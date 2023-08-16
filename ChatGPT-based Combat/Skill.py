@@ -1,7 +1,7 @@
 
 
 class Skill:
-    def __init__(self, name, definition, type, damage_coefficient, target_area, base_damage=0.0, target_select='random',
+    def __init__(self, name, definition, type, damage_coefficient, target_area, effects, base_damage=0.0, target_select='random',
                  area_shape=None, area_length=0.0, area_width=0.0, area_angle=0.0, distance_limit=0.0, max_targets=1,
                  target_type='enemy', first_allowed_turn=0, cooldown_turns=0, cooldown_group=None, cooldown_time=None,
                  cooldown_coefficient=None):
@@ -43,6 +43,8 @@ class Skill:
         self.cooldown_time = cooldown_time
         # 公共冷却系数，默认值为空
         self.cooldown_coefficient = cooldown_coefficient
+
+        self.effects = effects
 
     # def __init__(self, name, definition, type, target, first_allowed_turn=0, cooldown_turns=0,
     #              cooldown_group=None, cooldown_time=None, cooldown_coefficient=None):

@@ -51,41 +51,41 @@ class Character:
         # 攻击方的防御系数
         self.def_coef = def_coef
 
-    def select_targets(self, squads, skill):
-        if skill.target_type == 'enemy':
-            target_squads = [squad for squad in squads if squad != self.squad]
-        elif skill.target_type == 'ally':
-            target_squads = [self.squad]
-        elif skill.target_type == 'self':
-            target_squads = [self.squad]
-
-        if skill.target_area == 'single':
-            target_list = []
-            for squad in target_squads:
-                target_list.extend(squad.members)
-            if skill.target_type == 'enemy':
-                # Select a target from the enemy squad based on the target_select attribute of the skill
-                if skill.target_select == 'weakest':
-                    target = min(target_list, key=lambda character: character.hp)
-                elif skill.target_select == 'strongest':
-                    target = max(target_list, key=lambda character: character.hp)
-                else:  # random selection
-                    target = random.choice(target_list)
-            elif skill.target_type == 'ally':
-                # Select a target from the ally squad, excluding the attacker
-                target_list.remove(self)
-                target = random.choice(target_list)
-            elif skill.target_type == 'self':
-                target = self
-            return [target]
-        elif skill.target_area == 'multiple':
-            target_squads = random.sample(target_squads, min(skill.max_targets, len(target_squads)))
-            target_list = []
-            for squad in target_squads:
-                for target in squad.members:
-                    if target.is_alive():  # only attack alive characters
-                        target_list.append(target)
-            return target_list
+    # def select_targets(self, squads, skill):
+    #     if skill.target_type == 'enemy':
+    #         target_squads = [squad for squad in squads if squad != self.squad]
+    #     elif skill.target_type == 'ally':
+    #         target_squads = [self.squad]
+    #     elif skill.target_type == 'self':
+    #         target_squads = [self.squad]
+    #
+    #     if skill.target_area == 'single':
+    #         target_list = []
+    #         for squad in target_squads:
+    #             target_list.extend(squad.members)
+    #         if skill.target_type == 'enemy':
+    #             # Select a target from the enemy squad based on the target_select attribute of the skill
+    #             if skill.target_select == 'weakest':
+    #                 target = min(target_list, key=lambda character: character.hp)
+    #             elif skill.target_select == 'strongest':
+    #                 target = max(target_list, key=lambda character: character.hp)
+    #             else:  # random selection
+    #                 target = random.choice(target_list)
+    #         elif skill.target_type == 'ally':
+    #             # Select a target from the ally squad, excluding the attacker
+    #             target_list.remove(self)
+    #             target = random.choice(target_list)
+    #         elif skill.target_type == 'self':
+    #             target = self
+    #         return [target]
+    #     elif skill.target_area == 'multiple':
+    #         target_squads = random.sample(target_squads, min(skill.max_targets, len(target_squads)))
+    #         target_list = []
+    #         for squad in target_squads:
+    #             for target in squad.members:
+    #                 if target.is_alive():  # only attack alive characters
+    #                     target_list.append(target)
+    #         return target_list
 
     def attack(self, squads, skill):
         total_damage = 0

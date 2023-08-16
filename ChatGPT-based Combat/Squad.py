@@ -18,8 +18,8 @@ class Squad:
     def is_alive(self):
         return any(character.is_alive() for character in self.characters)
 
-    def increase_rage(self, character):
-        self.rage += character.rage_increase
+    def increase_rage(self, rage_increase):
+        self.rage += rage_increase
 
     def start_rage_skill_phase(self):
         self.rage_skill_phase = len(self.characters)
