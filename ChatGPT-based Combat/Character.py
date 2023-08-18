@@ -21,20 +21,11 @@ class Character:
         self.rage_increase = rage_increase
 
         self.skills = skills  # Convert dict to Skill objects
-        self.def_coef = Config.def_doef
+        self.def_coef = Config.def_coef
         self.squad = None
 
     def is_alive(self):
-        return self.current_health > 0
-
-    def calculate_damage(self, defender, skill_coef, skill_base_damage):
-        crit_rate = self.calculate_crit_rate(1.0)
-        damage = skill_coef * self.attack * (1 - defender.defense / (defender.defense + self.def_coef)) \
-                 + skill_base_damage
-        if crit_rate > random.random():  # Check if the attack is a critical hit
-            print('Critical!')
-            damage *= (1.0 + self.crit_damage)
-        return damage
+        return self.curr_hp > 0
 
     def calculate_crit_rate(self, crit_coef):
         return (self.crit - self.crit_resistance) / crit_coef
@@ -87,17 +78,43 @@ class Character:
     #                     target_list.append(target)
     #         return target_list
 
-    def attack(self, squads, skill):
+    # def attack(self, squads, skill):
+    #     total_damage = 0
+    #     targets = self.select_targets(squads, skill)
+    #     for target in targets:
+    #         damage = self.calculate_damage(target, skill_coef=skill.damage_coefficient,
+    #                                        skill_base_damage=skill.base_damage)
+    #         target.take_damage(damage)
+    #         total_damage += damage
+
+    def cast_skill(self, squads, skill):
         total_damage = 0
-        targets = self.select_targets(squads, skill)
-        for target in targets:
-            damage = self.calculate_damage(target, skill_coef=skill.damage_coefficient,
-                                           skill_base_damage=skill.base_damage)
-            target.take_damage(damage)
+        target_list = []
+        for effect in skill.effects:
+            is_cast, damage, targets = effect.run(self, squads)
             total_damage += damage
+            target_list.extend(targets)
+        return total_damage, target_list
+
+    def calc_attributes(self):
+        return 0
+
+    def calc_damage(self, defender, effect_coef, effect_base_damage):
+        crit_rate = self.calculate_crit_rate(1.0)
+        damage = effect_coef * self.attack * (1 - defender.defense / (defender.defense + self.def_coef)) \
+                 + effect_base_damage
+        if crit_rate > random.random():  # Check if the attack is a critical hit
+            print('Critical!')
+            damage *= (1.0 + self.crit_damage)
+        return damage
 
     def take_damage(self, damage):
         self.curr_hp -= damage
+        if self.curr_hp <= 0:
+            print(f'{self.squad.name}-{self.name} died!')
+
+    def calc_heal(self, effect_coef, effect_base_damage):
+        return effect_coef * self.attack + effect_base_damage
 
     def take_heal(self, heal):
         self.curr_hp = min(self.curr_hp + heal, self.max_hp)

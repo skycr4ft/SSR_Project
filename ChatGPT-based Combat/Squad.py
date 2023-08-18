@@ -8,10 +8,13 @@ class Squad:
             raise ValueError('A squad must have 1 to 3 characters')
         self.name = name
         self.characters = characters
+        while len(characters) < 3:
+            self.characters.append(None)
         self.rage = 0
         self.rage_skill_phase = 0
         self.current_character_index = 0
         self.alliance = alliance
+        self.skill_cast_time = 0
         for character in self.characters:
             character.squad = self
 
@@ -22,8 +25,9 @@ class Squad:
         self.rage += rage_increase
 
     def start_rage_skill_phase(self):
-        self.rage_skill_phase = len(self.characters)
+        self.rage_skill_phase = 3
         self.current_character_index = 0  # Reset the character index
+        self.skill_cast_time += 1
 
     def end_rage_skill_phase(self):
         self.rage_skill_phase = 0
@@ -35,19 +39,22 @@ class Squad:
         for i in range(len(self.characters)):
             character = self.characters[(self.current_character_index + i) % len(self.characters)]
             if character.is_alive():
-                self.current_character_index = (self.current_character_index + i) % len(self.characters)
+                self.current_character_index = (self.current_character_index + i + 1) % len(self.characters)
                 return character
         return None
 
-    # def get_target(self, target_select):
-    #     if target_select == 'random':
-    #         # Choose a random character as the target
-    #         return random.choice([character for character in self.characters if character.is_alive()])
-    #     elif target_select == 'weakest':
-    #         # Choose the character with the lowest current health as the target
-    #         return min((character for character in self.characters if character.is_alive()),
-    #                    key=lambda character: character.current_health)
-    #     else:
-    #         raise ValueError(f'Unknown target selection method: {target_select}')
+    def get_next_character(self):
+        # if self.rage_skill_phase > 0:
+        #     # If the squad is in the rage skill phase, return the character at the current index
+        #     return self.characters[self.current_character_index]
+        # else:
+        #     # If the squad is not in the rage skill phase, return the next alive character
+        #     for i in range(len(self.characters)):
+        #         character = self.characters[(self.current_character_index + i) % len(self.characters)]
+        #         if character.is_alive():
+        #             return character
+        if not self.characters[self.current_character_index].is_alive():
+            return None
+        return self.characters[self.current_character_index]
 
     # Add more methods as needed for your game mechanics

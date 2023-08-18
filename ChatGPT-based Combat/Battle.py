@@ -14,101 +14,89 @@ class Battle:
 
     def next_turn(self):
         self.turn += 1
+        print(f'【回合{self.turn}】')
         # Get the squads for this turn
         squad1 = self.squads[0]
         squad2 = self.squads[1]
 
         # Get the characters for this turn
-        character1 = squad1.get_next_alive_character()
-        character2 = squad2.get_next_alive_character()
+        # character1 = squad1.get_next_alive_character()
+        # character2 = squad2.get_next_alive_character()
+
+        # Get the characters for this turn
+        character1 = squad1.get_next_character()
+        character2 = squad2.get_next_character()
+
+        if character1 is None:
+            print(f'Squad {squad1.name} - idle')
+        else:
+            print(f'Squad {squad1.name} - {character1.name}')
+        if character2 is None:
+            print(f'Squad {squad2.name} - idle')
+        else:
+            print(f'Squad {squad2.name} - {character2.name}')
 
         # Determine if the squads are in the rage skill phase
         is_rage_skill_phase1 = squad1.rage_skill_phase > 0
         is_rage_skill_phase2 = squad2.rage_skill_phase > 0
 
         # Get the skills for this turn
-        skill1 = character1.take_action(is_rage_skill_phase1)
-        skill2 = character2.take_action(is_rage_skill_phase2)
+        skill1 = character1.take_action(is_rage_skill_phase1) if character1 is not None else None
+        skill2 = character2.take_action(is_rage_skill_phase2) if character2 is not None else None
 
         # Get the target squads for this turn
         # target_list1 = self.select_targets(character1, self.squads, skill1)
         # target_list2 = self.select_targets(character2, self.squads, skill2)
-        target_squads1 = self.select_target_squads(character1, skill1)
-        target_squads2 = self.select_target_squads(character2, skill2)
+        # target_squads1 = self.select_target_squads(character1, skill1)
+        # target_squads2 = self.select_target_squads(character2, skill2)
 
-        for effect in skill1.effects:
-            is_cast, damage = effect.run(character1, target_squads1)
-            # 记录每回合的攻击方、受击方、技能和造成伤害的日志
-            if is_cast:
-                self.log.append((self.turn, squad1.name, character1.name,
-                             [target.name for target in target_list1], skill1.name, damage))
-            else:
-                self.log.append((self.turn, squad1.name, character1.name,
-                                 [target.name for target in target_list1], skill1.name, damage))
-        for effect in skill2.effects:
-            is_cast, damage = effect.run(character2, target_squads2)
-            # 记录每回合的攻击方、受击方、技能和造成伤害的日志
-            if is_cast:
-                self.log.append((self.turn, squad2.name, character2.name, squad1.name,
-                                 [target.name for target in target_list2], skill2.name, damage2))
-            else:
-                self.log.append((self.turn, squad2.name, character2.name, squad1.name,
-                                 [target.name for target in target_list2], skill2.name, damage2))
+        # cast skill
+        damage1, target_list1 = character1.cast_skill(self.squads, skill1) if character1 is not None else (0, [])
+        damage2, target_list2 = character2.cast_skill(self.squads, skill2) if character2 is not None else (0, [])
 
-        # Make them attack each other
-        # damage1 = self.attack(character1, target_list1, skill1)
-        # damage2 = self.attack(character2, target_list2, skill2)
+        # 记录每回合的攻击方、受击方、技能和造成伤害的日志
+        self.log.append((self.turn, squad1.name, character1.name, [target.name for target in target_list1], skill1.name, damage1)) \
+            if character1 is not None else self.log.append((self.turn, squad1.name, 'idle', [], 'idle', 0))
+        self.log.append((self.turn, squad2.name, character2.name, [target.name for target in target_list2], skill2.name, damage2)) \
+            if character2 is not None else self.log.append((self.turn, squad2.name, 'idle', [], 'idle', 0))
 
-        # Handle the rage skill phase and increase rage
-        handle_rage(self, character1, squad1, is_rage_skill_phase1)
-        handle_rage(self, character2, squad2, is_rage_skill_phase2)
-
-        # if is_rage_skill_phase1:
-        #     squad1.rage_skill_phase -= 1
-        #     if squad1.rage_skill_phase == 0:
-        #         squad1.end_rage_skill_phase()
+        # 记录每回合的攻击方、受击方、技能和造成伤害的日志
+        # if is_cast:
+        #     self.log.append((self.turn, squads.name, self.name,
+        #                      [target.name for target in target_list1], skill.name, damage))
         # else:
-        #     squad1.increase_rage(character1)
-        #     if squad1.rage >= 100:
-        #         squad1.start_rage_skill_phase()
-        #
-        # if is_rage_skill_phase2:
-        #     squad2.rage_skill_phase -= 1
-        #     if squad2.rage_skill_phase == 0:
-        #         squad2.end_rage_skill_phase()
-        # else:
-        #     squad2.increase_rage(character2)
-        #     if squad2.rage >= 100:
-        #         squad2.start_rage_skill_phase()
+        #     self.log.append((self.turn, squad1.name, character1.name,
+        #                      [target.name for target in target_list1], skill1.name, damage))
+        # for effect in skill1.effects:
+        #     is_cast, damage = effect.run(character1, target_squads1)
+        #     # 记录每回合的攻击方、受击方、技能和造成伤害的日志
+        #     if is_cast:
+        #         self.log.append((self.turn, squad1.name, character1.name,
+        #                          [target.name for target in target_list1], skill1.name, damage))
+        #     else:
+        #         self.log.append((self.turn, squad1.name, character1.name,
+        #                          [target.name for target in target_list1], skill1.name, damage))
 
         # Move to the next character in each squad
         # 决定下一回合的出手角色
         squad1.current_character_index = (squad1.current_character_index + 1) % len(squad1.characters)
         squad2.current_character_index = (squad2.current_character_index + 1) % len(squad2.characters)
 
-    # 选择技能释放的部队
-    def select_target_squads(self, character, skill):
-        if skill.target_type == 'enemy':
-            target_squads = [squad for squad in self.squads if squad != character.squad]
-        elif skill.target_type == 'ally':
-            target_squads = [character.squad]
-        # elif skill.target_type == 'self':
-        else:
-            target_squads = [character.squad]
+        # Handle the rage skill phase and increase rage
+        self.handle_rage(character1, squad1, is_rage_skill_phase1) if character1 is not None else None
+        self.handle_rage(character2, squad2, is_rage_skill_phase2) if character2 is not None else None
 
-        return target_squads
 
     # 技能释放
     def attack(self, character, targets, skill):
         total_damage = 0
         for target in targets:
-            damage = character.calculate_damage(target, skill_coef=skill.damage_coefficient,
-                                                skill_base_damage=skill.base_damage)
+            damage = character.calc_damage(target, skill_coef=skill.damage_coefficient,
+                                           skill_base_damage=skill.base_damage)
             target.take_damage(damage)
             total_damage += damage
 
         return total_damage
-
 
     ## 判断战斗是否结束
     def is_over(self):
@@ -116,13 +104,13 @@ class Battle:
 
     # 打印战斗日志
     def print_log(self):
-        for turn, squad1, attacker, squad2, defender, skill, damage in self.log:
+        for turn, squad1, attacker, targets, skill, damage in self.log:
             print(
-                f"【回合{turn}】部队{squad1} - {attacker} 对部队{squad2} - {defender} 使用了 {skill}，总共造成了 {damage} 点伤害。")
+                f"【回合{turn}】部队{squad1} - {attacker} 对敌方{targets} 使用了 {skill}，总共造成了 {damage} 点伤害。")
 
     def get_total_damage_by_squad(self):
         squad_damage = {}
-        for _, squad_name, _, _, _, _, damage in self.log:
+        for _, squad_name, _, _, _, damage in self.log:
             if squad_name not in squad_damage:
                 squad_damage[squad_name] = damage
             else:
@@ -131,7 +119,7 @@ class Battle:
 
     def get_total_damage_by_character(self):
         character_damage = {}
-        for _, squad_name, attacker_name, _, _, _, damage in self.log:
+        for _, squad_name, attacker_name, _, _, damage in self.log:
             character_name = squad_name + '-' + attacker_name
             if character_name not in character_damage:
                 character_damage[character_name] = damage
@@ -148,6 +136,7 @@ class Battle:
             squad.increase_rage(character.rage_increase)
             if squad.rage >= 100:
                 squad.start_rage_skill_phase()
+
     # def get_next_alive_character(self, squad):
     #     # Find the next alive character in the squad
     #     for i in range(len(squad.characters)):
