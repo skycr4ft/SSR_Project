@@ -50,15 +50,15 @@ class Battle:
         # target_squads1 = self.select_target_squads(character1, skill1)
         # target_squads2 = self.select_target_squads(character2, skill2)
 
-        # cast skill
-        damage1, target_list1 = character1.cast_skill(self.squads, skill1) if character1 is not None else (0, [])
-        damage2, target_list2 = character2.cast_skill(self.squads, skill2) if character2 is not None else (0, [])
+        # select_targets
+        is_cast_list1, target_list1 = character1.select_targets(self.squads, skill1) if character1 is not None \
+            else ([], [])
+        is_cast_list2, target_list2 = character2.select_targets(self.squads, skill2) if character2 is not None \
+            else ([], [])
 
-        # 记录每回合的攻击方、受击方、技能和造成伤害的日志
-        self.log.append((self.turn, squad1.name, character1.name, [target.name for target in target_list1], skill1.name, damage1)) \
-            if character1 is not None else self.log.append((self.turn, squad1.name, 'idle', [], 'idle', 0))
-        self.log.append((self.turn, squad2.name, character2.name, [target.name for target in target_list2], skill2.name, damage2)) \
-            if character2 is not None else self.log.append((self.turn, squad2.name, 'idle', [], 'idle', 0))
+        # cast skill
+        damage1 = character1.cast_skill(target_list1, skill1) if character1 is not None else (0, [])
+        damage2 = character2.cast_skill(target_list2, skill2) if character2 is not None else (0, [])
 
         # 记录每回合的攻击方、受击方、技能和造成伤害的日志
         # if is_cast:
@@ -83,8 +83,8 @@ class Battle:
         squad2.current_character_index = (squad2.current_character_index + 1) % len(squad2.characters)
 
         # Handle the rage skill phase and increase rage
-        self.handle_rage(character1, squad1, is_rage_skill_phase1) if character1 is not None else None
-        self.handle_rage(character2, squad2, is_rage_skill_phase2) if character2 is not None else None
+        self.handle_rage(character1, squad1, is_rage_skill_phase1)
+        self.handle_rage(character2, squad2, is_rage_skill_phase2)
 
 
     # 技能释放
@@ -133,7 +133,7 @@ class Battle:
             if squad.rage_skill_phase == 0:
                 squad.end_rage_skill_phase()
         else:
-            squad.increase_rage(character.rage_increase)
+            squad.increase_rage(character.rage_increase if character is not None else 0)
             if squad.rage >= 100:
                 squad.start_rage_skill_phase()
 

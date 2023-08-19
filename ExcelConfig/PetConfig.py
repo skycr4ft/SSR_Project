@@ -41,13 +41,13 @@ def add_pet_model(pets):
         num += 1
         rows_art_resc.insert(line,
                              [str(last_num + 1), 'mdl_battlePet_B' + str(num), '宠物展示模型_' + cn_name, '0', '模型',
-                              'mdl_pet_' + en_name + '_lod1', '', '', '', '', '', '', '', '', '', '', ''])
+                              'mdl_pet_' + en_name + '_lod0', '', '', '', '', '', '', '', '', '', '', '0;-0.88;0'])
         rows_art_resc.insert(line + 1,
                              [str(last_num + 2), 'mdl_battlePet_A' + str(num), '宠物展示模型_' + cn_name, '0', '模型',
-                              'mdl_pet_' + en_name + '_lod1', '', '', '', '', '', '', '', '', '', '', ''])
+                              'mdl_pet_' + en_name + '_lod0', '', '', '', '', '', '', '', '', '', '', '0;-0.88;0'])
         rows_art_resc.insert(line + 2,
                              [str(last_num + 3), 'mdl_battlePet_S' + str(num), '宠物展示模型_' + cn_name, '0', '模型',
-                              'mdl_pet_' + en_name + '_lod1', '', '', '', '', '', '', '', '', '', '', ''])
+                              'mdl_pet_' + en_name + '_lod0', '', '', '', '', '', '', '', '', '', '', '0;-0.88;0'])
         rows_art_resc.insert(line + 3,
                              [str(last_num + 4), 'mdlBG_battlePet_B' + str(num), '宠物展示背景_' + cn_name, '0', '模型',
                               'mdl_ui3d_background1', '', '', '', '', '', '', '', '', '', '', ''])

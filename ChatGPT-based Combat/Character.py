@@ -87,14 +87,23 @@ class Character:
     #         target.take_damage(damage)
     #         total_damage += damage
 
-    def cast_skill(self, squads, skill):
-        total_damage = 0
+    # 选择技能效果的目标
+    def select_targets(self, squads, skill):
+        is_cast_list = []
         target_list = []
         for effect in skill.effects:
-            is_cast, damage, targets = effect.run(self, squads)
+            is_cast, targets = effect.run(self, squads)
+            target_list.append(targets)
+            is_cast_list.append(is_cast)
+        return is_cast_list, target_list
+
+    # 结算技能效果
+    def cast_skill(self, target_list, skill):
+        total_damage = 0
+        for (effect, targets) in zip(skill.effects, target_list):
+            damage = effect.apply(self, targets)
             total_damage += damage
-            target_list.extend(targets)
-        return total_damage, target_list
+        return total_damage
 
     def calc_attributes(self):
         return 0

@@ -110,26 +110,28 @@ class DamageEffect(Effect):
         # 生成随机数
         rand = random.random()
         if cast_prob < rand:
-            print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
-            return False, 0, []
+            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
+            return False, []
         # 选择目标
         targets = self.select_targets(caster, squads)
+        return True, targets
+
+    def apply(self, caster, targets):
         # 计算总伤害
         total_damage = 0
         for target in targets:
-            total_damage += self.apply_one_target(caster, target)
-        return True, total_damage, targets
+            # 计算伤害
+            damage = caster.calc_damage(target, effect_coef=self.damage_coef, effect_base_damage=self.damaga_base)
+            total_damage += damage
+            # 打印日志
+            self.log(caster, target, damage)
+            # 造成伤害
+            target.take_damage(damage)
+        return total_damage
 
-    def apply_one_target(self, caster, target):
-        # 计算伤害
-        damage = caster.calc_damage(target, effect_coef=self.damage_coef, effect_base_damage=self.damaga_base)
-        # 造成伤害
-        target.take_damage(damage)
-        return damage
-
-    def log(self, caster, targets, damage):
+    def log(self, caster, target, damage):
         print(
-            f'{caster.squad.name}-{caster.name} cast {self.effect_type} on {targets.name} and caused {damage} damage.')
+            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {self.effect_type}.')
 
 
 class HealEffect(Effect):
