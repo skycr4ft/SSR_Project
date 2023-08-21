@@ -2,7 +2,8 @@ import random
 
 
 class Effect:
-    def __init__(self, effect_type, target_area, duration=0, cast_prob_lower_bound=100, cast_prob_upper_bound=100,
+    def __init__(self, effect_type, target_area='single', duration=0, cast_prob_lower_bound=100,
+                 cast_prob_upper_bound=100,
                  target_select='random', area_shape=None, area_length=0.0, area_width=0.0, area_angle=0.0,
                  distance_limit=0.0, max_targets=1, target_type='enemy'):
         # 效果释放概率下限
@@ -48,8 +49,8 @@ class Effect:
         raise NotImplementedError
 
     # 记录日志
-    def log(self, caster, targets, damage):
-        raise NotImplementedError
+    # def log(self, caster, targets, damage):
+    #     raise NotImplementedError
 
     # 计算效果的释放概率
     def calc_cast_prob(self, caster) -> float:
@@ -99,10 +100,10 @@ class Effect:
 
 
 class DamageEffect(Effect):
-    def __init__(self, damage_coef, damaga_base=0, *args, **kwargs):
+    def __init__(self, dmg_coef, dmg_base=0, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.damage_coef = damage_coef
-        self.damaga_base = damaga_base
+        self.dmg_coef = dmg_coef
+        self.dmg_base = dmg_base
 
     def run(self, caster, squads):
         # 计算效果释放概率
@@ -121,13 +122,29 @@ class DamageEffect(Effect):
         total_damage = 0
         for target in targets:
             # 计算伤害
-            damage = caster.calc_damage(target, effect_coef=self.damage_coef, effect_base_damage=self.damaga_base)
+            damage = self.calc_dmg(caster, target, effect_coef=self.dmg_coef, effect_base_dmg=self.dmg_base)
             total_damage += damage
             # 打印日志
             self.log(caster, target, damage)
             # 造成伤害
-            target.take_damage(damage)
+            target.take_dmg(damage)
         return total_damage
+
+    def calc_dmg(self, caster, defender, effect_coef, effect_base_dmg):
+        crit_rate = caster.calc_crit_rate(1.0)
+        if self.effect_type == 'skill_dmg':
+            damage = (effect_coef * caster.attack * (1 - defender.defense / (defender.defense + caster.def_coef))
+                      + effect_base_dmg) * (1 + defender.skill_dmg_rcv_inc) * (1 + caster.skill_dmg_deal_inc) * \
+                     (1 + caster.dmg_deal_inc) * (1 + defender.dmg_rcv_inc)
+        else:
+            damage = (effect_coef * caster.attack * (1 - defender.defense / (defender.defense + caster.def_coef))
+                      + effect_base_dmg) * (1 + defender.atk_dmg_rcv_inc) * (1 + caster.atk_dmg_deal_inc) * \
+                     (1 + caster.dmg_deal_inc) * (1 + defender.dmg_rcv_inc)
+
+        if crit_rate > random.random():  # Check if the attack is a critical hit
+            print('Critical!')
+            damage *= (1.0 + caster.crit_damage)
+        return damage
 
     def log(self, caster, target, damage):
         print(
@@ -140,55 +157,80 @@ class HealEffect(Effect):
         self.heal_coef = heal_coef
         self.heal_base = heal_base
 
-    def apply_one_target(self, target):
-        # 计算治疗
-        heal = self.heal_coef * self.heal_base
-        # 造成治疗
-        target.take_heal(heal)
+    def run(self, caster, squads):
+        # 计算效果释放概率
+        cast_prob = self.calc_cast_prob(caster)
+        # 生成随机数
+        rand = random.random()
+        if cast_prob < rand:
+            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
+            return False, []
+        # 选择目标
+        targets = self.select_targets(caster, squads)
+        return True, targets
+
+    def apply(self, character, targets):
+        total_heal = 0
+        for target in targets:
+            # 计算治疗
+            heal = self.calc_heal(character, target, effect_coef=self.heal_coef, effect_base_heal=self.heal_base)
+            total_heal += heal
+            # 造成治疗
+            target.take_heal(heal)
+            # 打印日志
+            self.log(character, target, heal)
+        return total_heal
+
+    def calc_heal(self, caster, target, effect_coef, effect_base_heal):
+        heal = (effect_coef * caster.attack + effect_base_heal) * (1 + target.heal_rcv_inc) * (1 + caster.heal_deal_inc)
         return heal
+
+    def log(self, caster, target, heal):
+        print(
+            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {heal} {self.effect_type}.')
 
 
 class BuffEffect(Effect):
-    def __init__(self, attributes, increases, *args, **kwargs):
+    def __init__(self, buffs, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.attributes = attributes
-        self.increases = increases
+        # 示例：buffs = {'atk_multi': 0.1}
+        self.buffs = buffs
 
-    def apply_one_target(self, character):
-        setattr(character, self.attributes, getattr(character, self.attributes) + self.increases)
+    def clone(self):
+        return BuffEffect(buffs=self.buffs, effect_type=self.effect_type, target_area=self.target_area,
+                          duration=self.duration, cast_prob_lower_bound=self.cast_prob_lower_bound,
+                          cast_prob_upper_bound=self.cast_prob_upper_bound, target_select=self.target_select,
+                          area_shape=self.area_shape, area_length=self.area_length, area_width=self.area_width,
+                          area_angle=self.area_angle, distance_limit=self.distance_limit, max_targets=self.max_targets,
+                          target_type=self.target_type)
+
+    def run(self, caster, squads):
+        # 计算效果释放概率
+        cast_prob = self.calc_cast_prob(caster)
+        # 生成随机数
+        rand = random.random()
+        if cast_prob < rand:
+            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
+            return False, []
+        # 选择目标
+        targets = self.select_targets(caster, squads)
+        return True, targets
+
+    def apply(self, character, targets):
+        for target in targets:
+            # 造成增益
+            target.effect_tracker.add_effect(self.clone())
+            # 打印日志
+            self.log(character, target)
 
     def tick(self, character):
         self.duration -= 1
-        if self.duration <= 0:
-            # Remove the buff when the duration is over
-            setattr(character, self.attribute, getattr(character, self.attribute) - self.increase)
+        if self.duration < 0:
+            print(f'{character.squad.name}-{character.name} {self.buffs} {self.effect_type} expired.')
 
-
-class Skill:
-    def __init__(self, name, effects):
-        self.name = name
-        self.effects = effects
-
-    def use(self, character, target):
-        for effect in self.effects:
-            if effect.is_applicable(character):
-                effect.apply(target)
-                if effect.duration > 0:
-                    character.effect_tracker.add_effect(effect)
-
-
-class Character:
-    # ...existing code...
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.effect_tracker = EffectTracker()
-
-    def use_skill(self, skill, target):
-        skill.use(self, target)
-
-    def tick(self):
-        self.effect_tracker.tick(self)
+    def log(self, caster, target):
+        print(
+            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {self.buffs} {self.effect_type}.')
 
 
 class EffectTracker:
@@ -201,4 +243,6 @@ class EffectTracker:
     def tick(self, character):
         for effect in self.effects:
             effect.tick(character)
-        self.effects = [effect for effect in self.effects if effect.duration > 0]
+            # if effect.duration < 0:
+            #     self.effects.remove(effect)
+        self.effects = [effect for effect in self.effects if effect.duration >= 0]

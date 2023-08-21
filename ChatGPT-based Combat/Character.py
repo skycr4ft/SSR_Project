@@ -1,33 +1,69 @@
 import random
 from Skill import Skill
 import Config
+from Effect import EffectTracker
 
 
 class Character:
-    def __init__(self, name, attack, defense, max_hp, curr_hp, crit, crit_resistance, crit_damage,
-                 crit_reduction, effect_hit, effect_resistance, skills, rage_increase):
+    def __init__(self, name, level, attack_base, defense_base, max_hp_base, curr_hp_base, crit_base,
+                 crit_resistance_base,
+                 crit_damage_base, crit_reduction_base, effect_hit_base, effect_resistance_base, skills,
+                 rage_increase_base):
 
         self.name = name
-        self.attack = attack
-        self.defense = defense
-        self.max_hp = max_hp
-        self.curr_hp = curr_hp
-        self.crit = crit
-        self.crit_resistance = crit_resistance
-        self.crit_damage = crit_damage
-        self.crit_reduction = crit_reduction
-        self.effect_hit = effect_hit
-        self.effect_resistance = effect_resistance
-        self.rage_increase = rage_increase
+        self.level = level
 
-        self.skills = skills  # Convert dict to Skill objects
-        self.def_coef = Config.def_coef
+        # 读取属性基础值
+        self.attack_base = attack_base
+        self.defense_base = defense_base
+        self.max_hp_base = max_hp_base
+        self.curr_hp_base = curr_hp_base
+        self.crit_base = crit_base
+        self.crit_resistance_base = crit_resistance_base
+        self.crit_damage_base = crit_damage_base
+        self.crit_reduction_base = crit_reduction_base
+        self.effect_hit_base = effect_hit_base
+        self.effect_resistance_base = effect_resistance_base
+        self.rage_increase_base = rage_increase_base
+
+        self.skills = skills  # Convert list to Skill objects
+        self.def_coef = Config.def_coef[level - 1]
         self.squad = None
+        self.base_attrs = ['attack', 'defense', 'max_hp', 'crit', 'crit_resistance', 'crit_damage',
+                           'crit_reduction', 'effect_hit', 'effect_resistance', 'rage_increase']
+        # 配置进阶属性
+        self.promoted_attrs = ['atk_dmg_rcv_inc', 'skill_dmg_rcv_inc', 'atk_dmg_deal_inc', 'skill_dmg_deal_inc',
+                               'dmg_rcv_inc', 'dmg_deal_inc', 'heal_rcv_inc', 'heal_deal_inc']
+
+        self.effect_tracker = EffectTracker()
+
+        # 初始化属性值
+        self.attack = self.attack_base
+        self.defense = self.defense_base
+        self.max_hp = self.max_hp_base
+        self.curr_hp = self.curr_hp_base
+        self.crit = self.crit_base
+        self.crit_resistance = self.crit_resistance_base
+        self.crit_damage = self.crit_damage_base
+        self.crit_reduction = self.crit_reduction_base
+        self.effect_hit = self.effect_hit_base
+        self.effect_resistance = self.effect_resistance_base
+        self.rage_increase = self.rage_increase_base
+
+        # 初始化进阶属性
+        self.atk_dmg_rcv_inc = 0.0
+        self.skill_dmg_rcv_inc = 0.0
+        self.atk_dmg_deal_inc = 0.0
+        self.skill_dmg_deal_inc = 0.0
+        self.dmg_rcv_inc = 0.0
+        self.dmg_deal_inc = 0.0
+        self.heal_rcv_inc = 0.0
+        self.heal_deal_inc = 0.0
 
     def is_alive(self):
         return self.curr_hp > 0
 
-    def calculate_crit_rate(self, crit_coef):
+    def calc_crit_rate(self, crit_coef):
         return (self.crit - self.crit_resistance) / crit_coef
 
     def take_action(self, is_rage_skill_phase):
@@ -101,29 +137,41 @@ class Character:
     def cast_skill(self, target_list, skill):
         total_damage = 0
         for (effect, targets) in zip(skill.effects, target_list):
-            damage = effect.apply(self, targets)
-            total_damage += damage
-        return total_damage
+            effect.apply(self, targets)
+        # return total_damage
 
-    def calc_attributes(self):
-        return 0
-
-    def calc_damage(self, defender, effect_coef, effect_base_damage):
-        crit_rate = self.calculate_crit_rate(1.0)
-        damage = effect_coef * self.attack * (1 - defender.defense / (defender.defense + self.def_coef)) \
-                 + effect_base_damage
-        if crit_rate > random.random():  # Check if the attack is a critical hit
-            print('Critical!')
-            damage *= (1.0 + self.crit_damage)
-        return damage
-
-    def take_damage(self, damage):
+    def take_dmg(self, damage):
         self.curr_hp -= damage
         if self.curr_hp <= 0:
             print(f'{self.squad.name}-{self.name} died!')
 
-    def calc_heal(self, effect_coef, effect_base_damage):
-        return effect_coef * self.attack + effect_base_damage
+    def calc_heal(self, effect_coef, effect_base_dmg):
+        return effect_coef * self.attack + effect_base_dmg
 
     def take_heal(self, heal):
         self.curr_hp = min(self.curr_hp + heal, self.max_hp)
+
+    def update(self):
+        # 更新效果的状态
+        self.effect_tracker.tick(self)
+
+        # 计算角色的属性
+        bonus = self.gather_bonus()
+        self.calc_attributes(bonus)
+
+    def gather_bonus(self):
+        bonus = {}
+        for effect in self.effect_tracker.effects:
+            for buff in effect.buffs:
+                bonus[buff] = effect.buffs[buff] if buff not in bonus else bonus[buff] + effect.buffs[buff]
+        return bonus
+
+    def calc_attributes(self, bonus):
+        # 计算所有属性
+        for attr in self.base_attrs:
+            setattr(self, attr, getattr(self, attr + '_base') *
+                    (1.0 + bonus[attr + '_multi'] if attr + '_multi' in bonus else 1.0) +
+                    (bonus[attr + '_add'] if attr + '_add' in bonus else 0))
+
+        for attr in self.promoted_attrs:
+            setattr(self, attr, getattr(self, attr) + bonus[attr] if attr in bonus else getattr(self, attr))

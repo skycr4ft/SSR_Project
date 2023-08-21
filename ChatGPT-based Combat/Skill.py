@@ -71,7 +71,7 @@ class Skill:
     def create_effect(self, effects_param):
         effects = []
         for effect_param in effects_param:
-            if effect_param['effect_type'] == 'atk_damage' or 'skill_damage':
+            if effect_param['effect_type'] == 'atk_dmg' or effect_param['effect_type'] == 'skill_dmg':
                 from Effect import DamageEffect
                 effect = DamageEffect(**effect_param)
                 effects.append(effect)

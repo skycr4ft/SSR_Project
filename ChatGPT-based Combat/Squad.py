@@ -16,10 +16,19 @@ class Squad:
         self.alliance = alliance
         self.skill_cast_time = 0
         for character in self.characters:
-            character.squad = self
+            if character is not None:
+                character.squad = self
 
     def is_alive(self):
-        return any(character.is_alive() for character in self.characters)
+        for character in self.characters:
+            if character is not None and character.is_alive():
+                return True
+        return False
+        # return any(character.is_alive() for character in self.characters)
+
+    def update(self):
+        for character in self.characters:
+            character.update() if character is not None else None
 
     def increase_rage(self, rage_increase):
         self.rage += rage_increase
@@ -53,7 +62,9 @@ class Squad:
         #         character = self.characters[(self.current_character_index + i) % len(self.characters)]
         #         if character.is_alive():
         #             return character
-        if not self.characters[self.current_character_index].is_alive():
+        if self.characters[self.current_character_index] is None:
+            return None
+        elif not self.characters[self.current_character_index].is_alive():
             return None
         return self.characters[self.current_character_index]
 

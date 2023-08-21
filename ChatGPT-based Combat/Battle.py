@@ -19,6 +19,10 @@ class Battle:
         squad1 = self.squads[0]
         squad2 = self.squads[1]
 
+        # 更新所有角色的状态
+        squad1.update()
+        squad2.update()
+
         # Get the characters for this turn
         # character1 = squad1.get_next_alive_character()
         # character2 = squad2.get_next_alive_character()
@@ -57,8 +61,8 @@ class Battle:
             else ([], [])
 
         # cast skill
-        damage1 = character1.cast_skill(target_list1, skill1) if character1 is not None else (0, [])
-        damage2 = character2.cast_skill(target_list2, skill2) if character2 is not None else (0, [])
+        character1.cast_skill(target_list1, skill1) if character1 is not None else (0, [])
+        character2.cast_skill(target_list2, skill2) if character2 is not None else (0, [])
 
         # 记录每回合的攻击方、受击方、技能和造成伤害的日志
         # if is_cast:
@@ -91,9 +95,9 @@ class Battle:
     def attack(self, character, targets, skill):
         total_damage = 0
         for target in targets:
-            damage = character.calc_damage(target, skill_coef=skill.damage_coefficient,
-                                           skill_base_damage=skill.base_damage)
-            target.take_damage(damage)
+            damage = character.calc_dmg(target, skill_coef=skill.damage_coefficient,
+                                        skill_base_damage=skill.base_damage)
+            target.take_dmg(damage)
             total_damage += damage
 
         return total_damage

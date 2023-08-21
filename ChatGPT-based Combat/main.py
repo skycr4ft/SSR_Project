@@ -23,34 +23,36 @@ def main():
     ]
 
     # Create the characters
-    character1 = Character(name='Don', attack=68.828, defense=68.828, max_hp=1802.6/3, curr_hp=1802.6/3,
-                           crit=18.75, crit_resistance=18.75, crit_damage=0, crit_reduction=0, effect_hit=0.11,
-                           effect_resistance=0.08, skills=skills3, rage_increase=20)
-    character2 = Character(name='Nitro', attack=51.45, defense=51.45, max_hp=1349.3/3, curr_hp=1349.3/3,
-                           crit=15, crit_resistance=15, crit_damage=0, crit_reduction=0, effect_hit=0.09,
-                           effect_resistance=0.07, skills=skills2, rage_increase=20)
-    character3 = Character(name='Gem', attack=51.45, defense=51.45, max_hp=1349.3/4, curr_hp=1349.3/3,
-                           crit=15, crit_resistance=15, crit_damage=0, crit_reduction=0, effect_hit=0.09,
-                           effect_resistance=0.07, skills=skills1, rage_increase=20)
+    character1 = Character(name='Don', level=12, attack_base=68.828, defense_base=68.828, max_hp_base=1802.6/3, curr_hp_base=1802.6/3,
+                           crit_base=18.75, crit_resistance_base=18.75, crit_damage_base=0, crit_reduction_base=0,
+                           effect_hit_base=0.11, effect_resistance_base=0.08, skills=skills3, rage_increase_base=20)
+    character2 = Character(name='Nitro', level=12, attack_base=51.45, defense_base=51.45, max_hp_base=1349.3/3, curr_hp_base=1349.3/3,
+                           crit_base=15, crit_resistance_base=15, crit_damage_base=0, crit_reduction_base=0,
+                           effect_hit_base=0.09, effect_resistance_base=0.07, skills=skills2, rage_increase_base=20)
+    character3 = Character(name='Gem', level=12, attack_base=51.45, defense_base=51.45, max_hp_base=1349.3/3, curr_hp_base=1349.3/3,
+                           crit_base=15, crit_resistance_base=15, crit_damage_base=0, crit_reduction_base=0,
+                           effect_hit_base=0.09, effect_resistance_base=0.07, skills=skills1, rage_increase_base=20)
 
-    character4 = Character(name='Don', attack=68.828, defense=68.828, max_hp=1802.6/3, curr_hp=1802.6/3,
-                           crit=18.75, crit_resistance=18.75, crit_damage=0, crit_reduction=0, effect_hit=0.11,
-                           effect_resistance=0.08, skills=skills3, rage_increase=20)
-    character5 = Character(name='Nitro', attack=51.45, defense=51.45, max_hp=1349.3/3, curr_hp=1349.3/3,
-                           crit=15, crit_resistance=15, crit_damage=0, crit_reduction=0, effect_hit=0.09,
-                           effect_resistance=0.07, skills=skills2, rage_increase=20)
-    character6 = Character(name='Gem', attack=51.45, defense=51.45, max_hp=1349.3/3, curr_hp=1349.3/3,
-                           crit=15, crit_resistance=15, crit_damage=0, crit_reduction=0, effect_hit=0.09,
-                           effect_resistance=0.07, skills=skills1, rage_increase=20)
+    character4 = Character(name='Don', level=12, attack_base=68.828, defense_base=68.828, max_hp_base=1802.6/3, curr_hp_base=1802.6/3,
+                           crit_base=18.75, crit_resistance_base=18.75, crit_damage_base=0, crit_reduction_base=0,
+                           effect_hit_base=0.11, effect_resistance_base=0.08, skills=skills3, rage_increase_base=20)
+    character5 = Character(name='Nitro', level=12, attack_base=51.45, defense_base=51.45, max_hp_base=1349.3/3, curr_hp_base=1349.3/3,
+                           crit_base=15, crit_resistance_base=15, crit_damage_base=0, crit_reduction_base=0,
+                           effect_hit_base=0.09, effect_resistance_base=0.07, skills=skills2, rage_increase_base=20)
+    character6 = Character(name='Gem', level=12, attack_base=51.45, defense_base=51.45, max_hp_base=1349.3/3, curr_hp_base=1349.3/3,
+                           crit_base=15, crit_resistance_base=15, crit_damage_base=0, crit_reduction_base=0,
+                           effect_hit_base=0.09, effect_resistance_base=0.07, skills=skills1, rage_increase_base=20)
 
     # Create the squads
-    squad1 = Squad('A', characters=[character1, character2, character3], alliance='Justice')
-    squad2 = Squad('B', characters=[character4, character5, character6], alliance='Evil')
+    # squad1 = Squad('A', characters=[character1, character2, character3], alliance='Justice')
+    # squad2 = Squad('B', characters=[character4, character5, character6], alliance='Evil')
+
+    squad1 = Squad('A', characters=[character1], alliance='Justice')
+    squad2 = Squad('B', characters=[character2], alliance='Evil')
 
     # Create the battle
     battle = Battle(squad1=squad1, squad2=squad2)
 
-    # Run the battle for 10 turns
     battle.fight()
 
     # Print the battle log
