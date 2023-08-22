@@ -24,7 +24,7 @@ def add_pet_model(pets):
 
     # 读取ArtResource.csv文件中ID列值>=2000000且<3000000的最后一行
     for row in rows_art_resc:
-        if row[0] < '3000000':
+        if row[0] < '2100000':
             last_row = row
     line = 0
     for row in rows_art_resc:
@@ -78,7 +78,7 @@ def add_pet_model(pets):
             writer.writerows(rows_art_resc)
 
         for row in rows_pet:
-            if row[4] == en_name:
+            if row[4] == cn_name:
                 if row[7] == 'LV2':
                     row[13] = 'mdl_battlePet_B' + str(num)
                     row[14] = 'mdlBG_battlePet_B' + str(num)
@@ -97,4 +97,4 @@ def add_pet_model(pets):
 # if __name__ == '__main__':
     # 配置宠物模型资源
     # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
-    # add_pet_model()
+    # add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])

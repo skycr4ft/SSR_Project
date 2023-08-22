@@ -5,7 +5,7 @@ from Effect import EffectTracker
 
 
 class Character:
-    def __init__(self, name, level, attack_base, defense_base, max_hp_base, curr_hp_base, crit_base,
+    def __init__(self, name, level, attack_base, defense_base, max_hp_base, crit_base,
                  crit_resistance_base,
                  crit_damage_base, crit_reduction_base, effect_hit_base, effect_resistance_base, skills,
                  rage_increase_base):
@@ -17,7 +17,7 @@ class Character:
         self.attack_base = attack_base
         self.defense_base = defense_base
         self.max_hp_base = max_hp_base
-        self.curr_hp_base = curr_hp_base
+        self.curr_hp_base = max_hp_base
         self.crit_base = crit_base
         self.crit_resistance_base = crit_resistance_base
         self.crit_damage_base = crit_damage_base
