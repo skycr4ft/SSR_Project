@@ -117,7 +117,8 @@ def add_pet(pets):
                              rows_pet[line - 1][23],
                              rows_pet[line - 1][24], rows_pet[line - 1][25], rows_pet[line - 1][26],
                              rows_pet[line - 1][27],
-                             rows_pet[line - 1][28], rows_pet[line - 1][29], rows_pet[line - 1][30]])
+                             rows_pet[line - 1][28], rows_pet[line - 1][29], rows_pet[line - 1][30],
+                             rows_pet[line - 1][31],])
             line += 1
             last_num += 1
 
