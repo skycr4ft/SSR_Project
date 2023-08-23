@@ -99,7 +99,7 @@ def add_pet(pets):
             if row[0] == last_row[0]:
                 break
 
-        num = int(last_row[1].split(quality)[1].split('_')[0])
+        num = int(last_row[1].split(quality)[1])
         last_num = int(last_row[0])
 
         for en_name, cn_name in pets:
@@ -117,8 +117,8 @@ def add_pet(pets):
                              rows_pet[line - 1][23],
                              rows_pet[line - 1][24], rows_pet[line - 1][25], rows_pet[line - 1][26],
                              rows_pet[line - 1][27],
-                             rows_pet[line - 1][28], rows_pet[line - 1][29], rows_pet[line - 1][30],
-                             rows_pet[line - 1][31],])
+                             'Rank_battlePet_' + quality + str(num), rows_pet[line - 1][29], rows_pet[line - 1][30],
+                             rows_pet[line - 1][31], ])
             line += 1
             last_num += 1
 
