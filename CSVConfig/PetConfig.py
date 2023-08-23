@@ -2,17 +2,6 @@ import csv
 import os.path
 
 
-# def add_pet(pet_name_en, pet_name_chn):
-#     pet_file = open('C:\ssr-config\\trunk\config\csv\Pet.csv', encoding='utf-8')
-#     petType_file = open('C:\ssr-config\\trunk\config\csv\PetType.csv', encoding='utf-8')
-#     dict_reader = csv.DictReader(pet_file)
-#     reader = csv.reader(pet_file)
-#
-#     writer = csv.writer(file)
-#     print(dict_reader[5]['StringId'])
-#     # for row in reader:
-#     #     print(row[0])
-
 def add_pet_model(pets):
     art_resc_file = open('C:\ssr-config\\trunk\config\csv\ArtResource.csv', encoding='utf-8')
     reader_art_resc = csv.reader(art_resc_file)
@@ -200,7 +189,17 @@ def add_pet(pets):
                                        rows_pet_rank_attr[line - 1][18], rows_pet_rank_attr[line - 1][19],
                                        rows_pet_rank_attr[line - 1][20], rows_pet_rank_attr[line - 1][21],
                                        rows_pet_rank_attr[line - 1][22], rows_pet_rank_attr[line - 1][23],
-                                       rows_pet_rank_attr[line - 1][24]])
+                                       rows_pet_rank_attr[line - 1][24], rows_pet_rank_attr[line - 1][25],
+                                       rows_pet_rank_attr[line - 1][26], rows_pet_rank_attr[line - 1][27],
+                                       rows_pet_rank_attr[line - 1][28], rows_pet_rank_attr[line - 1][29],
+                                       rows_pet_rank_attr[line - 1][30], rows_pet_rank_attr[line - 1][31],
+                                       rows_pet_rank_attr[line - 1][32], rows_pet_rank_attr[line - 1][33],
+                                       rows_pet_rank_attr[line - 1][34], rows_pet_rank_attr[line - 1][35],
+                                       rows_pet_rank_attr[line - 1][36], rows_pet_rank_attr[line - 1][37],
+                                       rows_pet_rank_attr[line - 1][38], rows_pet_rank_attr[line - 1][39],
+                                       rows_pet_rank_attr[line - 1][40], rows_pet_rank_attr[line - 1][41],
+                                       rows_pet_rank_attr[line - 1][42], rows_pet_rank_attr[line - 1][43],
+                                       rows_pet_rank_attr[line - 1][44], ])
             line += 1
             last_num += 1
 
