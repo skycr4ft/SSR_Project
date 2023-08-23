@@ -94,7 +94,212 @@ def add_pet_model(pets):
             writer.writerows(rows_pet)
 
 
+def add_pet(pets):
+    pet_file = open('C:\ssr-config\\trunk\config\csv\Pet.csv', encoding='utf-8')
+    reader_pet = csv.reader(pet_file)
+    rows_pet = list(reader_pet)
+
+    ## 在Pet.csv文件中添加宠物
+    for pivot, quality in [['2000', 'B'], ['3000', 'A'], ['4000', 'S']]:
+        for row in rows_pet:
+            if row[0] < pivot:
+                last_row = row
+        line = 0
+        for row in rows_pet:
+            line += 1
+            if row[0] == last_row[0]:
+                break
+
+        num = int(last_row[1].split(quality)[1].split('_')[0])
+        last_num = int(last_row[0])
+
+        for en_name, cn_name in pets:
+            num += 1
+            rows_pet.insert(line,
+                            [str(last_num + 1), 'battlePet_' + quality + str(num), cn_name, 'pet' + str(num) + '_name',
+                             en_name, rows_pet[line - 1][5], rows_pet[line - 1][6], rows_pet[line - 1][7],
+                             rows_pet[line - 1][8], rows_pet[line - 1][9], rows_pet[line - 1][10],
+                             rows_pet[line - 1][11],
+                             rows_pet[line - 1][12], rows_pet[line - 1][13], rows_pet[line - 1][14],
+                             rows_pet[line - 1][15],
+                             rows_pet[line - 1][16], rows_pet[line - 1][17], rows_pet[line - 1][18],
+                             rows_pet[line - 1][19],
+                             rows_pet[line - 1][20], rows_pet[line - 1][21], rows_pet[line - 1][22],
+                             rows_pet[line - 1][23],
+                             rows_pet[line - 1][24], rows_pet[line - 1][25], rows_pet[line - 1][26],
+                             rows_pet[line - 1][27],
+                             rows_pet[line - 1][28], rows_pet[line - 1][29], rows_pet[line - 1][30]])
+            line += 1
+            last_num += 1
+
+    with open('C:\ssr-config\\trunk\config\csv\Pet.csv', 'w', newline='', encoding='utf-8') as pet_file:
+        writer = csv.writer(pet_file)
+        writer.writerows(rows_pet)
+
+    print('Pet.csv文件添加宠物成功！')
+
+    ## 在PetType.csv文件中添加宠物
+    pet_type_file = open('C:\ssr-config\\trunk\config\csv\PetType.csv', encoding='utf-8')
+    reader_pet_type = csv.reader(pet_type_file)
+    rows_pet_type = list(reader_pet_type)
+
+    last_row = rows_pet_type[-1]
+    line = len(rows_pet_type)
+    last_num = int(last_row[0])
+
+    # for en_name, cn_name in pets:
+    #     rows_pet_type.insert(line,
+    #                          [str(last_num + 1), en_name, cn_name, 'icon_battlePet_C' + str(last_num - 100),
+    #                           'battlePet_C' + str(last_num - 100),
+    #                           '0.5;0.2;1.6;0.6', 'TRUE', '50', '0;0.85;0;1.34;1', ''])
+    for en_name, cn_name in pets:
+        rows_pet_type.insert(line,
+                             [str(last_num + 1), en_name, cn_name, rows_pet_type[line - 1][3],
+                              rows_pet_type[line - 1][4],
+                              '0.5;0.2;1.6;0.6', 'TRUE', '50', '0;0.85;0;1.34;1', ''])
+
+        line += 1
+        last_num += 1
+
+    with open('C:\ssr-config\\trunk\config\csv\PetType.csv', 'w', newline='', encoding='utf-8') as pet_type_file:
+        writer = csv.writer(pet_type_file)
+        writer.writerows(rows_pet_type)
+
+    print('PetType.csv文件添加宠物成功！')
+
+    ## 在PetRankAttr.csv文件中添加宠物
+    pet_rank_attr_file = open('C:\ssr-config\\trunk\config\csv\PetRankAttr.csv', encoding='utf-8')
+    reader_pet_rank_attr = csv.reader(pet_rank_attr_file)
+    rows_pet_rank_attr = list(reader_pet_rank_attr)
+
+    for pivot, quality in [['2000', 'B'], ['3000', 'A'], ['4000', 'S']]:
+        for row in rows_pet_rank_attr:
+            if row[0] < pivot:
+                last_row = row
+        line = 0
+        for row in rows_pet_rank_attr:
+            line += 1
+            if row[0] == last_row[0]:
+                break
+
+        num = int(last_row[1].split(quality)[1].split('_')[0])
+        last_num = int(last_row[0])
+
+        for pet in pets:
+            num += 1
+            rows_pet_rank_attr.insert(line,
+                                      [str(last_num + 1), 'Rank_battlePet_' + quality + str(num),
+                                       'battlePet_' + quality + str(num), 'battlePet_' + quality + str(num),
+                                       rows_pet_rank_attr[line - 1][4], rows_pet_rank_attr[line - 1][5],
+                                       rows_pet_rank_attr[line - 1][6], rows_pet_rank_attr[line - 1][7],
+                                       rows_pet_rank_attr[line - 1][8], rows_pet_rank_attr[line - 1][9],
+                                       rows_pet_rank_attr[line - 1][10], rows_pet_rank_attr[line - 1][11],
+                                       rows_pet_rank_attr[line - 1][12], rows_pet_rank_attr[line - 1][13],
+                                       rows_pet_rank_attr[line - 1][14], rows_pet_rank_attr[line - 1][15],
+                                       rows_pet_rank_attr[line - 1][16], rows_pet_rank_attr[line - 1][17],
+                                       rows_pet_rank_attr[line - 1][18], rows_pet_rank_attr[line - 1][19],
+                                       rows_pet_rank_attr[line - 1][20], rows_pet_rank_attr[line - 1][21],
+                                       rows_pet_rank_attr[line - 1][22], rows_pet_rank_attr[line - 1][23],
+                                       rows_pet_rank_attr[line - 1][24]])
+            line += 1
+            last_num += 1
+
+    with open('C:\ssr-config\\trunk\config\csv\PetRankAttr.csv', 'w', newline='',
+              encoding='utf-8') as pet_rank_attr_file:
+        writer = csv.writer(pet_rank_attr_file)
+        writer.writerows(rows_pet_rank_attr)
+
+    print('PetRankAttr.csv文件添加宠物成功！')
+
+    ## 在PetRandomAttrBase.csv文件中添加宠物
+    pet_random_attr_base_file = open('C:\ssr-config\\trunk\config\csv\PetRandomAttrBase.csv', encoding='utf-8')
+    reader_pet_random_attr_base = csv.reader(pet_random_attr_base_file)
+    rows_pet_random_attr_base = list(reader_pet_random_attr_base)
+
+    quality_weight = {'S': 100, 'A': 10, 'B': 1}
+
+    qs = []
+    for q1 in ['B', 'A', 'S']:
+        for q2 in ['B', 'A', 'S']:
+            for q3 in ['B', 'A', 'S']:
+                score = quality_weight[q1] + quality_weight[q2] + quality_weight[q3]
+                qs.append([q1 + q2 + q3, score])
+    qs = sorted(qs, key=lambda x: x[1])
+
+    num = int(rows_pet_random_attr_base[-1][0])
+    pet_num = int(rows_pet_random_attr_base[-1][1].split('_')[1].split('S')[0])
+    for en_name, cn_name in pets:
+        pet_num += 1
+        for q in qs:
+            if q[1] > 100:
+                rarity = '超级超级稀有'
+                quality = 'LV4'
+            elif q[1] > 10:
+                rarity = '超级稀有'
+                quality = 'LV3'
+            else:
+                rarity = '稀有'
+                quality = 'LV2'
+
+            num += 1
+            rows_pet_random_attr_base.append([num, 'petAttrBase_' + str(pet_num) + q[0], cn_name,
+                                              en_name, rarity, '雄性', quality,
+                                              q[0][0], q[0][1], q[0][2], 'attrtemp_battlePet_S4'])
+    # print(rows_pet_random)
+
+    with open('C:\ssr-config\\trunk\config\csv\PetRandomAttrBase.csv', 'w', newline='',
+              encoding='utf-8') as pet_random_attr_base_file:
+        writer = csv.writer(pet_random_attr_base_file)
+        writer.writerows(rows_pet_random_attr_base)
+
+    print('PetRandomAttrBase.csv文件添加宠物成功！')
+
+# def gen_petrandomattrbase():
+#     pet_type_file = open('C:\ssr-config\\trunk\config\csv\PetType.csv', encoding='utf-8')
+#     reader_pet_type = csv.reader(pet_type_file)
+#     rows_pet_type = list(reader_pet_type)
+#     pet_random_file = open('C:\ssr-config\\trunk\config\csv\PetRandomAttrBase.csv', encoding='utf-8')
+#     reader_pet_random = csv.reader(pet_random_file)
+#     rows_pet_random = list(reader_pet_random)
+#
+#     quality_weight = {'S': 100, 'A': 10, 'B': 1}
+#
+#     qs = []
+#     for q1 in ['B', 'A', 'S']:
+#         for q2 in ['B', 'A', 'S']:
+#             for q3 in ['B', 'A', 'S']:
+#                 score = quality_weight[q1] + quality_weight[q2] + quality_weight[q3]
+#                 qs.append([q1+q2+q3, score])
+#     qs = sorted(qs, key=lambda x: x[1])
+#
+#     num = 100000
+#     for row in rows_pet_type[3:]:
+#         for q in qs:
+#             if q[1] > 100:
+#                 rarity = '超级超级稀有'
+#                 quality = 'LV4'
+#             elif q[1] > 10:
+#                 rarity = '超级稀有'
+#                 quality = 'LV3'
+#             else:
+#                 rarity = '稀有'
+#                 quality = 'LV2'
+#
+#             num += 1
+#             rows_pet_random.append([num, 'petAttrBase_' + str(int(row[0])-100) + q[0], row[2],
+#                                     row[1], rarity, '雄性', quality,
+#                                     q[0][0], q[0][1], q[0][2], 'attrtemp_battlePet_S4'])
+#     # print(rows_pet_random)
+#
+#     with open('C:\ssr-config\\trunk\config\csv\PetRandomAttrBase.csv', 'w', newline='',
+#               encoding='utf-8') as pet_random_attr_base_file:
+#         writer = csv.writer(pet_random_attr_base_file)
+#         writer.writerows(rows_pet_random)
+
+
 # if __name__ == '__main__':
-    # 配置宠物模型资源
-    # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
-    # add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
+# 配置宠物模型资源
+# 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
+# add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
+# add_pet([['pangolin', '穿山甲']])
+# gen_petrandomattrbase()
