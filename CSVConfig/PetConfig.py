@@ -2,6 +2,7 @@ import csv
 import os.path
 
 
+## 添加宠物模型
 def add_pet_model(pets):
     art_resc_file = open('C:\ssr-config\\trunk\config\csv\ArtResource.csv', encoding='utf-8')
     reader_art_resc = csv.reader(art_resc_file)
@@ -83,6 +84,7 @@ def add_pet_model(pets):
             writer.writerows(rows_pet)
 
 
+## 添加宠物
 def add_pet(pets):
     pet_file = open('C:\ssr-config\\trunk\config\csv\Pet.csv', encoding='utf-8')
     reader_pet = csv.reader(pet_file)

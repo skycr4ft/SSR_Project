@@ -16,7 +16,7 @@ Nitro_skill = Skill(name='Nitro_skill', definition='active', type='instant',
 Don_skill = Skill(name='Don_skill', definition='active', type='instant',
                   effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 3.0, 'max_targets': 1,
                                   'target_area': 'single'},
-                                 {'effect_type': 'buff', 'buffs': {'skill_dmg_rcv_inc': -0.2}, 'max_targets': 2,
+                                 {'effect_type': 'buff', 'buffs': {'skill_dmg_rcv_inc': -0.5}, 'max_targets': 2,
                                   'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, 'duration': 3,
                                   'target_area': 'single', 'target_type': 'ally'}])
 
