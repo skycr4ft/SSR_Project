@@ -237,10 +237,53 @@ class DOTEffect(Effect):
     def __init__(self, dots, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # 示例：buffs = {'atk_multi': 0.1}
-        self.buffs = dots
+        self.dots = dots
 
     def clone(self):
-        return BuffEffect(buffs=self.buffs, effect_type=self.effect_type, target_area=self.target_area,
+        return DOTEffect(dots=self.dots, effect_type=self.effect_type, target_area=self.target_area,
+                         duration=self.duration, cast_prob_lower_bound=self.cast_prob_lower_bound,
+                         cast_prob_upper_bound=self.cast_prob_upper_bound, target_select=self.target_select,
+                         area_shape=self.area_shape, area_length=self.area_length, area_width=self.area_width,
+                         area_angle=self.area_angle, distance_limit=self.distance_limit, max_targets=self.max_targets,
+                         target_type=self.target_type)
+
+    def run(self, caster, squads):
+        # 计算效果释放概率
+        cast_prob = self.calc_cast_prob(caster)
+        # 生成随机数
+        rand = random.random()
+        if cast_prob < rand:
+            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
+            return False, []
+        # 选择目标
+        targets = self.select_targets(caster, squads)
+        return True, targets
+
+    def apply(self, character, targets):
+        for target in targets:
+            # 造成增益
+            target.effect_tracker.add_effect(self.clone())
+            # 打印日志
+            self.log(character, target)
+
+    def tick(self, character):
+        self.duration -= 1
+        if self.duration < 0:
+            print(f'{character.squad.name}-{character.name} {self.dots} {self.effect_type} expired.')
+
+    def log(self, caster, target):
+        print(
+            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {self.dots} {self.effect_type}.')
+
+
+class SpecialEffect(Effect):
+    def __init__(self, spcl_eff, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 示例：buffs = {'atk_multi': 0.1}
+        self.spcl_eff = spcl_eff
+
+    def clone(self):
+        return BuffEffect(buffs=self.spcl_eff, effect_type=self.effect_type, target_area=self.target_area,
                           duration=self.duration, cast_prob_lower_bound=self.cast_prob_lower_bound,
                           cast_prob_upper_bound=self.cast_prob_upper_bound, target_select=self.target_select,
                           area_shape=self.area_shape, area_length=self.area_length, area_width=self.area_width,
@@ -269,11 +312,11 @@ class DOTEffect(Effect):
     def tick(self, character):
         self.duration -= 1
         if self.duration < 0:
-            print(f'{character.squad.name}-{character.name} {self.buffs} {self.effect_type} expired.')
+            print(f'{character.squad.name}-{character.name} {self.spcl_eff} {self.effect_type} expired.')
 
     def log(self, caster, target):
         print(
-            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {self.buffs} {self.effect_type}.')
+            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {self.spcl_eff} {self.effect_type}.')
 
 
 class EffectTracker:
