@@ -162,9 +162,9 @@ class Character:
 
     def gather_bonus(self):
         bonus = {}
-        for effect in self.effect_tracker.effects:
-            for buff in effect.buffs:
-                bonus[buff] = effect.buffs[buff] if buff not in bonus else bonus[buff] + effect.buffs[buff]
+        for buff_effect in self.effect_tracker.buff_effects:
+            for buff in buff_effect.buff_effects:
+                bonus[buff] = buff_effect.buff_effects[buff] if buff not in bonus else bonus[buff] + buff_effect.buff_effects[buff]
         return bonus
 
     def calc_attributes(self, bonus):

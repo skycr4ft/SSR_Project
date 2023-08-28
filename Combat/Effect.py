@@ -115,42 +115,80 @@ class DamageEffect(Effect):
             # 生成随机数
             rand = random.random()
             if cast_prob < rand:
-                # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
                 return False, total_damage
 
-            # 计算伤害
-            damage = self.calc_dmg(caster, target, effect_coef=self.dmg_coef, effect_base_dmg=self.dmg_base)
-            total_damage += damage
-            # 打印日志
-            self.log(caster, target, damage)
-            # 造成伤害
-            target.take_dmg(damage)
+            total_damage += self.apply_one(caster, target)
+
+            # 判断攻击者是否带有连击效果，并且是否在本次攻击中未触发
+            if caster.effect_tracker.is_exist('chain'):
+                chain = caster.effect_tracker.get_effect('chain')
+                if chain.used:
+                    chain.used = False
+                    return
+                else:
+                    chain.used = True
+                    total_damage += self.apply_one(caster, target)
+
         return True, total_damage
+
+    def apply_one(self, caster, target):
+        total_damage = 0
+        # 计算伤害
+        damage = self.calc_dmg(caster, target, effect_coef=self.dmg_coef, effect_base_dmg=self.dmg_base)
+        total_damage += damage
+        # 计算反击伤害
+        counter_damage = self.calc_dmg(target, caster, effect_coef=0.2, effect_base_dmg=0)
+        # 打印日志
+        self.log(caster, target, damage, self.effect_type)
+        self.log(target, caster, counter_damage, '反击')
+        # 造成伤害
+        target.take_dmg(damage)
+        caster.take_dmg(counter_damage)
+
+        # 判断受击者是否带有反击效果
+        if target.effect_tracker.is_exist('counter'):
+            counter = target.effect_tracker.get_effect('counter')
+            # 计算反击伤害
+            counter_damage = self.calc_dmg(target, caster, effect_coef=counter.coef, effect_base_dmg=counter.base_dmg)
+            self.log(target, caster, counter_damage, '反击')
+            caster.take_dmg(counter_damage)
+
+        # 判断攻击者是否带有追击效果
+        if caster.effect_tracker.is_exist('chase'):
+            chase = caster.effect_tracker.get_effect('chase')
+            # 计算追击伤害
+            chase_damage = self.calc_dmg(caster, target, effect_coef=chase.coef, effect_base_dmg=chase.base_dmg)
+            self.log(caster, target, chase_damage, '追击')
+            target.take_dmg(chase_damage)
+
+        return total_damage
+
 
     def calc_dmg(self, caster, defender, effect_coef, effect_base_dmg):
         crit_rate = self.calc_crit_rate(caster.crit, defender.crit_res)
+        alpha = 1
+        if crit_rate > random.random():  # Check if the attack is a critical hit
+            print('暴击!')
+            alpha += caster.crit_damage
         if self.effect_type == 'skill_dmg':
             damage = (effect_coef * caster.attack * (1 - defender.defense / (defender.defense + caster.def_coef))
                       + effect_base_dmg) * (1 + defender.skill_dmg_rcv_inc) * (1 + caster.skill_dmg_deal_inc) * \
-                     (1 + caster.dmg_deal_inc) * (1 + defender.dmg_rcv_inc)
+                     (1 + caster.dmg_deal_inc) * (1 + defender.dmg_rcv_inc) * alpha
             caster.skill_dmg_dealt += damage
         else:
             damage = (effect_coef * caster.attack * (1 - defender.defense / (defender.defense + caster.def_coef))
                       + effect_base_dmg) * (1 + defender.atk_dmg_rcv_inc) * (1 + caster.atk_dmg_deal_inc) * \
-                     (1 + caster.dmg_deal_inc) * (1 + defender.dmg_rcv_inc)
+                     (1 + caster.dmg_deal_inc) * (1 + defender.dmg_rcv_inc) * alpha
             caster.atk_dmg_dealt += damage
 
-        if crit_rate > random.random():  # Check if the attack is a critical hit
-            print('Critical!')
-            damage *= (1.0 + caster.crit_damage)
         return damage
 
     def calc_crit_rate(self, caster_crit, defender_crit_res):
         return (caster_crit - defender_crit_res) / self.crit_coef
 
-    def log(self, caster, target, damage):
+    def log(self, caster, target, damage, effect_type):
         print(
-            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {self.effect_type}.')
+            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {effect_type}.')
 
 
 class HealEffect(Effect):
@@ -160,20 +198,22 @@ class HealEffect(Effect):
         self.heal_base = heal_base
 
     def run(self, caster, squads):
-        # 计算效果释放概率
-        cast_prob = self.calc_cast_prob(caster)
-        # 生成随机数
-        rand = random.random()
-        if cast_prob < rand:
-            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
-            return False, []
         # 选择目标
         targets = self.select_targets(caster, squads)
         return True, targets
 
     def apply(self, character, targets):
         total_heal = 0
+
         for target in targets:
+            # # 计算效果释放概率
+            # cast_prob = self.calc_cast_prob(caster, target)
+            # # 生成随机数
+            # rand = random.random()
+            # if cast_prob < rand:
+            #     # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
+            #     return False, total_heal
+
             # 计算治疗
             heal = self.calc_heal(character, target, effect_coef=self.heal_coef, effect_base_heal=self.heal_base)
             total_heal += heal
@@ -207,21 +247,21 @@ class BuffEffect(Effect):
                           target_type=self.target_type)
 
     def run(self, caster, squads):
-        # 计算效果释放概率
-        cast_prob = self.calc_cast_prob(caster)
-        # 生成随机数
-        rand = random.random()
-        if cast_prob < rand:
-            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
-            return False, []
         # 选择目标
         targets = self.select_targets(caster, squads)
         return True, targets
 
     def apply(self, character, targets):
         for target in targets:
+            # 计算效果释放概率
+            cast_prob = self.calc_cast_prob(caster, target)
+            # 生成随机数
+            rand = random.random()
+            if cast_prob < rand:
+                # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
+                return
             # 造成增益
-            target.effect_tracker.add_effect(self.clone())
+            target.effect_tracker.add_buff(self.clone())
             # 打印日志
             self.log(character, target)
 
@@ -264,7 +304,7 @@ class DOTEffect(Effect):
     def apply(self, character, targets):
         for target in targets:
             # 造成增益
-            target.effect_tracker.add_effect(self.clone())
+            target.effect_tracker.add_buff(self.clone())
             # 打印日志
             self.log(character, target)
 
@@ -281,11 +321,11 @@ class DOTEffect(Effect):
 class SpecialEffect(Effect):
     def __init__(self, spcl_eff, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # 示例：buffs = {'atk_multi': 0.1}
+        # 示例：spcl_eff = ['atk_multi']
         self.spcl_eff = spcl_eff
 
     def clone(self):
-        return BuffEffect(buffs=self.spcl_eff, effect_type=self.effect_type, target_area=self.target_area,
+        return SpecialEffect(spcl_eff=self.spcl_eff, effect_type=self.effect_type, target_area=self.target_area,
                           duration=self.duration, cast_prob_lower_bound=self.cast_prob_lower_bound,
                           cast_prob_upper_bound=self.cast_prob_upper_bound, target_select=self.target_select,
                           area_shape=self.area_shape, area_length=self.area_length, area_width=self.area_width,
@@ -293,21 +333,21 @@ class SpecialEffect(Effect):
                           target_type=self.target_type)
 
     def run(self, caster, squads):
-        # 计算效果释放概率
-        cast_prob = self.calc_cast_prob(caster)
-        # 生成随机数
-        rand = random.random()
-        if cast_prob < rand:
-            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
-            return False, []
         # 选择目标
         targets = self.select_targets(caster, squads)
         return True, targets
 
     def apply(self, character, targets):
         for target in targets:
-            # 造成增益
-            target.effect_tracker.add_effect(self.clone())
+            # 计算效果释放概率
+            cast_prob = self.calc_cast_prob(caster)
+            # 生成随机数
+            rand = random.random()
+            if cast_prob < rand:
+                return
+
+            # 施加特殊效果
+            target.effect_tracker.add_spcl_eff(self.clone())
             # 打印日志
             self.log(character, target)
 
@@ -323,14 +363,36 @@ class SpecialEffect(Effect):
 
 class EffectTracker:
     def __init__(self):
-        self.effects = []
+        self.buff_effects = []
+        self.spcl_effs = []
 
-    def add_effect(self, effect):
-        self.effects.append(effect)
+    def add_buff_effect(self, effect):
+        self.buff_effects.append(effect)
+
+    def add_spcl_eff(self, effect):
+        self.spcl_effs.append(effect)
 
     def tick(self, character):
-        for effect in self.effects:
+        for effect in self.buff_effects:
             effect.tick(character)
             # if effect.duration < 0:
             #     self.effects.remove(effect)
-        self.effects = [effect for effect in self.effects if effect.duration >= 0]
+        self.buff_effects = [effect for effect in self.buff_effects if effect.duration >= 0]
+
+        for effect in self.spcl_effs:
+            effect.tick(character)
+            # if effect.duration < 0:
+            #     self.effects.remove(effect)
+        self.spcl_effs = [effect for effect in self.spcl_effs if effect.duration >= 0]
+
+    def is_exist(self, effect_type):
+        for effect in self.spcl_effs:
+            if effect.effect_type == effect_type:
+                return True
+        return False
+
+    def get_effect(self, effect_type):
+        for effect in self.spcl_effs:
+            if effect.effect_type == effect_type:
+                return effect
+        return None

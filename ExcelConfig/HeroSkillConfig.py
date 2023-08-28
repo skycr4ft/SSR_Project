@@ -5,51 +5,50 @@ from Combat.Skill import Skill
 Uni_attack = Skill(name='普通攻击', definition='normal', type='instant',
                    effects_param=[{'effect_type': 'atk_dmg', 'dmg_coef': 1.0, 'target_area': 'single'}])
 
-
 ### 技能数值配置
 Gem_skills = [Skill(name='杰玛技能', definition='active', type='instant',
-                  effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.2, 'max_targets': 3,
-                                  'target_area': 'single'}]),
+                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.2, 'max_targets': 3,
+                                    'target_area': 'single'}]),
               Uni_attack]
 
 # version: 1
 Nitro_skills = [Skill(name='奈乔技能', definition='active', type='instant',
-                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 2.4, 'target_area': 'single'},
-                                   {'effect_type': 'skill_dmg', 'dmg_coef': 2.4, 'cast_prob_lower_bound': 0.5,
-                                    'cast_prob_upper_bound': 0.5, 'target_area': 'single'}]),
+                      effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 2.4, 'target_area': 'single'},
+                                     {'effect_type': 'skill_dmg', 'dmg_coef': 2.4, 'cast_prob_lower_bound': 0.5,
+                                      'cast_prob_upper_bound': 0.5, 'target_area': 'single'}]),
                 Uni_attack]
 
 # version: 1
 Don_skills = [Skill(name='东技能', definition='active', type='instant',
-                  effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.2, 'max_targets': 1,
-                                  'target_area': 'single'},
-                                 {'effect_type': 'buff', 'buffs': {'skill_dmg_rcv_inc': -0.12}, 'max_targets': 2,
-                                  'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, 'duration': 3,
-                                  'target_area': 'single', 'target_type': 'ally'}]),
+                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.2, 'max_targets': 1,
+                                    'target_area': 'single'},
+                                   {'effect_type': 'buff', 'buffs': {'skill_dmg_rcv_inc': -0.12}, 'max_targets': 2,
+                                    'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, 'duration': 3,
+                                    'target_area': 'single', 'target_type': 'ally'}]),
               Uni_attack]
 
 # version: 1
 Massager_skills = [Skill(name='按摩师技能', definition='active', type='instant',
-                       effects_param=[
-                           {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 1, 'target_area': 'single'},
-                           {'effect_type': 'buff', 'buffs': {'defense_multi': 3.3}, 'max_targets': 1,
-                            'target_type': 'self', 'duration': 3}, ]),
+                         effects_param=[
+                             {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 1, 'target_area': 'single'},
+                             {'effect_type': 'buff', 'buffs': {'defense_multi': 3.3}, 'max_targets': 1,
+                              'target_type': 'self', 'duration': 3}, ]),
                    Uni_attack]
 
 # version: 1
 GoldenNose_skills = [Skill(name='金鼻子技能', definition='active', type='instant',
-                         effects_param=[
-                             {'effect_type': 'skill_dmg', 'dmg_coef': 3.0, 'max_targets': 1, 'target_area': 'single'},
-                             {'effect_type': 'buff', 'buffs': {'rage_increase_add': 5}, 'max_targets': 2,
-                              'target_type': 'ally', 'duration': 3}, ]),
+                           effects_param=[
+                               {'effect_type': 'skill_dmg', 'dmg_coef': 3.0, 'max_targets': 1, 'target_area': 'single'},
+                               {'effect_type': 'buff', 'buffs': {'rage_increase_add': 5}, 'max_targets': 2,
+                                'target_type': 'ally', 'duration': 3}, ]),
                      Uni_attack]
 
 # version: 1
 Susie_skills = [Skill(name='苏茜技能', definition='active', type='instant',
-                    effects_param=[
-                        {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 2, 'target_area': 'single'},
-                        {'effect_type': 'buff', 'buffs': {'atk_dmg_deal_inc': -0.6}, 'max_targets': 2,
-                         'target_type': 'enemy', 'duration': 5}, ]),
+                      effects_param=[
+                          {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 2, 'target_area': 'single'},
+                          {'effect_type': 'buff', 'buffs': {'atk_dmg_deal_inc': -0.6}, 'max_targets': 2,
+                           'target_type': 'enemy', 'duration': 5}, ]),
                 Uni_attack]
 
 # # version: 1
@@ -117,4 +116,3 @@ Susie_skills = [Skill(name='苏茜技能', definition='active', type='instant',
 #                         {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 3, 'target_area': 'single'},
 #                         {'effect_type': 'buffs', 'buffs': {'atk_dmg_deal_inc': 0.34}, 'max_targets': 3, 'duration': 3,
 #                          'target_type': 'enemy'}, ])
-
