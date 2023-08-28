@@ -1,4 +1,37 @@
 import xlwings as xw
+import ExcelConfig.HeroSkillConfig as HeroSkillConfig
+
+Skills = {
+    '杰玛': HeroSkillConfig.Gem_skills,
+    '东': HeroSkillConfig.Don_skills,
+    '奈乔': HeroSkillConfig.Nitro_skills,
+    '按摩师': HeroSkillConfig.Massager_skills,
+    '金鼻子': HeroSkillConfig.GoldenNose_skills,
+    '苏茜': HeroSkillConfig.Susie_skills,
+
+}
+
+Heros = {
+    # 蓝色
+    '杰玛': 'blue',
+    '东': 'blue',
+    '按摩师': 'blue',
+    # 紫色
+    '奈乔': 'purple',
+    '金鼻子': 'purple',
+    '苏茜': 'purple',
+    '女医生': 'purple',
+    '街头艺术家': 'purple',
+    '审判长': 'purple',
+    # 橙色
+    '南希': 'orange',
+    '华特': 'orange',
+    '杰登': 'orange',
+    '大鹅': 'orange',
+    '吉尔伯特': 'orange',
+    'E-girl': 'orange',
+    '硬汉': 'orange',
+}
 
 
 ## 获取所有品质的英雄的标准模板属性
@@ -391,7 +424,8 @@ class Numerical:
         self.pet_rank_attr = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8,
                               0.85, 0.9, 0.95, 1.0, 1.05, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35, 1.4, 1.45, 1.5]
 
-    def calc_hero_attr(self, hero, level, star, quality, item_qlt, item_tier, item_num, item_boost, pet_qlt, pet_lvl, pet_star):
+    def calc_hero_attr(self, hero, level, star, quality, item_qlt, item_tier, item_num, item_boost, pet_qlt, pet_lvl,
+                       pet_star):
         atk = self.hero_offset[hero]['atk'] * self.hero_level_attr[quality]['atk'][level - 1] * \
               (1 + self.hero_star[quality]['base_attr'][star - 1]) + self.item_qlt_power[item_qlt][item_tier] * \
               item_num * self.item_attr_prop['atk_prop'] / self.attr_weight['atk'] + \
@@ -426,13 +460,21 @@ class Numerical:
         eff_res = self.hero_star[quality]['eff_res'][star - 1] + self.item_qlt_power[item_qlt][item_tier] * item_num * \
                   self.item_attr_prop['eff_res_prop'] / self.attr_weight['eff_res']
 
-        return atk, _def, hp, crit, crit_res, eff_hit, eff_res
+        return [atk, _def, hp, crit, crit_res, eff_hit, eff_res, hero, level]
 
+    def pack(self, hero_info):
+        attrs = self.calc_hero_attr(**hero_info)
+        dict = {}
+        dict['atk_base'], dict['def_base'], dict['max_hp_base'], dict['crit_base'], dict['crit_res_base'], \
+            dict['eff_hit_base'], dict['eff_res_base'] = \
+            attrs[0], attrs[1], attrs[2], attrs[3], attrs[4], attrs[5], attrs[6]
+        dict['name'], dict['level'] = attrs[7], attrs[8]
+        return dict
 
-if __name__ == '__main__':
-    hero_info = {'hero': '奈乔', 'level': 40, 'star': 5, 'quality': 'orange', 'item_qlt': 'orange',
-                 'item_tier': 't2_power', 'item_num': 5,
-                 'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
-    # hero_getter = Numerical('E:\游戏设计\SSR\SSR战斗养成数值（7day）.xlsx')
-    hero_getter = Numerical()
-    print(hero_getter.calc_hero_attr(**hero_info))
+# if __name__ == '__main__':
+#     hero_info = {'hero': '', 'level': 40, 'star': 5, 'quality': 'orange', 'item_qlt': 'orange',
+#                  'item_tier': 't2_power', 'item_num': 5,
+#                  'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
+#     # hero_getter = Numerical('E:\游戏设计\SSR\SSR战斗养成数值（7day）.xlsx')
+#     hero_getter = Numerical()
+#     print(hero_getter.calc_hero_attr(**hero_info))

@@ -36,6 +36,7 @@ class Effect:
         self.area_angle = area_angle
         self.distance_limit = distance_limit
 
+
     def is_applicable(self, character):
         # Define the condition for the effect to be applicable
         return True
@@ -53,16 +54,19 @@ class Effect:
     #     raise NotImplementedError
 
     # 计算效果的释放概率
-    def calc_cast_prob(self, caster) -> float:
-        cast_prob = random.uniform(self.cast_prob_lower_bound, self.cast_prob_upper_bound)
+    def calc_cast_prob(self, caster, target) -> float:
+        delta = self.cast_prob_upper_bound - self.cast_prob_lower_bound
+        cast_prob = self.cast_prob_lower_bound + delta * (caster.eff_hit - target.eff_res)
+        cast_prob = min(max(cast_prob, self.cast_prob_lower_bound), self.cast_prob_upper_bound)
         return cast_prob
 
     def select_targets(self, caster, squads):
         if self.target_type == 'enemy':
             target_squads = [squad for squad in squads if squad.alliance != caster.squad.alliance]
-        elif self.target_type == 'ally':
-            target_squads = [caster.squad]
-        # elif skill.target_type == 'self':
+        # elif self.target_type == 'ally':
+        #     target_squads = [caster.squad]
+        # elif self.target_type == 'self':
+        #     target_squads = [caster.squad]
         else:
             target_squads = [caster.squad]
 
@@ -71,23 +75,13 @@ class Effect:
             squad = random.choice(target_squads)
             target_list.extend([character for character in squad.characters if character is not None
                                 and character.is_alive()])
-            # for squad in target_squads:
-            #     target_list.extend(squad.characters)
-            # if self.target_type == 'enemy':
-            #     # Select a target from the enemy squad based on the target_select attribute of the skill
+
             if self.target_select == 'weakest':
                 target = [min(target_list, key=lambda caster: caster.curr_hp)]
             elif self.target_select == 'strongest':
                 target = [max(target_list, key=lambda caster: caster.curr_hp)]
             else:  # random selection
                 target = random.sample(target_list, min(self.max_targets, len(target_list)))
-            # elif self.target_type == 'ally':
-            #     # Select a target from the ally squad, excluding the attacker
-            #     target_list.remove(caster)
-            #     target = random.sample(target_list, min(self.max_targets, len(target_list)))
-            # # elif skill.target_type == 'self':
-            # else:
-            #     target = [caster]
             return target
         elif self.target_area == 'multiple':
             target_squads = random.sample(target_squads, min(self.max_targets, len(target_squads)))
@@ -104,15 +98,9 @@ class DamageEffect(Effect):
         super().__init__(*args, **kwargs)
         self.dmg_coef = dmg_coef
         self.dmg_base = dmg_base
+        self.crit_coef = 100
 
     def run(self, caster, squads):
-        # 计算效果释放概率
-        cast_prob = self.calc_cast_prob(caster)
-        # 生成随机数
-        rand = random.random()
-        if cast_prob < rand:
-            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
-            return False, []
         # 选择目标
         targets = self.select_targets(caster, squads)
         return True, targets
@@ -120,7 +108,16 @@ class DamageEffect(Effect):
     def apply(self, caster, targets):
         # 计算总伤害
         total_damage = 0
+
         for target in targets:
+            # 计算效果释放概率
+            cast_prob = self.calc_cast_prob(caster, target)
+            # 生成随机数
+            rand = random.random()
+            if cast_prob < rand:
+                # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
+                return False, total_damage
+
             # 计算伤害
             damage = self.calc_dmg(caster, target, effect_coef=self.dmg_coef, effect_base_dmg=self.dmg_base)
             total_damage += damage
@@ -128,23 +125,28 @@ class DamageEffect(Effect):
             self.log(caster, target, damage)
             # 造成伤害
             target.take_dmg(damage)
-        return total_damage
+        return True, total_damage
 
     def calc_dmg(self, caster, defender, effect_coef, effect_base_dmg):
-        crit_rate = caster.calc_crit_rate(1.0)
+        crit_rate = self.calc_crit_rate(caster.crit, defender.crit_res)
         if self.effect_type == 'skill_dmg':
             damage = (effect_coef * caster.attack * (1 - defender.defense / (defender.defense + caster.def_coef))
                       + effect_base_dmg) * (1 + defender.skill_dmg_rcv_inc) * (1 + caster.skill_dmg_deal_inc) * \
                      (1 + caster.dmg_deal_inc) * (1 + defender.dmg_rcv_inc)
+            caster.skill_dmg_dealt += damage
         else:
             damage = (effect_coef * caster.attack * (1 - defender.defense / (defender.defense + caster.def_coef))
                       + effect_base_dmg) * (1 + defender.atk_dmg_rcv_inc) * (1 + caster.atk_dmg_deal_inc) * \
                      (1 + caster.dmg_deal_inc) * (1 + defender.dmg_rcv_inc)
+            caster.atk_dmg_dealt += damage
 
         if crit_rate > random.random():  # Check if the attack is a critical hit
             print('Critical!')
             damage *= (1.0 + caster.crit_damage)
         return damage
+
+    def calc_crit_rate(self, caster_crit, defender_crit_res):
+        return (caster_crit - defender_crit_res) / self.crit_coef
 
     def log(self, caster, target, damage):
         print(
@@ -152,7 +154,7 @@ class DamageEffect(Effect):
 
 
 class HealEffect(Effect):
-    def __init__(self, heal_coef, heal_base, *args, **kwargs):
+    def __init__(self, heal_coef, heal_base=0, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.heal_coef = heal_coef
         self.heal_base = heal_base

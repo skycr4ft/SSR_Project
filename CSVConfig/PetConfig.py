@@ -86,10 +86,6 @@ def add_pet_model(pets):
 
 ## 添加宠物
 def add_pet(pets):
-    pet_file = open('C:\ssr-config\\trunk\config\csv\Pet.csv', encoding='utf-8')
-    reader_pet = csv.reader(pet_file)
-    rows_pet = list(reader_pet)
-
     ## 在PetType.csv文件中添加宠物
     pet_type_file = open('C:\ssr-config\\trunk\config\csv\PetType.csv', encoding='utf-8')
     reader_pet_type = csv.reader(pet_type_file)
@@ -113,8 +109,11 @@ def add_pet(pets):
         line += 1
         last_num += 1
 
-
     ## 在Pet.csv文件中添加宠物
+    pet_file = open('C:\ssr-config\\trunk\config\csv\Pet.csv', encoding='utf-8')
+    reader_pet = csv.reader(pet_file)
+    rows_pet = list(reader_pet)
+
     for pivot, quality in [['2000', 'B'], ['3000', 'A'], ['4000', 'S']]:
         for row in rows_pet:
             if row[0] < pivot:
@@ -257,6 +256,7 @@ def add_pet(pets):
 
     print('PetRandomAttrBase.csv文件添加宠物成功！')
 
+
 # def gen_petrandomattrbase():
 #     pet_type_file = open('C:\ssr-config\\trunk\config\csv\PetType.csv', encoding='utf-8')
 #     reader_pet_type = csv.reader(pet_type_file)
@@ -300,9 +300,9 @@ def add_pet(pets):
 #         writer.writerows(rows_pet_random)
 
 
-# if __name__ == '__main__':
-# 配置宠物模型资源
-# 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
-# add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
-# add_pet([['pangolin', '穿山甲']])
+if __name__ == '__main__':
+    # 配置宠物模型资源
+    # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
+    # add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
+    add_pet([['pangolin', '穿山甲']])
 # gen_petrandomattrbase()

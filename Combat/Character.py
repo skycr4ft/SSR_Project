@@ -5,32 +5,32 @@ from Effect import EffectTracker
 
 
 class Character:
-    def __init__(self, name, level, attack_base, defense_base, max_hp_base, crit_base,
-                 crit_resistance_base,
-                 crit_damage_base, crit_reduction_base, effect_hit_base, effect_resistance_base, skills,
-                 rage_increase_base):
+    def __init__(self, name, level, atk_base, def_base, max_hp_base, crit_base,
+                 crit_res_base,
+                 eff_hit_base, eff_res_base, skills,
+                 rage_increase_base=15, crit_damage_base=0.5, crit_reduction_base=0):
 
         self.name = name
         self.level = level
 
         # 读取属性基础值
-        self.attack_base = attack_base
-        self.defense_base = defense_base
+        self.attack_base = atk_base
+        self.defense_base = def_base
         self.max_hp_base = max_hp_base
         self.curr_hp_base = max_hp_base
         self.crit_base = crit_base
-        self.crit_resistance_base = crit_resistance_base
+        self.crit_res_base = crit_res_base
         self.crit_damage_base = crit_damage_base
         self.crit_reduction_base = crit_reduction_base
-        self.effect_hit_base = effect_hit_base
-        self.effect_resistance_base = effect_resistance_base
+        self.eff_hit_base = eff_hit_base
+        self.eff_res_base = eff_res_base
         self.rage_increase_base = rage_increase_base
 
         self.skills = skills  # Convert list to Skill objects
         self.def_coef = Config.def_coef[level - 1]
         self.squad = None
-        self.base_attrs = ['attack', 'defense', 'max_hp', 'crit', 'crit_resistance', 'crit_damage',
-                           'crit_reduction', 'effect_hit', 'effect_resistance', 'rage_increase']
+        self.base_attrs = ['attack', 'defense', 'max_hp', 'crit', 'crit_res', 'crit_damage',
+                           'crit_reduction', 'eff_hit', 'eff_res', 'rage_increase']
         # 配置进阶属性
         self.promoted_attrs = ['atk_dmg_rcv_inc', 'skill_dmg_rcv_inc', 'atk_dmg_deal_inc', 'skill_dmg_deal_inc',
                                'dmg_rcv_inc', 'dmg_deal_inc', 'heal_rcv_inc', 'heal_deal_inc']
@@ -43,11 +43,11 @@ class Character:
         self.max_hp = self.max_hp_base
         self.curr_hp = self.curr_hp_base
         self.crit = self.crit_base
-        self.crit_resistance = self.crit_resistance_base
+        self.crit_res = self.crit_res_base
         self.crit_damage = self.crit_damage_base
         self.crit_reduction = self.crit_reduction_base
-        self.effect_hit = self.effect_hit_base
-        self.effect_resistance = self.effect_resistance_base
+        self.eff_hit = self.eff_hit_base
+        self.eff_res = self.eff_res_base
         self.rage_increase = self.rage_increase_base
 
         # 初始化进阶属性
@@ -60,11 +60,12 @@ class Character:
         self.heal_rcv_inc = 0.0
         self.heal_deal_inc = 0.0
 
+        # 记录造成的伤害
+        self.skill_dmg_dealt = 0.0
+        self.atk_dmg_dealt = 0.0
+
     def is_alive(self):
         return self.curr_hp > 0
-
-    def calc_crit_rate(self, crit_coef):
-        return (self.crit - self.crit_resistance) / crit_coef
 
     def take_action(self, is_rage_skill_phase):
         if is_rage_skill_phase:

@@ -48,12 +48,6 @@ class Battle:
         skill1 = character1.take_action(is_rage_skill_phase1) if character1 is not None else None
         skill2 = character2.take_action(is_rage_skill_phase2) if character2 is not None else None
 
-        # Get the target squads for this turn
-        # target_list1 = self.select_targets(character1, self.squads, skill1)
-        # target_list2 = self.select_targets(character2, self.squads, skill2)
-        # target_squads1 = self.select_target_squads(character1, skill1)
-        # target_squads2 = self.select_target_squads(character2, skill2)
-
         # select_targets
         is_cast_list1, target_list1 = character1.select_targets(self.squads, skill1) if character1 is not None \
             else ([], [])

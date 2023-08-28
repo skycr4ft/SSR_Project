@@ -12,10 +12,10 @@ def_coef = [60, 68, 76, 84, 92, 100, 108, 116, 124, 132, 140, 148, 156, 164, 172
 # orange_hero_standard_atk = [33, 35, 38, 41, 45, 48, 51, 55, 58, 61, 65, 68, 71, 75, 78, 81, 85, 89, 92, 95, 101, 106,
 #                             111, 117, 122, 127, 133, 138, 144, 149, 154, 160, 165, 171, 176, 181, 187, 192, 198, 203]
 
-blue_hero_standard_atk, purple_hero_standard_atk, orange_hero_standard_atk, \
-    blue_hero_standard_def, purple_hero_standard_def, orange_hero_standard_def, \
-    blue_hero_standard_hp, purple_hero_standard_hp, orange_hero_standard_hp = Hero.fetch_hero_attr()
+# blue_hero_standard_atk, purple_hero_standard_atk, orange_hero_standard_atk, \
+#     blue_hero_standard_def, purple_hero_standard_def, orange_hero_standard_def, \
+#     blue_hero_standard_hp, purple_hero_standard_hp, orange_hero_standard_hp = Hero.fetch_hero_attr()
 
-attr_offset = {'atk': 1, 'def': 1, 'hp': 25.0 / 3}
+# attr_offset = {'atk': 1, 'def': 1, 'hp': 25.0 / 3}
 
-hero_attr_offset = Hero.fetch_hero_offset()
+# hero_attr_offset = Hero.fetch_hero_offset()
