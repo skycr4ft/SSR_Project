@@ -2,7 +2,7 @@ from Character import Character
 from Skill import Skill
 from Squad import Squad
 from Battle import Battle
-import Config
+import Consts
 from ExcelConfig.Hero import Skills, Heros
 import matplotlib
 from ExcelConfig.Hero import Numerical
@@ -48,35 +48,6 @@ def main():
             hero_info = active_orange_hero_info
         squad1_list.append(Character(**hero_builder.pack(hero_info), skills=Skills[member]))
         squad2_list.append(Character(**hero_builder.pack(hero_info), skills=Skills[member]))
-
-    # Create the characters
-    # character1 = Character(name='奈乔', level=30, atk_base=68.828, def_base=68.828,
-    #                        max_hp_base=1802.6 / 3,
-    #                        crit_base=18.75, crit_res_base=18.75, crit_damage_base=0, crit_reduction_base=0,
-    #                        eff_hit_base=0.11, eff_res_base=0.08, skills=HeroSkillConfig.Nitro_skills)
-    # character2 = Character(name='东', level=30, attack_base=51.45, defense_base=51.45,
-    #                        max_hp_base=1349.3 / 3,
-    #                        crit_base=15, crit_resistance_base=15, crit_damage_base=0, crit_reduction_base=0,
-    #                        effect_hit_base=0.09, effect_resistance_base=0.07, skills=HeroSkillConfig.Don_skills)
-    # character3 = Character(name='杰玛', level=30, attack_base=51.45, defense_base=51.45, max_hp_base=1349.3 / 3,
-    #                        crit_base=15, crit_resistance_base=15, crit_damage_base=0, crit_reduction_base=0,
-    #                        effect_hit_base=0.09, effect_resistance_base=0.07, skills=HeroSkillConfig.Gem_skills,
-    #                        rage_increase_base=15)
-    #
-    # character4 = Character(name='奈乔', level=30, attack_base=68.828, defense_base=68.828,
-    #                        max_hp_base=1802.6 / 3,
-    #                        crit_base=18.75, crit_resistance_base=18.75, crit_damage_base=0, crit_reduction_base=0,
-    #                        effect_hit_base=0.11, effect_resistance_base=0.08, skills=HeroSkillConfig.Nitro_skills,
-    #                        rage_increase_base=15)
-    # character5 = Character(name='东', level=30, attack_base=51.45, defense_base=51.45,
-    #                        max_hp_base=1349.3 / 3,
-    #                        crit_base=15, crit_resistance_base=15, crit_damage_base=0, crit_reduction_base=0,
-    #                        effect_hit_base=0.09, effect_resistance_base=0.07, skills=HeroSkillConfig.Don_skills,
-    #                        rage_increase_base=15)
-    # character6 = Character(name='杰玛', level=30, attack_base=51.45, defense_base=51.45, max_hp_base=1349.3 / 3,
-    #                        crit_base=15, crit_resistance_base=15, crit_damage_base=0, crit_reduction_base=0,
-    #                        effect_hit_base=0.09, effect_resistance_base=0.07, skills=HeroSkillConfig.Gem_skills,
-    #                        rage_increase_base=15)
 
     # Create the squads
     squad1 = Squad('A', characters=squad1_list, alliance='Justice')

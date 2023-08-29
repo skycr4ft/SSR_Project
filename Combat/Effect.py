@@ -15,7 +15,7 @@ class Effect:
         self.effect_type = effect_type
         # 效果目标，取值范围为{单体，群体} {'single', 'multiple'}
         self.target_area = target_area
-        # 选择目标的方法 {Random, Weakest}
+        # 选择目标的方法 {random, weakest, strongest, self, ally_except_self,}
         self.target_select = target_select
         # 效果目标类型,取值范围为{敌人，友方，自身}
         self.target_type = target_type
@@ -35,7 +35,6 @@ class Effect:
         self.area_width = area_width
         self.area_angle = area_angle
         self.distance_limit = distance_limit
-
 
     def is_applicable(self, character):
         # Define the condition for the effect to be applicable
@@ -76,7 +75,12 @@ class Effect:
             target_list.extend([character for character in squad.characters if character is not None
                                 and character.is_alive()])
 
-            if self.target_select == 'weakest':
+            if self.target_select == 'self':
+                target = [caster]
+            elif self.target_select == 'ally_except_self':
+                target_list.remove(caster)
+                target = random.sample(target_list, min(self.max_targets, len(target_list)))
+            elif self.target_select == 'weakest':
                 target = [min(target_list, key=lambda caster: caster.curr_hp)]
             elif self.target_select == 'strongest':
                 target = [max(target_list, key=lambda caster: caster.curr_hp)]
@@ -137,7 +141,7 @@ class DamageEffect(Effect):
         damage = self.calc_dmg(caster, target, effect_coef=self.dmg_coef, effect_base_dmg=self.dmg_base)
         total_damage += damage
         # 计算反击伤害
-        counter_damage = self.calc_dmg(target, caster, effect_coef=0.2, effect_base_dmg=0)
+        counter_damage = 0.2 * self.calc_dmg(target, caster, effect_coef=1, effect_base_dmg=0)
         # 打印日志
         self.log(caster, target, damage, self.effect_type)
         self.log(target, caster, counter_damage, '反击')
@@ -162,7 +166,6 @@ class DamageEffect(Effect):
             target.take_dmg(chase_damage)
 
         return total_damage
-
 
     def calc_dmg(self, caster, defender, effect_coef, effect_base_dmg):
         crit_rate = self.calc_crit_rate(caster.crit, defender.crit_res)
@@ -251,7 +254,7 @@ class BuffEffect(Effect):
         targets = self.select_targets(caster, squads)
         return True, targets
 
-    def apply(self, character, targets):
+    def apply(self, caster, targets):
         for target in targets:
             # 计算效果释放概率
             cast_prob = self.calc_cast_prob(caster, target)
@@ -261,9 +264,9 @@ class BuffEffect(Effect):
                 # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
                 return
             # 造成增益
-            target.effect_tracker.add_buff(self.clone())
+            target.effect_tracker.add_buff_effect(self.clone())
             # 打印日志
-            self.log(character, target)
+            self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
@@ -290,23 +293,24 @@ class DOTEffect(Effect):
                          target_type=self.target_type)
 
     def run(self, caster, squads):
-        # 计算效果释放概率
-        cast_prob = self.calc_cast_prob(caster)
-        # 生成随机数
-        rand = random.random()
-        if cast_prob < rand:
-            # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
-            return False, []
         # 选择目标
         targets = self.select_targets(caster, squads)
         return True, targets
 
-    def apply(self, character, targets):
+    def apply(self, caster, targets):
         for target in targets:
+            # 计算效果释放概率
+            cast_prob = self.calc_cast_prob(caster, target)
+            # 生成随机数
+            rand = random.random()
+            if cast_prob < rand:
+                # print(f'{caster.squad.name}-{caster.name} failed to cast {self.effect_type}.')
+                return False, []
+
             # 造成增益
             target.effect_tracker.add_buff(self.clone())
             # 打印日志
-            self.log(character, target)
+            self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
@@ -319,28 +323,27 @@ class DOTEffect(Effect):
 
 
 class SpecialEffect(Effect):
-    def __init__(self, spcl_eff, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # 示例：spcl_eff = ['atk_multi']
-        self.spcl_eff = spcl_eff
 
     def clone(self):
-        return SpecialEffect(spcl_eff=self.spcl_eff, effect_type=self.effect_type, target_area=self.target_area,
-                          duration=self.duration, cast_prob_lower_bound=self.cast_prob_lower_bound,
-                          cast_prob_upper_bound=self.cast_prob_upper_bound, target_select=self.target_select,
-                          area_shape=self.area_shape, area_length=self.area_length, area_width=self.area_width,
-                          area_angle=self.area_angle, distance_limit=self.distance_limit, max_targets=self.max_targets,
-                          target_type=self.target_type)
+        return SpecialEffect(effect_type=self.effect_type, target_area=self.target_area,
+                             duration=self.duration, cast_prob_lower_bound=self.cast_prob_lower_bound,
+                             cast_prob_upper_bound=self.cast_prob_upper_bound, target_select=self.target_select,
+                             area_shape=self.area_shape, area_length=self.area_length, area_width=self.area_width,
+                             area_angle=self.area_angle, distance_limit=self.distance_limit,
+                             max_targets=self.max_targets,
+                             target_type=self.target_type)
 
     def run(self, caster, squads):
         # 选择目标
         targets = self.select_targets(caster, squads)
         return True, targets
 
-    def apply(self, character, targets):
+    def apply(self, caster, targets):
         for target in targets:
             # 计算效果释放概率
-            cast_prob = self.calc_cast_prob(caster)
+            cast_prob = self.calc_cast_prob(caster, target)
             # 生成随机数
             rand = random.random()
             if cast_prob < rand:
@@ -349,16 +352,16 @@ class SpecialEffect(Effect):
             # 施加特殊效果
             target.effect_tracker.add_spcl_eff(self.clone())
             # 打印日志
-            self.log(character, target)
+            self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
         if self.duration < 0:
-            print(f'{character.squad.name}-{character.name} {self.spcl_eff} {self.effect_type} expired.')
+            print(f'{character.squad.name}-{character.name} {self.effect_type} expired.')
 
     def log(self, caster, target):
         print(
-            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {self.spcl_eff} {self.effect_type}.')
+            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {self.effect_type}.')
 
 
 class EffectTracker:

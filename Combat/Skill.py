@@ -87,5 +87,10 @@ class Skill:
                 from Effect import DebuffEffect
                 effect = DebuffEffect(**effect_param)
                 effects.append(effect)
+            elif effect_param['effect_type'] == 'chain' or effect_param['effect_type'] == 'chase' or \
+                    effect_param['effect_type'] == 'counter':
+                from Effect import SpecialEffect
+                effect = SpecialEffect(**effect_param)
+                effects.append(effect)
         return effects
 

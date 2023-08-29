@@ -1,6 +1,6 @@
 import random
 from Skill import Skill
-import Config
+import Consts
 from Effect import EffectTracker
 
 
