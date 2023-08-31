@@ -27,7 +27,7 @@ class Character:
         self.rage_increase_base = rage_increase_base
 
         self.skills = skills  # Convert list to Skill objects
-        self.def_coef = Config.def_coef[level - 1]
+        self.def_coef = Consts.def_coef[level - 1]
         self.squad = None
         self.base_attrs = ['attack', 'defense', 'max_hp', 'crit', 'crit_res', 'crit_damage',
                            'crit_reduction', 'eff_hit', 'eff_res', 'rage_increase']
@@ -143,8 +143,8 @@ class Character:
 
     def take_dmg(self, damage):
         self.curr_hp -= damage
-        if self.curr_hp <= 0:
-            print(f'{self.squad.name}-{self.name} died!')
+        # if self.curr_hp <= 0:
+        #     print(f'{self.squad.name}-{self.name} died!')
 
     def calc_heal(self, effect_coef, effect_base_dmg):
         return effect_coef * self.attack + effect_base_dmg
@@ -163,8 +163,8 @@ class Character:
     def gather_bonus(self):
         bonus = {}
         for buff_effect in self.effect_tracker.buff_effects:
-            for buff in buff_effect.buff_effects:
-                bonus[buff] = buff_effect.buff_effects[buff] if buff not in bonus else bonus[buff] + buff_effect.buff_effects[buff]
+            for buff in buff_effect.buffs:
+                bonus[buff] = buff_effect.buffs[buff] if buff not in bonus else bonus[buff] + buff_effect.buffs[buff]
         return bonus
 
     def calc_attributes(self, bonus):

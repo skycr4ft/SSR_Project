@@ -72,25 +72,29 @@ class Skill:
         effects = []
         for effect_param in effects_param:
             if effect_param['effect_type'] == 'atk_dmg' or effect_param['effect_type'] == 'skill_dmg':
-                from Effect import DamageEffect
+                from .Effect import DamageEffect
                 effect = DamageEffect(**effect_param)
                 effects.append(effect)
             elif effect_param['effect_type'] == 'heal':
-                from Effect import HealEffect
+                from .Effect import HealEffect
                 effect = HealEffect(**effect_param)
                 effects.append(effect)
             elif effect_param['effect_type'] == 'buff':
-                from Effect import BuffEffect
+                from .Effect import BuffEffect
                 effect = BuffEffect(**effect_param)
                 effects.append(effect)
             elif effect_param['effect_type'] == 'debuff':
-                from Effect import DebuffEffect
+                from .Effect import DebuffEffect
                 effect = DebuffEffect(**effect_param)
                 effects.append(effect)
             elif effect_param['effect_type'] == 'chain' or effect_param['effect_type'] == 'chase' or \
-                    effect_param['effect_type'] == 'counter':
-                from Effect import SpecialEffect
+                    effect_param['effect_type'] == 'counter' or effect_param['effect_type'] == 'guard':
+                from .Effect import SpecialEffect
                 effect = SpecialEffect(**effect_param)
+                effects.append(effect)
+            elif effect_param['effect_type'] == 'burn':
+                from .Effect import DOTEffect
+                effect = DOTEffect(**effect_param)
                 effects.append(effect)
         return effects
 

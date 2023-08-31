@@ -2,7 +2,7 @@ import csv
 import os.path
 
 
-## 添加宠物模型
+## 配置宠物模型
 def add_pet_model(pets):
     art_resc_file = open('C:\ssr-config\\trunk\config\csv\ArtResource.csv', encoding='utf-8')
     reader_art_resc = csv.reader(art_resc_file)
@@ -300,9 +300,12 @@ def add_pet(pets):
 #         writer.writerows(rows_pet_random)
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # 配置宠物模型资源
     # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
     # add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
-    add_pet([['pangolin', '穿山甲']])
-# gen_petrandomattrbase()
+
+    # 添加宠物
+    # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
+    # add_pet([['pangolin', '穿山甲']])
+    # gen_petrandomattrbase()

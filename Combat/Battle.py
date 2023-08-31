@@ -8,13 +8,12 @@ class Battle:
         self.log = []
 
     def fight(self):
-        random.seed(1)
         while self.squads[0].is_alive() and self.squads[1].is_alive():
             self.next_turn()
 
     def next_turn(self):
         self.turn += 1
-        print(f'【回合{self.turn}】')
+        # print(f'【回合{self.turn}】')
         # Get the squads for this turn
         squad1 = self.squads[0]
         squad2 = self.squads[1]
@@ -31,14 +30,14 @@ class Battle:
         character1 = squad1.get_next_character()
         character2 = squad2.get_next_character()
 
-        if character1 is None:
-            print(f'Squad {squad1.name} - idle')
-        else:
-            print(f'Squad {squad1.name} - {character1.name}')
-        if character2 is None:
-            print(f'Squad {squad2.name} - idle')
-        else:
-            print(f'Squad {squad2.name} - {character2.name}')
+        # if character1 is None:
+        #     print(f'Squad {squad1.name} - idle')
+        # else:
+        #     print(f'Squad {squad1.name} - {character1.name}')
+        # if character2 is None:
+        #     print(f'Squad {squad2.name} - idle')
+        # else:
+        #     print(f'Squad {squad2.name} - {character2.name}')
 
         # Determine if the squads are in the rage skill phase
         is_rage_skill_phase1 = squad1.rage_skill_phase > 0

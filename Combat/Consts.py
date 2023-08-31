@@ -1,4 +1,4 @@
-from ExcelConfig import Hero
+from ExcelConfig import HeroStats
 
 
 # 防御系数
