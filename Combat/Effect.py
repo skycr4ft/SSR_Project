@@ -209,7 +209,7 @@ class HealEffect(Effect):
         total_heal = 0
 
         for target in targets:
-            # # 计算效果释放概率
+            # 计算效果释放概率
             # cast_prob = self.calc_cast_prob(caster, target)
             # # 生成随机数
             # rand = random.random()
@@ -308,7 +308,7 @@ class DOTEffect(Effect):
                 return False, []
 
             # 造成增益
-            target.effect_tracker.add_buff(self.clone())
+            target.effect_tracker.add_dot(self.clone())
             # 打印日志
             self.log(caster, target)
 
@@ -368,12 +368,16 @@ class EffectTracker:
     def __init__(self):
         self.buff_effects = []
         self.spcl_effs = []
+        self.dots = []
 
     def add_buff_effect(self, effect):
         self.buff_effects.append(effect)
 
     def add_spcl_eff(self, effect):
         self.spcl_effs.append(effect)
+
+    def add_dot(self, effect):
+        self.dots.append(effect)
 
     def tick(self, character):
         for effect in self.buff_effects:

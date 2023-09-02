@@ -257,55 +257,55 @@ def add_pet(pets):
     print('PetRandomAttrBase.csv文件添加宠物成功！')
 
 
-# def gen_petrandomattrbase():
-#     pet_type_file = open('C:\ssr-config\\trunk\config\csv\PetType.csv', encoding='utf-8')
-#     reader_pet_type = csv.reader(pet_type_file)
-#     rows_pet_type = list(reader_pet_type)
-#     pet_random_file = open('C:\ssr-config\\trunk\config\csv\PetRandomAttrBase.csv', encoding='utf-8')
-#     reader_pet_random = csv.reader(pet_random_file)
-#     rows_pet_random = list(reader_pet_random)
-#
-#     quality_weight = {'S': 100, 'A': 10, 'B': 1}
-#
-#     qs = []
-#     for q1 in ['B', 'A', 'S']:
-#         for q2 in ['B', 'A', 'S']:
-#             for q3 in ['B', 'A', 'S']:
-#                 score = quality_weight[q1] + quality_weight[q2] + quality_weight[q3]
-#                 qs.append([q1+q2+q3, score])
-#     qs = sorted(qs, key=lambda x: x[1])
-#
-#     num = 100000
-#     for row in rows_pet_type[3:]:
-#         for q in qs:
-#             if q[1] > 100:
-#                 rarity = '超级超级稀有'
-#                 quality = 'LV4'
-#             elif q[1] > 10:
-#                 rarity = '超级稀有'
-#                 quality = 'LV3'
-#             else:
-#                 rarity = '稀有'
-#                 quality = 'LV2'
-#
-#             num += 1
-#             rows_pet_random.append([num, 'petAttrBase_' + str(int(row[0])-100) + q[0], row[2],
-#                                     row[1], rarity, '雄性', quality,
-#                                     q[0][0], q[0][1], q[0][2], 'attrtemp_battlePet_S4'])
-#     # print(rows_pet_random)
-#
-#     with open('C:\ssr-config\\trunk\config\csv\PetRandomAttrBase.csv', 'w', newline='',
-#               encoding='utf-8') as pet_random_attr_base_file:
-#         writer = csv.writer(pet_random_attr_base_file)
-#         writer.writerows(rows_pet_random)
+def gen_petrandomattrbase():
+    pet_type_file = open('C:\ssr-config\\trunk\config\csv\PetType.csv', encoding='utf-8')
+    reader_pet_type = csv.reader(pet_type_file)
+    rows_pet_type = list(reader_pet_type)
+    pet_random_file = open('C:\ssr-config\\trunk\config\csv\PetRandomAttrBase.csv', encoding='utf-8')
+    reader_pet_random = csv.reader(pet_random_file)
+    rows_pet_random = list(reader_pet_random)
+    rows_pet_random = rows_pet_random[:3]
 
+    qs = []
 
-# if __name__ == '__main__':
-    # 配置宠物模型资源
-    # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
-    # add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
+    num = 100000
+    n = 0
+    l = [{'quality': 'B', 'group': ['B']}, {'quality': 'A', 'group': ['B', 'A']},
+         {'quality': 'S', 'group': ['A', 'S']}]
+    for row in rows_pet_type[3:]:
+        n += 1
+        for q in l:
+            if q['quality'] == 'S':
+                rarity = '超级超级稀有'
+                quality = 'LV4'
+            elif q['quality'] == 'A':
+                rarity = '超级稀有'
+                quality = 'LV3'
+            else:
+                rarity = '稀有'
+                quality = 'LV2'
 
-    # 添加宠物
-    # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
-    # add_pet([['pangolin', '穿山甲']])
-    # gen_petrandomattrbase()
+            for g1 in q['group']:
+                for g2 in q['group']:
+                    for g3 in q['group']:
+                        num += 1
+                        rows_pet_random.append([num, 'petAttrBase_' + str(num), row[2],
+                                                row[1], rarity, '雄性', quality,
+                                                g1, g2, g3, 'attrtemp_battlePet_' + q['quality'] + str(n)])
+
+    # print(rows_pet_random)
+
+    with open('C:\\Users\Administrator\Desktop\PetRandomAttrBase.csv', 'w', newline='',
+              encoding='utf-8') as pet_random_attr_base_file:
+        writer = csv.writer(pet_random_attr_base_file)
+        writer.writerows(rows_pet_random)
+
+if __name__ == '__main__':
+# 配置宠物模型资源
+# 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
+# add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
+
+# 添加宠物
+# 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
+# add_pet([['pangolin', '穿山甲']])
+    gen_petrandomattrbase()

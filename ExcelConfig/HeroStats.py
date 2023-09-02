@@ -1,7 +1,10 @@
 import xlwings as xw
 import ExcelConfig.HeroSkillConfig as HeroSkillConfig
 
-Skills = {
+Hero_level = [0, 1, 4, 6, 8, 9, 10, 10, 10, 12, 12, 15, 18, 20, 22, 22, 22, 24, 26, 28, 30, 30, 33, 35]
+
+Hero_Skills = {
+    '白板': HeroSkillConfig.Monster1_skills,
     # 蓝色
     '杰玛': HeroSkillConfig.Gem_skills,
     '东': HeroSkillConfig.Don_skills,
@@ -24,6 +27,7 @@ Skills = {
 }
 
 Heros = {
+    '白板': 'blue',
     # 蓝色
     '杰玛': 'blue',
     '东': 'blue',
@@ -304,11 +308,15 @@ class Numerical:
                            844, 889, 930, 975, 1020, 1065, 1110, 1155, 1200, 1245, 1290, 1335, 1380, 1425, 1470, 1515,
                            1560,
                            1605, 1650, 1695]}}
-        self.hero_offset = {'杰玛': {'name': '杰玛', 'quality': 1.0, 'atk': 1.1, 'def': 1.0, 'hp': 0.9},
+        self.hero_offset = {'白板': {'name': '白板', 'quality': 1.0, 'atk': 0.7, 'def': 0.3, 'hp': 0.7},
+                            '杰玛': {'name': '杰玛', 'quality': 1.0, 'atk': 1.1, 'def': 1.0, 'hp': 0.9},
+                            # '杰玛': {'name': '杰玛', 'quality': 1.0, 'atk': 3.3, 'def': 1.0, 'hp': 0.9},
                             '按摩师': {'name': '按摩师', 'quality': 1.0, 'atk': 1.0, 'def': 1.0, 'hp': 1.0},
                             '东': {'name': '东', 'quality': 1.0, 'atk': 0.75, 'def': 1.1, 'hp': 1.15},
+                            # '东': {'name': '东', 'quality': 1.0, 'atk': 0.75*3, 'def': 1.1, 'hp': 1.15},
                             '奈乔': {'name': '奈乔', 'quality': 2.0, 'atk': 1.1, 'def': 0.95, 'hp': 0.95},
                             '苏西': {'name': '苏西', 'quality': 2.0, 'atk': 0.85, 'def': 1.05, 'hp': 1.1},
+                            # '奈乔': {'name': '奈乔', 'quality': 2.0, 'atk': 1.1*3, 'def': 0.95, 'hp': 0.95},
                             '金鼻子': {'name': '金鼻子', 'quality': 2.0, 'atk': 1.0, 'def': 1.0, 'hp': 1.0},
                             '街头艺术家': {'name': '街头艺术家', 'quality': 2.0, 'atk': 1.0, 'def': 1.0, 'hp': 1.0},
                             '女医生': {'name': '女医生', 'quality': 2.0, 'atk': 1.0, 'def': 1.0, 'hp': 1.0},

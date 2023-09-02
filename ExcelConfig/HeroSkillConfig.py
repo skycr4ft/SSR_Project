@@ -5,6 +5,16 @@ from Combat.Skill import Skill
 Uni_attack = Skill(name='普通攻击', definition='normal', type='instant',
                    effects_param=[{'effect_type': 'atk_dmg', 'dmg_coef': 1.0, 'target_area': 'single'}])
 
+Monster1_skills = [Skill(name='怪物技能', definition='active', type='instant',
+                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.6, 'max_targets': 1,
+                                    'target_area': 'single'}]),
+                Uni_attack]
+
+Monster2_skills = [Skill(name='怪物技能', definition='active', type='instant',
+                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.6, 'max_targets': 1,
+                                    'target_area': 'single'}]),
+                Uni_attack]
+
 ### 技能数值配置
 Gem_skills = [Skill(name='杰玛技能', definition='active', type='instant',
                     effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.6, 'max_targets': 3,
@@ -64,7 +74,7 @@ FemaleDoctor_skill = [Skill(name='女医生技能', definition='active', type='i
 # version: 1
 Artist_skill = [Skill(name='艺术家技能', definition='active', type='instant',
                      effects_param=[
-                         {'effect_type': 'skill_dmg', 'dmg_coef': 2.0, 'max_targets': 2, 'target_area': 'single'},
+                         {'effect_type': 'skill_dmg', 'dmg_coef': 1.6, 'max_targets': 2, 'target_area': 'single'},
                          {'effect_type': 'chain', 'max_targets': 1,
                           'target_type': 'self', 'duration': 3,
                           'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, }, ]),
@@ -73,13 +83,13 @@ Artist_skill = [Skill(name='艺术家技能', definition='active', type='instant
 # version: 1
 Judge_skill = [Skill(name='审判长技能', definition='active', type='instant',
                     effects_param=[
-                        {'effect_type': 'skill_dmg', 'dmg_coef': 2.0, 'max_targets': 3, 'target_area': 'single'}]),
+                        {'effect_type': 'skill_dmg', 'dmg_coef': 1.6, 'max_targets': 3, 'target_area': 'single'}]),
                Uni_attack]
 
 # version: 1
 Jaden_skill = [Skill(name='杰登技能', definition='active', type='instant',
                     effects_param=[
-                        {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 3, 'target_area': 'multiple'}]),
+                        {'effect_type': 'skill_dmg', 'dmg_coef': 0.8, 'max_targets': 3, 'target_area': 'multiple'}]),
                Skill(name='杰登普通攻击', definition='normal', type='instant',
                      effects_param=[{'effect_type': 'atk_dmg', 'dmg_coef': 1.0, 'target_area': 'single'},
                                     {'effect_type': 'buff', 'buffs': {'rage_increase_add': 5}, 'max_targets': 1,
@@ -89,7 +99,7 @@ Jaden_skill = [Skill(name='杰登技能', definition='active', type='instant',
 # version: 1
 Singer_skill = [Skill(name='歌手技能', definition='active', type='instant',
                      effects_param=[
-                         {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 3, 'target_area': 'single'},
+                         {'effect_type': 'skill_dmg', 'dmg_coef': 0.8, 'max_targets': 3, 'target_area': 'single'},
                          {'effect_type': 'buff', 'buffs': {'dmg_rcv_inc': 0.22}, 'max_targets': 3,
                           'target_type': 'enemy', 'duration': 3,
                           'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, }, ]),
@@ -98,7 +108,7 @@ Singer_skill = [Skill(name='歌手技能', definition='active', type='instant',
 # version: 1
 Gilbert_skill = [Skill(name='吉尔伯特技能', definition='active', type='instant',
                       effects_param=[
-                          {'effect_type': 'skill_dmg', 'dmg_coef': 1.5, 'max_targets': 3, 'target_area': 'single'},
+                          {'effect_type': 'skill_dmg', 'dmg_coef': 1.2, 'max_targets': 3, 'target_area': 'single'},
                           {'effect_type': 'chase', 'max_targets': 1,
                            'target_type': 'self', 'target_select': 'self', 'duration': 3,
                            'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, }, ]),
@@ -112,7 +122,7 @@ Gilbert_skill = [Skill(name='吉尔伯特技能', definition='active', type='ins
 # version: 1
 Egirl_skill = [Skill(name='E-girl技能', definition='active', type='instant',
                     effects_param=[
-                        {'effect_type': 'skill_dmg', 'dmg_coef': 4.0, 'max_targets': 1, 'target_area': 'single',
+                        {'effect_type': 'skill_dmg', 'dmg_coef': 3.2, 'max_targets': 1, 'target_area': 'single',
                          'target_select': 'weakest'},
                         {'effect_type': 'buff', 'buffs': {'atk_multi': 0.25}, 'max_targets': 1,
                          'target_type': 'self'}, ]),
@@ -121,7 +131,7 @@ Egirl_skill = [Skill(name='E-girl技能', definition='active', type='instant',
 # version: 1
 Watt_skill = [Skill(name='华特技能', definition='active', type='instant',
                    effects_param=[
-                       {'effect_type': 'skill_dmg', 'dmg_coef': 2.0, 'max_targets': 2, 'target_area': 'single'},
+                       {'effect_type': 'skill_dmg', 'dmg_coef': 1.6, 'max_targets': 2, 'target_area': 'single'},
                        {'effect_type': 'counter', 'max_targets': 1,
                         'target_type': 'self', 'target_select': 'self', 'duration': 3,
                         'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, }, ]),
@@ -130,15 +140,15 @@ Watt_skill = [Skill(name='华特技能', definition='active', type='instant',
 # version: 1
 Strongman_skill = Skill(name='硬汉技能', definition='active', type='instant',
                         effects_param=[
-                            {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 3, 'target_area': 'single'},
+                            {'effect_type': 'skill_dmg', 'dmg_coef': 0.8, 'max_targets': 3, 'target_area': 'single'},
                             {'effect_type': 'guard', 'max_targets': 2,
                              'target_type': 'ally', 'target_select': 'ally_except_self', 'duration': 4}, ])
 
 # version: 1
 Nancy_skill = [Skill(name='南希技能', definition='active', type='instant',
                     effects_param=[
-                        {'effect_type': 'skill_dmg', 'dmg_coef': 1.0, 'max_targets': 3, 'target_area': 'single'},
-                        {'effect_type': 'burn', 'dmg_coef': 1.0, 'max_targets': 3, 'duration': 3,
+                        {'effect_type': 'skill_dmg', 'dmg_coef': 0.8, 'max_targets': 3, 'target_area': 'single'},
+                        {'effect_type': 'burn', 'dmg_coef': 0.8, 'max_targets': 3, 'duration': 3,
                          'target_type': 'enemy',
                          'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, }, ]),
                Uni_attack]
