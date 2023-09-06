@@ -300,12 +300,34 @@ def gen_petrandomattrbase():
         writer = csv.writer(pet_random_attr_base_file)
         writer.writerows(rows_pet_random)
 
-if __name__ == '__main__':
-# 配置宠物模型资源
-# 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
-# add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
 
-# 添加宠物
-# 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
-# add_pet([['pangolin', '穿山甲']])
-    gen_petrandomattrbase()
+def add_speed():
+    # 读取AttrGroup-PetGenerate.csv文件
+    attr_group_pet_generate_file = open('C:\ssr-config\\trunk\config\csv\AttrGroup-PetGenerate.csv', encoding='utf-8')
+    reader_attr_group_pet_generate = csv.reader(attr_group_pet_generate_file)
+    rows_attr_group_pet_generate = list(reader_attr_group_pet_generate)
+
+    pet_speed = {'大嘴鸟': 1, '薮猫': 2, '蜜蜂': 1.5, '章鱼': 0, '熊': 0.5, '海豹': 1, '土拨鼠': 0.5, '野猪': 1,
+                 '甲虫': 0, '熊猫': 0.5, '海鸥': 0.5, '卷尾猴': 0, '绿绿鹳': 0, '刺猬': 2, '狼': 2, '穿山甲': 0.5,
+                 '牦牛': 1, '水豚': 0.5}
+    speed_base = 200
+
+    for row in rows_attr_group_pet_generate[3:]:
+        row[22] = 'se速度_base'
+        row[23] = str(int(speed_base * pet_speed[row[2]]))
+
+    with open('C:\\Users\Administrator\Desktop\AttrGroup-PetGenerate.csv', 'w', newline='', encoding='utf-8') as attr_group_pet_generate_file:
+        writer = csv.writer(attr_group_pet_generate_file)
+        writer.writerows(rows_attr_group_pet_generate)
+
+
+if __name__ == '__main__':
+    # 配置宠物模型资源
+    # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
+    # add_pet_model([['panda', '狼'], ['panda', '海鸥'], ['marmot', '土拨鼠']])
+
+    # 添加宠物
+    # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
+    # add_pet([['pangolin', '穿山甲']])
+    # gen_petrandomattrbase()
+    add_speed()
