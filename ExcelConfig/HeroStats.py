@@ -48,7 +48,7 @@ Hero_Skills = {
     '南希': HeroSkillConfig.Nancy_skill,
 }
 
-Heros = {
+Heroes_qlt = {
     '白板': 'blue',
     # 蓝色
     '杰玛': 'blue',
@@ -70,6 +70,148 @@ Heros = {
     'E-girl': 'orange',
     '硬汉': 'orange',
 }
+
+Heroes = {
+    'blue': ['杰玛', '东', '按摩师'],
+    'purple': ['奈乔', '金鼻子', '苏茜', '女医生', '街头艺术家', '审判长'],
+    'orange': []
+}
+
+active_hero_progress = [
+    [{'quality': 'orange', 'level': 20, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 3.0,
+      'item_boost': 0, 'pet_qlt': 'purple', 'pet_lvl': 8, 'pet_star': 3},
+     {'quality': 'purple', 'level': 20, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'orange', 'item_num': 0.0,
+      'item_boost': 1, 'pet_qlt': 'blue', 'pet_lvl': 13, 'pet_star': 3},
+     {'quality': 'blue', 'level': 20, 'star': 0, 'item_tier': 't1_power', 'item_qlt': 'orange', 'item_num': 0.0,
+      'item_boost': 0, 'pet_qlt': 'blue', 'pet_lvl': 13, 'pet_star': 1}], [
+        {'quality': 'orange', 'level': 22, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 4.0,
+         'item_boost': 0, 'pet_qlt': 'purple', 'pet_lvl': 9, 'pet_star': 4},
+        {'quality': 'purple', 'level': 22, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'orange', 'item_num': 0.0,
+         'item_boost': 1, 'pet_qlt': 'blue', 'pet_lvl': 14, 'pet_star': 3},
+        {'quality': 'blue', 'level': 22, 'star': 0, 'item_tier': 't1_power', 'item_qlt': 'orange', 'item_num': 0.0,
+         'item_boost': 0, 'pet_qlt': 'blue', 'pet_lvl': 14, 'pet_star': 1}], [
+        {'quality': 'orange', 'level': 22, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 10, 'pet_star': 4},
+        {'quality': 'purple', 'level': 22, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'orange', 'item_num': 0.0,
+         'item_boost': 1, 'pet_qlt': 'blue', 'pet_lvl': 15, 'pet_star': 4},
+        {'quality': 'blue', 'level': 22, 'star': 0, 'item_tier': 't1_power', 'item_qlt': 'orange', 'item_num': 0.0,
+         'item_boost': 0, 'pet_qlt': 'blue', 'pet_lvl': 15, 'pet_star': 1}], [
+        {'quality': 'orange', 'level': 22, 'star': 0, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 11, 'pet_star': 5},
+        {'quality': 'purple', 'level': 22, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 3.0,
+         'item_boost': 0, 'pet_qlt': 'purple', 'pet_lvl': 16, 'pet_star': 4},
+        {'quality': 'purple', 'level': 22, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 2.0,
+         'item_boost': 0, 'pet_qlt': 'blue', 'pet_lvl': 16, 'pet_star': 2}], [
+        {'quality': 'orange', 'level': 24, 'star': 0, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 12, 'pet_star': 5},
+        {'quality': 'purple', 'level': 24, 'star': 2, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 18, 'pet_star': 5},
+        {'quality': 'purple', 'level': 24, 'star': 1, 'item_tier': 't1_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 0, 'pet_qlt': 'purple', 'pet_lvl': 18, 'pet_star': 2}], [
+        {'quality': 'orange', 'level': 26, 'star': 0, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 13, 'pet_star': 6},
+        {'quality': 'purple', 'level': 26, 'star': 2, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 20, 'pet_star': 5},
+        {'quality': 'purple', 'level': 26, 'star': 1, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 20, 'pet_star': 2}], [
+        {'quality': 'orange', 'level': 28, 'star': 0, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 22, 'pet_star': 6},
+        {'quality': 'purple', 'level': 28, 'star': 2, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 22, 'pet_star': 6},
+        {'quality': 'purple', 'level': 28, 'star': 2, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 22, 'pet_star': 2}], [
+        {'quality': 'orange', 'level': 30, 'star': 1, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 26, 'pet_star': 7},
+        {'quality': 'purple', 'level': 30, 'star': 3, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 26, 'pet_star': 6},
+        {'quality': 'purple', 'level': 30, 'star': 2, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 26, 'pet_star': 3}], [
+        {'quality': 'orange', 'level': 30, 'star': 1, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 30, 'pet_star': 7},
+        {'quality': 'purple', 'level': 30, 'star': 3, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 30, 'pet_star': 7},
+        {'quality': 'purple', 'level': 30, 'star': 2, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 30, 'pet_star': 3}], [
+        {'quality': 'orange', 'level': 33, 'star': 1, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 34, 'pet_star': 8},
+        {'quality': 'purple', 'level': 33, 'star': 3, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 34, 'pet_star': 7},
+        {'quality': 'purple', 'level': 33, 'star': 3, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 34, 'pet_star': 4}], [
+        {'quality': 'orange', 'level': 35, 'star': 1, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8},
+        {'quality': 'purple', 'level': 35, 'star': 3, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8},
+        {'quality': 'purple', 'level': 35, 'star': 3, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 4}]]
+
+super_hero_progress = [
+    [{'quality': 'orange', 'level': 20, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 3.0,
+      'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 10, 'pet_star': 4},
+     {'quality': 'orange', 'level': 20, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 0.0,
+      'item_boost': 2, 'pet_qlt': 'purple', 'pet_lvl': 15, 'pet_star': 4},
+     {'quality': 'orange', 'level': 20, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 0.0,
+      'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 15, 'pet_star': 2}], [
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 4.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 11, 'pet_star': 5},
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 0.0,
+         'item_boost': 2, 'pet_qlt': 'purple', 'pet_lvl': 16, 'pet_star': 4},
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 0.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 16, 'pet_star': 2}], [
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 12, 'pet_star': 5},
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 0.0,
+         'item_boost': 2, 'pet_qlt': 'purple', 'pet_lvl': 17, 'pet_star': 5},
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'blue', 'item_num': 0.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 17, 'pet_star': 2}], [
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 13, 'pet_star': 6},
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 3.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 18, 'pet_star': 5},
+        {'quality': 'orange', 'level': 22, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 2.0,
+         'item_boost': 1, 'pet_qlt': 'purple', 'pet_lvl': 18, 'pet_star': 3}], [
+        {'quality': 'orange', 'level': 24, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 14, 'pet_star': 6},
+        {'quality': 'orange', 'level': 24, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 20, 'pet_star': 6},
+        {'quality': 'orange', 'level': 24, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 20, 'pet_star': 3}], [
+        {'quality': 'orange', 'level': 26, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 15, 'pet_star': 7},
+        {'quality': 'orange', 'level': 26, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 22, 'pet_star': 6},
+        {'quality': 'orange', 'level': 26, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 22, 'pet_star': 3}], [
+        {'quality': 'orange', 'level': 28, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 24, 'pet_star': 7},
+        {'quality': 'orange', 'level': 28, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 24, 'pet_star': 7},
+        {'quality': 'orange', 'level': 28, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 24, 'pet_star': 3}], [
+        {'quality': 'orange', 'level': 30, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 28, 'pet_star': 8},
+        {'quality': 'orange', 'level': 30, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 28, 'pet_star': 7},
+        {'quality': 'orange', 'level': 30, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 28, 'pet_star': 4}], [
+        {'quality': 'orange', 'level': 30, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 32, 'pet_star': 8},
+        {'quality': 'orange', 'level': 30, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 32, 'pet_star': 8},
+        {'quality': 'orange', 'level': 30, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 32, 'pet_star': 4}], [
+        {'quality': 'orange', 'level': 33, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 36, 'pet_star': 9},
+        {'quality': 'orange', 'level': 33, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 36, 'pet_star': 8},
+        {'quality': 'orange', 'level': 33, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 36, 'pet_star': 5}], [
+        {'quality': 'orange', 'level': 35, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 37, 'pet_star': 9},
+        {'quality': 'orange', 'level': 35, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 37, 'pet_star': 9},
+        {'quality': 'orange', 'level': 35, 'star': 4, 'item_tier': 't2_power', 'item_qlt': 'purple', 'item_num': 5.0,
+         'item_boost': 2, 'pet_qlt': 'orange', 'pet_lvl': 37, 'pet_star': 5}]]
 
 
 ## 获取所有品质的英雄的标准模板属性
@@ -270,7 +412,84 @@ def fetch_pet_rank_attr(filepath):
 
 def calc_hero_power(hero):
     return int(hero.attack * 5 + hero.defense * 5 + hero.max_hp * 0.6 + hero.crit * 5 + hero.crit_res * 5 + \
-               hero.eff_hit * 500 + hero.eff_res * 500 + hero.crit_damage * 0 + hero.crit_reduction * 10)
+               hero.eff_hit * 500 + hero.eff_res * 500 + hero.crit_damage * 0 * hero.crit + hero.crit_reduction * 10)
+
+
+def get_hero_progression(filepath):
+    app = xw.App(visible=False, add_book=False)
+    app.display_alerts = False
+    app.screen_updating = False
+    wb = app.books.open(filepath)
+
+    active_hero_prog = []
+    super_hero_prog = []
+    for row in wb.sheets['养成节奏'].range('C15:AF25').value:
+        active_hero_prog_temp = []
+        super_hero_prog_temp = []
+        for i in range(3):
+            active_hero_prog_temp.append({'quality': row[i * 10 + 0], 'level': int(row[i * 10 + 1]),
+                                          'star': int(row[i * 10 + 2]),
+                                          'item_tier': row[i * 10 + 3], 'item_qlt': row[i * 10 + 4],
+                                          'item_num': row[i * 10 + 5], 'item_boost': int(row[i * 10 + 6]),
+                                          'pet_qlt': row[i * 10 + 7], 'pet_lvl': int(row[i * 10 + 8]),
+                                          'pet_star': int(row[i * 10 + 9])})
+            super_hero_prog_temp.append({'quality': 3, 'level': int(min(row[i * 10 + 1], 60)), 'star': 4,
+                                         'item_tier': row[i * 10 + 3] + 1, 'item_qlt': min(row[i * 10 + 4] + 1, 3),
+                                         'item_num': row[i * 10 + 5], 'item_boost': int(row[i * 10 + 6] + 1),
+                                         'pet_qlt': min(row[i * 10 + 7] + 1, 3), 'pet_lvl': int(row[i * 10 + 8] + 2),
+                                         'pet_star': int(row[i * 10 + 9] + 1)})
+        for hero in active_hero_prog_temp:
+            if hero['quality'] == 1:
+                hero['quality'] = 'blue'
+            elif hero['quality'] == 2:
+                hero['quality'] = 'purple'
+            else:
+                hero['quality'] = 'orange'
+
+            hero['item_tier'] = 't' + str(int(min(hero['item_tier'], 2))) + '_power'
+
+            if hero['item_qlt'] == 1:
+                hero['item_qlt'] = 'blue'
+            elif hero['item_qlt'] == 2:
+                hero['item_qlt'] = 'purple'
+            else:
+                hero['item_qlt'] = 'orange'
+
+            if hero['pet_qlt'] == 1:
+                hero['pet_qlt'] = 'blue'
+            elif hero['pet_qlt'] == 2:
+                hero['pet_qlt'] = 'purple'
+            else:
+                hero['pet_qlt'] = 'orange'
+
+        for hero in super_hero_prog_temp:
+            if hero['quality'] == 1:
+                hero['quality'] = 'blue'
+            elif hero['quality'] == 2:
+                hero['quality'] = 'purple'
+            else:
+                hero['quality'] = 'orange'
+
+            hero['item_tier'] = 't' + str(int(min(hero['item_tier'], 2))) + '_power'
+
+            if hero['item_qlt'] == 1:
+                hero['item_qlt'] = 'blue'
+            elif hero['item_qlt'] == 2:
+                hero['item_qlt'] = 'purple'
+            else:
+                hero['item_qlt'] = 'orange'
+
+            if hero['pet_qlt'] == 1:
+                hero['pet_qlt'] = 'blue'
+            elif hero['pet_qlt'] == 2:
+                hero['pet_qlt'] = 'purple'
+            else:
+                hero['pet_qlt'] = 'orange'
+
+        active_hero_prog.append(active_hero_prog_temp)
+        super_hero_prog.append(super_hero_prog_temp)
+
+    return active_hero_prog, super_hero_prog
 
 
 class Numerical:
@@ -373,20 +592,20 @@ class Numerical:
              '硬汉': {'name': '硬汉', 'quality': 3.0, 'atk': 0.85, 'def': 1.05, 'hp': 1.1}}
 
         self.hero_star = {
-            {'blue': {'crit': [15, 30, 45, 60, 75, 90], 'crit_res': [15, 30, 45, 60, 75, 90],
-                      'eff_hit': [0.09, 0.18, 0.27, 0.36, 0.45, 0.54],
-                      'eff_res': [0.06749999999999999, 0.13499999999999998, 0.20249999999999999, 0.26999999999999996,
-                                  0.33749999999999997, 0.40499999999999997],
-                      'base_attr': [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]},
-             'purple': {'crit': [18, 37, 56, 75, 93, 112], 'crit_res': [18, 37, 56, 75, 93, 112],
-                        'eff_hit': [0.11249999999999999, 0.22499999999999998, 0.3375, 0.44999999999999996, 0.5625,
-                                    0.675],
-                        'eff_res': [0.08437499999999999, 0.16874999999999998, 0.253125, 0.33749999999999997,
-                                    0.42187499999999994, 0.50625], 'base_attr': [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]},
-             'orange': {'crit': [24, 48, 72, 96, 120, 144], 'crit_res': [24, 48, 72, 96, 120, 144],
-                        'eff_hit': [0.144, 0.288, 0.43200000000000005, 0.576, 0.7200000000000001, 0.8640000000000001],
-                        'eff_res': [0.10799999999999998, 0.21599999999999997, 0.324, 0.43199999999999994,
-                                    0.5399999999999999, 0.648], 'base_attr': [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]}}
+            'blue': {'crit': [15, 30, 45, 60, 75, 90], 'crit_res': [15, 30, 45, 60, 75, 90],
+                     'eff_hit': [0.09, 0.18, 0.27, 0.36, 0.45, 0.54],
+                     'eff_res': [0.06749999999999999, 0.13499999999999998, 0.20249999999999999, 0.26999999999999996,
+                                 0.33749999999999997, 0.40499999999999997],
+                     'base_attr': [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]},
+            'purple': {'crit': [18, 37, 56, 75, 93, 112], 'crit_res': [18, 37, 56, 75, 93, 112],
+                       'eff_hit': [0.11249999999999999, 0.22499999999999998, 0.3375, 0.44999999999999996, 0.5625,
+                                   0.675],
+                       'eff_res': [0.08437499999999999, 0.16874999999999998, 0.253125, 0.33749999999999997,
+                                   0.42187499999999994, 0.50625], 'base_attr': [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]},
+            'orange': {'crit': [24, 48, 72, 96, 120, 144], 'crit_res': [24, 48, 72, 96, 120, 144],
+                       'eff_hit': [0.144, 0.288, 0.43200000000000005, 0.576, 0.7200000000000001, 0.8640000000000001],
+                       'eff_res': [0.10799999999999998, 0.21599999999999997, 0.324, 0.43199999999999994,
+                                   0.5399999999999999, 0.648], 'base_attr': [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]}
         }
         self.attr_weight = {'atk': 5.0, 'def': 5.0, 'hp': 0.6, 'crit': 5.0, 'crit_res': 5.0, 'eff_hit': 500.0,
                             'eff_res': 500.0, 'crit_dmg': 1000.0, 'crit_dmg_res': 1000.0}
@@ -539,6 +758,9 @@ if __name__ == '__main__':
     hero_info = {'hero': '', 'level': 40, 'star': 5, 'quality': 'orange', 'item_qlt': 'orange',
                  'item_tier': 't2_power', 'item_num': 5,
                  'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
-    hero_getter = Numerical('E:\新建文件夹\战斗\SSR战斗养成数值7day_.xlsx')
+    # hero_getter = Numerical('E:\新建文件夹\战斗\SSR战斗养成数值7day_.xlsx')
     # hero_getter = Numerical()
     # print(hero_getter.calc_hero_attr(**hero_info))
+    active, super = get_hero_progression('E:\新建文件夹\战斗\SSR数值规划.xlsx')
+    print(active)
+    print(super)

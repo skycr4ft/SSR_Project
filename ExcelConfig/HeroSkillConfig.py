@@ -109,7 +109,7 @@ Singer_skill = [Skill(name='歌手技能', definition='active', type='instant',
 Gilbert_skill = [Skill(name='吉尔伯特技能', definition='active', type='instant',
                       effects_param=[
                           {'effect_type': 'skill_dmg', 'dmg_coef': 1.2, 'max_targets': 3, 'target_area': 'single'},
-                          {'effect_type': 'chase', 'max_targets': 1,
+                          {'effect_type': 'chase', 'max_targets': 1, 'dmg_coef': 1.0,
                            'target_type': 'self', 'target_select': 'self', 'duration': 3,
                            'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, }, ]),
                  Skill(name='吉尔伯特普通攻击', definition='normal', type='instant',

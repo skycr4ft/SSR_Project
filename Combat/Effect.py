@@ -91,7 +91,7 @@ class Effect:
             target_squads = random.sample(target_squads, min(self.max_targets, len(target_squads)))
             target_list = []
             for squad in target_squads:
-                for target in squad.members:
+                for target in squad.characters:
                     if target.is_alive():  # only attack alive characters
                         target_list.append(target)
             return target_list
@@ -153,7 +153,8 @@ class DamageEffect(Effect):
         if target.effect_tracker.is_exist('counter'):
             counter = target.effect_tracker.get_effect('counter')
             # 计算反击伤害
-            counter_damage = self.calc_dmg(target, caster, effect_coef=counter.coef, effect_base_dmg=counter.base_dmg)
+            counter_damage = self.calc_dmg(target, caster, effect_coef=counter.dmg_coef,
+                                           effect_base_dmg=counter.base_dmg)
             # self.log(target, caster, counter_damage, '反击')
             caster.take_dmg(counter_damage)
 
@@ -161,7 +162,7 @@ class DamageEffect(Effect):
         if caster.effect_tracker.is_exist('chase'):
             chase = caster.effect_tracker.get_effect('chase')
             # 计算追击伤害
-            chase_damage = self.calc_dmg(caster, target, effect_coef=chase.coef, effect_base_dmg=chase.base_dmg)
+            chase_damage = self.calc_dmg(caster, target, effect_coef=chase.dmg_coef, effect_base_dmg=chase.base_dmg)
             # self.log(caster, target, chase_damage, '追击')
             target.take_dmg(chase_damage)
 
@@ -190,8 +191,8 @@ class DamageEffect(Effect):
         return (caster_crit - defender_crit_res) / self.crit_coef
 
     # def log(self, caster, target, damage, effect_type):
-        # print(
-        #     f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {effect_type}.')
+    # print(
+    #     f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {effect_type}.')
 
 
 class HealEffect(Effect):
@@ -314,8 +315,8 @@ class DOTEffect(Effect):
 
     def tick(self, character):
         self.duration -= 1
-        if self.duration < 0:
-            print(f'{character.squad.name}-{character.name} {self.effect_type} expired.')
+        # if self.duration < 0:
+        #     print(f'{character.squad.name}-{character.name} {self.effect_type} expired.')
 
     def log(self, caster, target):
         print(
@@ -323,11 +324,14 @@ class DOTEffect(Effect):
 
 
 class SpecialEffect(Effect):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, dmg_coef=1.0, base_dmg=0.0, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.dmg_coef = dmg_coef
+        self.base_dmg = base_dmg
 
     def clone(self):
-        return SpecialEffect(effect_type=self.effect_type, target_area=self.target_area,
+        return SpecialEffect(base_dmg=self.base_dmg, dmg_coef=self.dmg_coef, effect_type=self.effect_type,
+                             target_area=self.target_area,
                              duration=self.duration, cast_prob_lower_bound=self.cast_prob_lower_bound,
                              cast_prob_upper_bound=self.cast_prob_upper_bound, target_select=self.target_select,
                              area_shape=self.area_shape, area_length=self.area_length, area_width=self.area_width,
@@ -352,12 +356,12 @@ class SpecialEffect(Effect):
             # 施加特殊效果
             target.effect_tracker.add_spcl_eff(self.clone())
             # 打印日志
-            self.log(caster, target)
+            # self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
-        if self.duration < 0:
-            print(f'{character.squad.name}-{character.name} {self.effect_type} expired.')
+        # if self.duration < 0:
+        #     print(f'{character.squad.name}-{character.name} {self.effect_type} expired.')
 
     def log(self, caster, target):
         print(
