@@ -321,6 +321,38 @@ def add_speed():
         writer.writerows(rows_attr_group_pet_generate)
 
 
+## 往AttrGropu-pet表填宠物属性系数
+def pet_attr_factor():
+    # 读取AttrGroup-PetGenerate.csv文件
+    pet_attr_item = open('C:\ssr-config\\branches\sprint_0.6.0\config\csv\PetRandomAttrItem.csv', encoding='utf-8')
+    reader_pet_attr_item = csv.reader(pet_attr_item)
+    rows_pet_attr_item = list(reader_pet_attr_item)
+
+    pets = ['海豹', '蜜蜂', '刺猬', '熊', '章鱼', '大嘴鸟', '水豚', '薮猫', '屎壳郎', '卷尾猴', '野猪', '熊猫', '狼', '海鸥',
+            '土拨鼠', '绿绿鹳', '牦牛', '穿山甲']
+
+    id = 0
+    attr_quality = ['BBB', 'ABB', 'BAB', 'BBA', 'AAB', 'ABA', 'AAB', 'AAA', 'SAA', 'ASA', 'SAA', 'SSA', 'SAS', 'SSA',
+                    'SSS']
+    for pet in pets:
+
+        for a_q in attr_quality:
+            id += 1
+            row[0] = id
+            row[1] = 'battlePet_' + str(id)
+            row[2] = a_q
+            row[3] = str(int(int(row[3]) * pet_speed[row[2].split('A')[0]]))
+            row[4] = str(int(int(row[4]) * pet_speed[row[2].split('A')[1]]))
+            row[5] = str(int(int(row[5]) * pet_speed[row[2].split('A')[2]]))
+
+
+
+    with open('C:\ssr-config\\branches\sprint_0.6.0\config\csv\PetRandomAttrItem.csv', 'w', newline='',
+              encoding='utf-8') as pet_attr_item:
+        writer = csv.writer(pet_attr_item)
+        writer.writerows(rows_pet_attr_item)
+
+
 if __name__ == '__main__':
     # 配置宠物模型资源
     # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
@@ -330,4 +362,4 @@ if __name__ == '__main__':
     # 输入格式：[[宠物1英文名，宠物1中文名], [宠物2英文名，宠物2中文名], ...]
     # add_pet([['pangolin', '穿山甲']])
     # gen_petrandomattrbase()
-    add_speed()
+    # add_speed()
