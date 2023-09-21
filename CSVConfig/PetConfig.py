@@ -316,41 +316,137 @@ def add_speed():
         row[22] = 'se速度_base'
         row[23] = str(int(speed_base * pet_speed[row[2]]))
 
-    with open('C:\\Users\Administrator\Desktop\AttrGroup-PetGenerate.csv', 'w', newline='', encoding='utf-8') as attr_group_pet_generate_file:
+    with open('C:\\Users\Administrator\Desktop\AttrGroup-PetGenerate.csv', 'w', newline='',
+              encoding='utf-8') as attr_group_pet_generate_file:
         writer = csv.writer(attr_group_pet_generate_file)
         writer.writerows(rows_attr_group_pet_generate)
 
 
 ## 往AttrGropu-pet表填宠物属性系数
-def pet_attr_factor():
+def pet_attr_temp():
     # 读取AttrGroup-PetGenerate.csv文件
     pet_attr_item = open('C:\ssr-config\\branches\sprint_0.6.0\config\csv\PetRandomAttrItem.csv', encoding='utf-8')
     reader_pet_attr_item = csv.reader(pet_attr_item)
     rows_pet_attr_item = list(reader_pet_attr_item)
 
-    pets = ['海豹', '蜜蜂', '刺猬', '熊', '章鱼', '大嘴鸟', '水豚', '薮猫', '屎壳郎', '卷尾猴', '野猪', '熊猫', '狼', '海鸥',
+    pets = ['海豹', '蜜蜂', '刺猬', '熊', '章鱼', '大嘴鸟', '水豚', '薮猫', '屎壳郎', '卷尾猴', '野猪', '熊猫', '狼',
+            '海鸥',
             '土拨鼠', '绿绿鹳', '牦牛', '穿山甲']
 
-    id = 0
-    attr_quality = ['BBB', 'ABB', 'BAB', 'BBA', 'AAB', 'ABA', 'AAB', 'AAA', 'SAA', 'ASA', 'SAA', 'SSA', 'SAS', 'SSA',
+    attr_quality = ['BBB', 'ABB', 'BAB', 'BBA', 'AAB', 'ABA', 'BAA', 'AAA', 'SAA', 'ASA', 'AAS', 'SSA', 'SAS', 'ASS',
                     'SSS']
-    for pet in pets:
+    id, cnt, idx = 0, 0, 2
 
+    for pet in pets:
+        cnt += 1
         for a_q in attr_quality:
             id += 1
-            row[0] = id
-            row[1] = 'battlePet_' + str(id)
-            row[2] = a_q
-            row[3] = str(int(int(row[3]) * pet_speed[row[2].split('A')[0]]))
-            row[4] = str(int(int(row[4]) * pet_speed[row[2].split('A')[1]]))
-            row[5] = str(int(int(row[5]) * pet_speed[row[2].split('A')[2]]))
+            idx += 1
+            row = []
+            row.append(id)
+            row.append('battlePet_' + str(cnt) + '_' + a_q)
+            row.append(pet + '_' + a_q)
+            row.append(a_q[0])
+            row.append('battlePet_' + str(cnt) + '_Attr1_' + a_q[0])
+            row.append(a_q[1])
+            row.append('battlePet_' + str(cnt) + '_Attr2_' + a_q[1])
+            row.append(a_q[2])
+            row.append('battlePet_' + str(cnt) + '_Attr3_' + a_q[2])
 
-
+            if len(rows_pet_attr_item) > idx:
+                rows_pet_attr_item[idx] = row
+            else:
+                rows_pet_attr_item.append(row)
 
     with open('C:\ssr-config\\branches\sprint_0.6.0\config\csv\PetRandomAttrItem.csv', 'w', newline='',
               encoding='utf-8') as pet_attr_item:
         writer = csv.writer(pet_attr_item)
         writer.writerows(rows_pet_attr_item)
+
+
+def pet_catch_item_multi():
+    # 读取AttrGroup-PetGenerate.csv文件
+    pet_catch_item = open('C:\ssr-config\\branches\sprint_0.6.0\config\csv\PetCatchItemMulti.csv', encoding='utf-8')
+    reader_pet_catch_item = csv.reader(pet_catch_item)
+    rows_pet_catch_item = list(reader_pet_catch_item)
+
+    pets_cn = ['海豹', '蜜蜂', '刺猬', '熊', '章鱼', '大嘴鸟', '水豚', '薮猫', '屎壳郎', '卷尾猴', '野猪', '熊猫', '狼',
+               '海鸥', '土拨鼠', '绿绿鹳', '牦牛', '穿山甲']
+    pets = ['seal', 'bee', 'hedgehog', 'bear', 'octopus', 'tigrex', 'capybara', 'serval', 'dungbeetle', 'capuchin',
+            'pumbaa', 'panda', 'wolf', 'seagull', 'marmot', 'stork', 'yak', 'pangolin']
+
+    catch_item = ['normal_item', 'rare_item', 'srare_item']
+    catch_item_cn = ['普通', '稀有', '超级稀有']
+    catch_item_quality = ['B', 'A', 'S']
+    factors = [100, 200, 300]
+
+    id, cnt, idx = 0, 0, 2
+
+    for k in range(len(pets)):
+        cnt += 1
+        for i in range(3):
+            id += 1
+            idx += 1
+            row = []
+            row.append(id)
+            row.append('battlePet_' + str(cnt) + '_ctItem_' + catch_item_quality[i])
+            row.append(pets_cn[k] + 'vs' + catch_item_cn[i])
+            row.append(pets[k])
+            row.append(catch_item[i])
+            row.append(factors[i])
+
+            if len(rows_pet_catch_item) > idx:
+                rows_pet_catch_item[idx] = row
+            else:
+                rows_pet_catch_item.append(row)
+
+    with open('C:\ssr-config\\branches\sprint_0.6.0\config\csv\PetCatchItemMulti.csv', 'w', newline='',
+              encoding='utf-8') as catch_item:
+        writer = csv.writer(catch_item)
+        writer.writerows(rows_pet_catch_item)
+
+
+def pet_attr_factor():
+    # 读取AttrGroup-Pet.csv文件
+    pet_attr = open('C:\ssr-config\\branches\sprint_0.6.0\config\csv\AttrGroup-pet.csv', encoding='utf-8')
+    reader_pet_attr = csv.reader(pet_attr)
+    rows_pet_attr = list(reader_pet_attr)
+
+    pets = ['海豹', '蜜蜂', '刺猬', '熊', '章鱼', '大嘴鸟', '水豚', '薮猫', '屎壳郎', '卷尾猴', '野猪', '熊猫', '狼',
+            '海鸥', '土拨鼠', '绿绿鹳', '牦牛', '穿山甲']
+
+    attr_ctgr_quality = ['B', 'A', 'S']
+    attr_ctgr = ['_Attr1_', '_Attr2_', '_Attr3_']
+    map_attr_ctgr = {'_Attr1_': ['攻击_multi', '暴击率_multi', '宠物提供的攻击_multi'],
+                     '_Attr2_': ['防御_multi', '暴击抵抗_multi', '宠物提供的防御_multi'],
+                     '_Attr3_': ['血量_multi', '宠物提供的血量_multi', 'se速度_multi']}
+    id = 6710000
+
+    for i in range(len(pets)):
+        for a_c in attr_ctgr:
+            for k in range(len(attr_ctgr_quality)):
+                id += 1
+                row = []
+                row.append(id)
+                row.append('battlePet_' + str(i + 1) + a_c + attr_ctgr_quality[k])
+                row.append('')
+                row.append('Factor')
+
+                row_temp = []
+                for attr in map_attr_ctgr[a_c]:
+                    row_temp.append(attr)
+                    row_temp.append(100)
+                row.extend(row_temp)
+
+                for l in range(2 * (30 - len(map_attr_ctgr[a_c]))):
+                    row.append('')
+
+                rows_pet_attr.append(row)
+
+    with open('C:\\Users\Administrator\Desktop\AttrGroup-pet.csv', 'w', newline='',
+              encoding='utf-8') as pet_attr_item:
+        writer = csv.writer(pet_attr_item)
+        writer.writerows(rows_pet_attr)
 
 
 if __name__ == '__main__':
@@ -363,3 +459,6 @@ if __name__ == '__main__':
     # add_pet([['pangolin', '穿山甲']])
     # gen_petrandomattrbase()
     # add_speed()
+    # pet_catch_item_multi()
+    pet_attr_factor()
+    # pet_attr_temp()
