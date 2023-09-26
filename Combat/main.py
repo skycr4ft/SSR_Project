@@ -5,7 +5,7 @@ from Battle import Battle
 import Consts
 from ExcelConfig.HeroStats import Hero_Skills, Heroes_qlt, Hero_level
 import matplotlib
-from ExcelConfig.HeroStats import Numerical, calc_hero_power, active_hero_progress, super_hero_progress
+from ExcelConfig.HeroStats import Numerical, calc_hero_power, get_hero_progression
 from ExcelConfig.MonsterStats import Mon_Numerical
 import csv
 
@@ -102,6 +102,7 @@ import csv
 
 def main():
     PVP_1vN()
+
 
 def PVP_1v1():
     # Define the characters and their skills
@@ -220,8 +221,9 @@ def PVP_1vN():
 
     ## PVP
     cfgs = []
-    for i in range(len(active_hero_progress)):
-        cfgs.append([active_hero_progress[i], super_hero_progress[i]])
+    # cfgs = HeroStats.get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值7day.xlsx')
+    # for hero_progress in active_hero_progress:
+    #     cfgs.append(hero_progress)
 
     for cfg in cfgs:
         N = 1000
@@ -255,8 +257,6 @@ def PVP_1vN():
                     victory_num += 1
                 else:
                     break
-
-
 
         print('平均回合数', turn / N)
         print('平均战胜队伍数', victory_num / N)
@@ -343,138 +343,128 @@ def PVP_NvM():
 
 def PVE_1v1():
     # Define the characters and their skills
-    super_r_orange_hero_info = {'hero': '', 'level': 40, 'star': 5, 'quality': 'orange', 'item_qlt': 'orange',
-                                'item_tier': 't2_power', 'item_num': 5,
-                                'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
-    super_r_purple_hero_info = {'hero': '', 'level': 40, 'star': 5, 'quality': 'purple', 'item_qlt': 'orange',
-                                'item_tier': 't2_power', 'item_num': 5,
-                                'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
-    active_orange_hero_info = {'hero': '', 'level': 35, 'star': 1, 'quality': 'orange', 'item_qlt': 'blue',
-                               'item_tier': 't2_power', 'item_num': 5,
-                               'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8}
+    # super_r_orange_hero_info = {'hero': '', 'level': 40, 'star': 5, 'quality': 'orange', 'item_qlt': 'orange',
+    #                             'item_tier': 't2_power', 'item_num': 5,
+    #                             'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
+    # super_r_purple_hero_info = {'hero': '', 'level': 40, 'star': 5, 'quality': 'purple', 'item_qlt': 'orange',
+    #                             'item_tier': 't2_power', 'item_num': 5,
+    #                             'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
+    # active_orange_hero_info = {'hero': '', 'level': 35, 'star': 1, 'quality': 'orange', 'item_qlt': 'blue',
+    #                            'item_tier': 't2_power', 'item_num': 5,
+    #                            'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8}
+    # # active_purple_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'purple', 'item_qlt': 'blue',
+    # #                            'item_tier': 't2_power', 'item_num': 5,
+    # #                            'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8}
+    # # active_blue_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'blue', 'item_qlt': 'blue',
+    # #                          'item_tier': 't2_power', 'item_num': 5,
+    # #                          'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 4}
     # active_purple_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'purple', 'item_qlt': 'blue',
     #                            'item_tier': 't2_power', 'item_num': 5,
     #                            'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8}
     # active_blue_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'blue', 'item_qlt': 'blue',
     #                          'item_tier': 't2_power', 'item_num': 5,
     #                          'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 4}
-    active_purple_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'purple', 'item_qlt': 'blue',
-                               'item_tier': 't2_power', 'item_num': 5,
-                               'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8}
-    active_blue_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'blue', 'item_qlt': 'blue',
-                             'item_tier': 't2_power', 'item_num': 5,
-                             'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 4}
+
     hero_builder = Numerical()
     monster_builder = Mon_Numerical()
 
-    heros = ['奈乔', '东', '杰玛', '按摩师', '金鼻子', '苏茜', '女医生']
+    heroes = ['奈乔', '东', '杰玛', '按摩师', '金鼻子', '苏茜', '女医生']
 
     N = 1000
     turn = 0
     a, b = 0, 0
     battle_loss = 0
-    rows = ['SLG怪物等级', '剩余血量']
-    for k in range(20):
-        level = int((k + 1) * (k + 1) * 0.05 + 0.2 * (k + 1) + 5)
-        print('level:', k + 1)
-        for i in range(N):
-            active_blue_hero_info1 = {'hero': '', 'level': level, 'star': 1, 'quality': 'blue', 'item_qlt': 'blue',
-                                      'item_tier': 't1_power', 'item_num': 0,
-                                      'item_boost': 1, 'pet_qlt': 'blue', 'pet_lvl': 1, 'pet_star': 1}
-            active_blue_hero_info2 = {'hero': '', 'level': level, 'star': 1, 'quality': 'blue', 'item_qlt': 'blue',
-                                      'item_tier': 't1_power', 'item_num': 0,
-                                      'item_boost': 1, 'pet_qlt': 'blue', 'pet_lvl': 1, 'pet_star': 1}
-            active_blue_hero_info3 = {'hero': '', 'level': level, 'star': 1, 'quality': 'blue', 'item_qlt': 'blue',
-                                      'item_tier': 't1_power', 'item_num': 0,
-                                      'item_boost': 1, 'pet_qlt': 'blue', 'pet_lvl': 1, 'pet_star': 1}
-            active_purple_hero_info = {'hero': '', 'level': level, 'star': 1, 'quality': 'purple', 'item_qlt': 'blue',
-                                       'item_tier': 't1_power', 'item_num': 0,
-                                       'item_boost': 1, 'pet_qlt': 'blue', 'pet_lvl': 1, 'pet_star': 1}
-            squad = ['奈乔', '东', '杰玛']
-            squad1_list, squad2_list = [], []
-            # for member in squad:
-            #     if Heros[member] == 'blue':
-            #         active_blue_hero_info['hero'] = member
-            #         hero_info = active_blue_hero_info
-            #     elif Heros[member] == 'purple':
-            #         active_purple_hero_info['hero'] = member
-            #         hero_info = active_purple_hero_info
-            #     else:
-            #         active_orange_hero_info['hero'] = member
-            #         hero_info = active_orange_hero_info
-            #     squad1_list.append(Character(**hero_builder.pack(hero_info), skills=Hero_Skills[member]))
+    rows = ['验证点', '剩余血量']
 
-            hero_info1, hero_info2, hero_info3 = active_blue_hero_info1, active_blue_hero_info2, active_purple_hero_info
-            hero_info1['hero'], hero_info2['hero'], hero_info3['hero'] = '杰玛', '东', '奈乔'
-            hero_info1['level'], hero_info2['level'], hero_info3['level'] = Hero_level[k][0], Hero_level[k][1], \
-                Hero_level[k][2]
-            squad1_list = [Character(**hero_builder.pack(hero_info1), skills=Hero_Skills['杰玛']),
-                           Character(**hero_builder.pack(hero_info2), skills=Hero_Skills['东']),
-                           Character(**hero_builder.pack(hero_info3), skills=Hero_Skills['奈乔'])]
-            # for member in squad1_list:
-            #     print(member.name, member.level, member.max_hp, member.attack, member.defense)
+    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值7day_new.xlsx')
 
-            hero_info = active_blue_hero_info3
-            hero_info['hero'] = '白板'
-            hero_info['level'] = level
-            for i in range(3):
-                squad2_list.append(Character(**hero_builder.pack(hero_info), skills=Hero_Skills['白板']))
+    factors = [1.0, 1.0, 25.0 / 3]
 
-            # for member in squad2_list:
-            #     print(member.name, member.level, member.max_hp, member.attack, member.defense)
+    attr_base = 20
+    for k, cfg in enumerate(cfgs):
+        for base in range(attr_base, 1000):
+            for i in range(N):
 
-            # Create the squads
-            squad1 = Squad('A', characters=squad1_list, alliance='Justice')
-            squad2 = Squad('B', characters=squad2_list, alliance='Evil')
+                squad1_list, squad2_list = [], []
 
-            # Create the battle
-            battle = Battle(squad1=squad1, squad2=squad2)
+                for hero in cfg:
+                    squad1_list.append(Character(**hero_builder.pack(hero), skills=Hero_Skills[hero['hero']]))
 
-            battle.fight()
-            for squad in battle.squads:
-                for character in squad.characters:
-                    if character is not None:
-                        total_dmg = character.skill_dmg_dealt + character.atk_dmg_dealt
-                        # print(f"部队{squad.name}-{character.name} 造成的总伤害是 {total_dmg}。")
-                        # print(
-                        #     f'部队{squad.name}-{character.name} 造成的技能伤害是 {character.skill_dmg_dealt}，占比为 {character.skill_dmg_dealt / total_dmg}。')
-                        # print(
-                        #     f'部队{squad.name}-{character.name} 造成的普攻伤害是 {character.atk_dmg_dealt}，占比为 {character.atk_dmg_dealt / total_dmg}。')
+                monster_attrs = [base * f for f in factors]
+                for j in range(3):
+                    squad2_list.append(Character(**hero_builder.pack_monster(monster_attrs), skills=Hero_Skills['白板']))
 
-                        character.skill_dmg_dealt = 0
-                        character.atk_dmg_dealt = 0
 
-            hp_remain = 0
-            hp_max = 0
-            for hero in squad1.characters:
-                hp_remain += hero.curr_hp
-                hp_max += hero.max_hp
+                # Create the squads
+                squad1 = Squad('A', characters=squad1_list, alliance='Justice')
+                squad2 = Squad('B', characters=squad2_list, alliance='Evil')
 
-            if battle.squads[0].is_alive():
-                a += 1
-                # print('Justice win!')
-            else:
-                b += 1
-                # print('Evil win!')
+                # Create the battle
+                battle = Battle(squad1=squad1, squad2=squad2)
 
-            turn += battle.turn
-            battle_loss += hp_remain / hp_max
+                battle.fight()
+                # for squad in battle.squads:
+                #     for character in squad.characters:
+                #         if character is not None:
+                #             total_dmg = character.skill_dmg_dealt + character.atk_dmg_dealt
+                #             # print(f"部队{squad.name}-{character.name} 造成的总伤害是 {total_dmg}。")
+                #             # print(
+                #             #     f'部队{squad.name}-{character.name} 造成的技能伤害是 {character.skill_dmg_dealt}，占比为 {character.skill_dmg_dealt / total_dmg}。')
+                #             # print(
+                #             #     f'部队{squad.name}-{character.name} 造成的普攻伤害是 {character.atk_dmg_dealt}，占比为 {character.atk_dmg_dealt / total_dmg}。')
+                #
+                #             character.skill_dmg_dealt = 0
+                #             character.atk_dmg_dealt = 0
 
-        power = 0
-        for character in squad1.characters:
-            power += calc_hero_power(character)
-        print("队伍战力：", power)
-        print('平均回合数：', turn / N)
-        print('平均剩余血量：', battle_loss / N)
-        print('Justice win rate:', a / N)
-        print('Evil win rate:', b / N)
+                hp_remain = 0
+                hp_max = 0
+                for hero in squad1.characters:
+                    hp_remain += hero.curr_hp
+                    hp_max += hero.max_hp
 
-        rows.append([k + 1, battle_loss / N])
+                if battle.squads[0].is_alive():
+                    a += 1
+                    # print('Justice win!')
+                else:
+                    b += 1
+                    # print('Evil win!')
 
-        turn = 0
-        battle_loss = 0
-        a = 0
-        b = 0
+                turn += battle.turn
+                battle_loss += hp_remain / hp_max
+
+            if abs(battle_loss / N - 0.5) < 0.03:
+                attr_base = base
+                power = 0
+                for character in squad1.characters:
+                    # print(character.name, character.level, character.max_hp, character.attack, character.defense)
+                    power += calc_hero_power(character)
+                    # print('战力：', calc_hero_power(character))
+                print('验证点：', k + 1)
+
+                for member in squad1_list:
+                    print(member.name, member.level, member.max_hp, member.attack, member.defense)
+                for member in squad2_list:
+                    print(member.name, member.level, member.max_hp, member.attack, member.defense)
+
+                print('基数:', base)
+                print("队伍战力：", power)
+                print('平均回合数：', turn / N)
+                print('平均剩余血量：', battle_loss / N)
+                # print('Justice win rate:', a / N)
+                # print('Evil win rate:', b / N)
+                rows.append([k + 1, battle_loss / N])
+
+                turn = 0
+                battle_loss = 0
+                a = 0
+                b = 0
+                break
+
+            turn = 0
+            battle_loss = 0
+            a = 0
+            b = 0
+
     with open('C:\\Users\Administrator\Desktop\BattleLoss.csv', 'w', newline='',
               encoding='utf-8') as loss:
         writer = csv.writer(loss)
@@ -622,4 +612,4 @@ def PVE_Nv1():
 
 
 if __name__ == '__main__':
-    PVP_1vN()
+    PVE_1v1()

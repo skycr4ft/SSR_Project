@@ -6,7 +6,7 @@ Uni_attack = Skill(name='普通攻击', definition='normal', type='instant',
                    effects_param=[{'effect_type': 'atk_dmg', 'dmg_coef': 1.0, 'target_area': 'single'}])
 
 Monster1_skills = [Skill(name='怪物技能', definition='active', type='instant',
-                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.6, 'max_targets': 1,
+                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 2.0, 'max_targets': 1,
                                     'target_area': 'single'}]),
                 Uni_attack]
 

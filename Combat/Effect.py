@@ -311,7 +311,7 @@ class DOTEffect(Effect):
             # 造成增益
             target.effect_tracker.add_dot(self.clone())
             # 打印日志
-            self.log(caster, target)
+            # self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
