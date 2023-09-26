@@ -17,20 +17,20 @@ Monster2_skills = [Skill(name='怪物技能', definition='active', type='instant
 
 ### 技能数值配置
 Gem_skills = [Skill(name='杰玛技能', definition='active', type='instant',
-                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.6, 'max_targets': 3,
+                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1, 'max_targets': 3,
                                     'target_area': 'single'}]),
               Uni_attack]
 
 # version: 1
 Nitro_skills = [Skill(name='奈乔技能', definition='active', type='instant',
-                      effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 3.2, 'target_area': 'single'},
-                                     {'effect_type': 'skill_dmg', 'dmg_coef': 3.2, 'cast_prob_lower_bound': 0.5,
+                      effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 2, 'target_area': 'single'},
+                                     {'effect_type': 'skill_dmg', 'dmg_coef': 2, 'cast_prob_lower_bound': 0.5,
                                       'cast_prob_upper_bound': 0.5, 'target_area': 'single'}]),
                 Uni_attack]
 
 # version: 1
 Don_skills = [Skill(name='东技能', definition='active', type='instant',
-                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 2.4, 'max_targets': 1,
+                    effects_param=[{'effect_type': 'skill_dmg', 'dmg_coef': 1.5, 'max_targets': 1,
                                     'target_area': 'single'},
                                    {'effect_type': 'buff', 'buffs': {'skill_dmg_rcv_inc': -0.15}, 'max_targets': 2,
                                     'cast_prob_lower_bound': 0.3, 'cast_prob_upper_bound': 0.6, 'duration': 3,
