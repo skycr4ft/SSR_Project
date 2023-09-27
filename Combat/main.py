@@ -190,7 +190,6 @@ def PVP():
     battle = Battle(squad1=squad1, squad2=squad2)
 
     battle.fight()
-    battle.print_log()
 
 def PVP_1vN():
     # Define the characters and their skills
