@@ -1,5 +1,4 @@
 import csv
-import os.path
 
 
 ## 配置宠物模型

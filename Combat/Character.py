@@ -8,7 +8,7 @@ class Character:
     def __init__(self, name, level, atk_base, def_base, max_hp_base, crit_base,
                  crit_res_base,
                  eff_hit_base, eff_res_base, skills,
-                 rage_increase_base=15, crit_damage_base=0.5, crit_reduction_base=0):
+                 rage_increase_base=18, crit_damage_base=0.5, crit_reduction_base=0):
 
         self.name = name
         self.level = level

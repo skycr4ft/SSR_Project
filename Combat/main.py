@@ -171,7 +171,26 @@ def PVP_1v1():
         print('队伍平均技能伤害占比', sum1 / N, sum2 / N)
 
 
+def PVP():
+    hero_builder = Numerical()
+    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值7day_new.xlsx')
+    squad1_list, squad2_list = [], []
 
+    for hero in cfgs[2]:
+        squad1_list.append(Character(**hero_builder.pack(hero), skills=Hero_Skills[hero['hero']]))
+
+    for hero in cfgs[2]:
+        squad2_list.append(Character(**hero_builder.pack(hero), skills=Hero_Skills[hero['hero']]))
+
+    # Create the squads
+    squad2 = Squad('A', characters=squad1_list, alliance='玩家A')
+    squad1 = Squad('B', characters=squad2_list, alliance='玩家B')
+
+    # Create the battle
+    battle = Battle(squad1=squad1, squad2=squad2)
+
+    battle.fight()
+    battle.print_log()
 
 def PVP_1vN():
     # Define the characters and their skills
@@ -595,4 +614,4 @@ def PVE_Nv1():
 
 if __name__ == '__main__':
     # PVE_1v1()
-    PVP_1v1()
+    PVP()

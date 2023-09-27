@@ -60,7 +60,6 @@ Heroes_qlt = {
     '苏茜': 'purple',
     '女医生': 'purple',
     '街头艺术家': 'purple',
-    '审判长': 'purple',
     # 橙色
     '南希': 'orange',
     '华特': 'orange',
@@ -69,12 +68,13 @@ Heroes_qlt = {
     '吉尔伯特': 'orange',
     'E-girl': 'orange',
     '硬汉': 'orange',
+    '审判长': 'orange',
 }
 
 Heroes = {
     'blue': ['杰玛', '东', '按摩师'],
-    'purple': ['奈乔', '金鼻子', '苏茜', '女医生', '街头艺术家', '审判长'],
-    'orange': []
+    'purple': ['奈乔', '金鼻子', '苏茜', '女医生', '街头艺术家', ],
+    'orange': ['审判长', ]
 }
 
 active_hero_progress = [
@@ -279,7 +279,7 @@ def fetch_item_boost_attr(filepath):
     wb = app.books.open(filepath)
 
     # print(wb.sheets['装备强化数值'].range('B3:B22').value)
-    return wb.sheets['装备强化数值'].range('B3:B22').value
+    return wb.sheets['装备强化数值'].range('C3:C22').value
 
 
 ## 获取所有英雄的宠物升级数值
@@ -523,8 +523,8 @@ class Numerical:
                                'crit_res_prop': 0.08888888888888889, 'eff_hit_prop': 0.1111111111111111,
                                'eff_res_prop': 0.08888888888888889}
 
-        self.item_boost_attr = [30.0, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0, 300.0, 330.0, 360.0, 390.0,
-                                420.0, 450.0, 480.0, 510.0, 540.0, 570.0, 600.0]
+        self.item_boost_attr = [10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0, 140.0,
+                                150.0, 160.0, 170.0, 180.0, 190.0, 200.0]
 
         self.pet_level_attr = {
             'blue': {

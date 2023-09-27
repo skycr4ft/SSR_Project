@@ -133,6 +133,10 @@ class DamageEffect(Effect):
                     chain.used = True
                     total_damage += self.apply_one(caster, target)
 
+            self.log(caster, target, total_damage)
+
+
+
         return True, total_damage
 
     def apply_one(self, caster, target):
@@ -190,9 +194,9 @@ class DamageEffect(Effect):
     def calc_crit_rate(self, caster_crit, defender_crit_res):
         return (caster_crit - defender_crit_res) / self.crit_coef
 
-    # def log(self, caster, target, damage, effect_type):
-    # print(
-    #     f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {effect_type}.')
+    def log(self, caster, target, damage):
+        print(
+        f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {self.effect_type}.')
 
 
 class HealEffect(Effect):
@@ -224,7 +228,7 @@ class HealEffect(Effect):
             # 造成治疗
             target.take_heal(heal)
             # 打印日志
-            # self.log(character, target, heal)
+            self.log(character, target, heal)
         return total_heal
 
     def calc_heal(self, caster, target, effect_coef, effect_base_heal):
@@ -267,7 +271,7 @@ class BuffEffect(Effect):
             # 造成增益
             target.effect_tracker.add_buff_effect(self.clone())
             # 打印日志
-            # self.log(caster, target)
+            self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
@@ -311,7 +315,7 @@ class DOTEffect(Effect):
             # 造成增益
             target.effect_tracker.add_dot(self.clone())
             # 打印日志
-            # self.log(caster, target)
+            self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
