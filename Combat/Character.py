@@ -51,14 +51,23 @@ class Character:
         self.rage_increase = self.rage_increase_base
 
         # 初始化进阶属性
-        self.atk_dmg_rcv_inc = 0.0
-        self.skill_dmg_rcv_inc = 0.0
-        self.atk_dmg_deal_inc = 0.0
-        self.skill_dmg_deal_inc = 0.0
-        self.dmg_rcv_inc = 0.0
-        self.dmg_deal_inc = 0.0
-        self.heal_rcv_inc = 0.0
-        self.heal_deal_inc = 0.0
+        self.atk_dmg_rcv_inc_base = 0.0
+        self.skill_dmg_rcv_inc_base = 0.0
+        self.atk_dmg_deal_inc_base = 0.0
+        self.skill_dmg_deal_inc_base = 0.0
+        self.dmg_rcv_inc_base = 0.0
+        self.dmg_deal_inc_base = 0.0
+        self.heal_rcv_inc_base = 0.0
+        self.heal_deal_inc_base = 0.0
+
+        self.atk_dmg_rcv_inc = self.atk_dmg_rcv_inc_base
+        self.skill_dmg_rcv_inc = self.skill_dmg_rcv_inc_base
+        self.atk_dmg_deal_inc = self.atk_dmg_deal_inc_base
+        self.skill_dmg_deal_inc = self.skill_dmg_deal_inc_base
+        self.dmg_rcv_inc = self.dmg_rcv_inc_base
+        self.dmg_deal_inc = self.dmg_deal_inc_base
+        self.heal_rcv_inc = self.heal_rcv_inc_base
+        self.heal_deal_inc = self.heal_deal_inc_base
 
         # 记录造成的伤害
         self.skill_dmg_dealt = 0.0
@@ -175,4 +184,5 @@ class Character:
                     (bonus[attr + '_add'] if attr + '_add' in bonus else 0))
 
         for attr in self.promoted_attrs:
-            setattr(self, attr, getattr(self, attr) + bonus[attr] if attr in bonus else getattr(self, attr))
+            setattr(self, attr,
+                    getattr(self, attr + '_base') + bonus[attr] if attr in bonus else getattr(self, attr + '_base'))

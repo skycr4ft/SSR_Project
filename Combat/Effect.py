@@ -400,6 +400,12 @@ class EffectTracker:
             #     self.effects.remove(effect)
         self.spcl_effs = [effect for effect in self.spcl_effs if effect.duration >= 0]
 
+        for effect in self.dots:
+            effect.tick(character)
+            # if effect.duration < 0:
+            #     self.effects.remove(effect)
+        self.dots = [effect for effect in self.dots if effect.duration >= 0]
+
     def is_exist(self, effect_type):
         for effect in self.spcl_effs:
             if effect.effect_type == effect_type:
