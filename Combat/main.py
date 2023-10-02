@@ -173,7 +173,7 @@ def PVP_1v1():
 
 def PVP():
     hero_builder = Numerical()
-    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值7day_new.xlsx')
+    cfgs = get_hero_progression('C:\\Users\lxl51\Desktop\SSR战斗养成数值（7day）.xlsx')
     squad1_list, squad2_list = [], []
 
     for hero in cfgs[2]:
