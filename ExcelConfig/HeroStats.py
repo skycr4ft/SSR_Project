@@ -1,5 +1,6 @@
 import xlwings as xw
 import ExcelConfig.HeroSkillConfig as HeroSkillConfig
+from Combat.Character import Character
 
 Hero_level = [[8, 4, 1, 0, 0, 0],
               [9, 3, 1, 0, 0, 0],
@@ -354,7 +355,7 @@ def get_hero_progression(filepath):
     wb = app.books.open(filepath)
 
     active_hero_prog = []
-    for row in wb.sheets['Sheet18'].range('B3:AH12').value:
+    for row in wb.sheets['部队养成进度'].range('B3:AH12').value:
         heroes = []
         for i in range(3):
             heroes.append({'hero': row[i * 11 + 0], 'quality': int(row[i * 11 + 1]), 'level': int(row[i * 11 + 2]),
@@ -390,6 +391,60 @@ def get_hero_progression(filepath):
         active_hero_prog.append(heroes)
 
     return active_hero_prog
+
+
+def get_se_hero_progression(filepath):
+    app = xw.App(visible=False, add_book=False)
+    app.display_alerts = False
+    app.screen_updating = False
+    wb = app.books.open(filepath)
+
+    power_list = []
+    for row in wb.sheets['SE'].range('Z120:BF144').value:
+        heroes = []
+        for i in range(3):
+            heroes.append({'hero': '白板' + str(int(row[i * 11 + 1])), 'quality': int(row[i * 11 + 1]),
+                           'level': int(row[i * 11 + 2]),
+                           'star': int(row[i * 11 + 3]), 'item_tier': int(row[i * 11 + 4]),
+                           'item_qlt': int(row[i * 11 + 5]), 'item_num': int(row[i * 11 + 6]),
+                           'item_boost': int(row[i * 11 + 7]), 'pet_qlt': int(row[i * 11 + 8]),
+                           'pet_lvl': int(row[i * 11 + 9]), 'pet_star': int(row[i * 11 + 10])})
+
+        for hero in heroes:
+            if hero['quality'] == 1:
+                hero['quality'] = 'blue'
+            elif hero['quality'] == 2:
+                hero['quality'] = 'purple'
+            else:
+                hero['quality'] = 'orange'
+
+            hero['item_tier'] = 't' + str(max(min(hero['item_tier'], 2), 1)) + '_power'
+
+            if hero['item_qlt'] == 1:
+                hero['item_qlt'] = 'blue'
+            elif hero['item_qlt'] == 2:
+                hero['item_qlt'] = 'purple'
+            else:
+                hero['item_qlt'] = 'orange'
+
+            if hero['pet_qlt'] == 1:
+                hero['pet_qlt'] = 'blue'
+            elif hero['pet_qlt'] == 2:
+                hero['pet_qlt'] = 'purple'
+            else:
+                hero['pet_qlt'] = 'orange'
+
+        power = 0
+        hero_builder = Numerical()
+        for hero in heroes:
+            c = Character(**hero_builder.pack(hero), skills=Hero_Skills['白板'])
+            p = calc_hero_power(c)
+            # print(p)
+            power += p
+
+        power_list.append(power)
+
+    return power_list
 
 
 class Numerical:
@@ -477,7 +532,9 @@ class Numerical:
                        2106,
                        2146, 2186, 2226, 2266, 2306]}}
 
-        self.hero_offset = {'白板': {'name': '白板', 'quality': 1.0, 'atk': 0.4, 'def': 0.5, 'hp': 1.2},
+        self.hero_offset = {'白板1': {'name': '白板1', 'quality': 1.0, 'atk': 1.0, 'def': 1.0, 'hp': 1.0},
+                            '白板2': {'name': '白板2', 'quality': 2.0, 'atk': 1.0, 'def': 1.0, 'hp': 1.0},
+                            '白板3': {'name': '白板3', 'quality': 3.0, 'atk': 1.0, 'def': 1.0, 'hp': 1.0},
                             '杰玛': {'name': '杰玛', 'quality': 1.0, 'atk': 1.1, 'def': 1.0, 'hp': 0.9},
                             '按摩师': {'name': '按摩师', 'quality': 1.0, 'atk': 1.0, 'def': 1.0, 'hp': 1.0},
                             '东': {'name': '东', 'quality': 1.0, 'atk': 0.75, 'def': 1.1, 'hp': 1.15},
@@ -678,17 +735,24 @@ class Numerical:
 
         # print(self.pet_level_attr[pet_qlt]['slg_atk'][pet_lvl - 1], self.pet_rank_attr[max(pet_star - 1, 0)])
 
+        if level == 0:
+            return [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
         atk = self.hero_offset[hero]['atk'] * self.hero_level_attr[quality]['atk'][level - 1] * \
               (1 + self.hero_star[quality]['base_attr'][star]) + self.item_qlt_power[item_qlt][item_tier] * \
               item_num * self.item_attr_prop['atk_prop'] / self.attr_weight['atk'] + \
-              self.item_boost_attr[item_boost - 1] * item_num / 3 / self.attr_weight['atk'] + \
-              self.pet_level_attr[pet_qlt]['slg_atk'][pet_lvl - 1] * (1 + self.pet_rank_attr[max(pet_star - 1, 0)])
+              self.item_boost_attr[item_boost - 1] * item_num / 3 / self.attr_weight['atk']
+
+        if pet_lvl != 0:
+            atk += self.pet_level_attr[pet_qlt]['slg_atk'][pet_lvl - 1] * (1 + self.pet_rank_attr[max(pet_star - 1, 0)])
 
         _def = self.hero_offset[hero]['def'] * self.hero_level_attr[quality]['def'][level - 1] * \
                (1 + self.hero_star[quality]['base_attr'][star]) + self.item_qlt_power[item_qlt][item_tier] * \
                item_num * self.item_attr_prop['def_prop'] / self.attr_weight['def'] + \
-               self.item_boost_attr[item_boost - 1] * item_num / 3 / self.attr_weight['def'] + \
-               self.pet_level_attr[pet_qlt]['slg_def'][pet_lvl - 1] * (1 + self.pet_rank_attr[max(pet_star - 1, 0)])
+               self.item_boost_attr[item_boost - 1] * item_num / 3 / self.attr_weight['def']
+
+        if pet_lvl != 0:
+            _def += self.pet_level_attr[pet_qlt]['slg_def'][pet_lvl - 1] * (1 + self.pet_rank_attr[max(pet_star - 1, 0)])
 
         # print(self.hero_offset[hero]['hp'], self.hero_level_attr[quality]['hp'][level - 1],
         #       self.hero_star[quality]['base_attr'][star - 1], self.item_qlt_power[item_qlt][item_tier],
@@ -698,8 +762,10 @@ class Numerical:
         hp = self.hero_offset[hero]['hp'] * self.hero_level_attr[quality]['hp'][level - 1] * \
              (1 + self.hero_star[quality]['base_attr'][star]) + self.item_qlt_power[item_qlt][item_tier] * \
              item_num * self.item_attr_prop['hp_prop'] / self.attr_weight['hp'] + \
-             self.item_boost_attr[item_boost - 1] * item_num / 3 / self.attr_weight['hp'] + \
-             self.pet_level_attr[pet_qlt]['slg_hp'][pet_lvl - 1] * (1 + self.pet_rank_attr[max(pet_star - 1, 0)])
+             self.item_boost_attr[item_boost - 1] * item_num / 3 / self.attr_weight['hp']
+
+        if pet_lvl != 0:
+            hp += self.pet_level_attr[pet_qlt]['slg_hp'][pet_lvl - 1] * (1 + self.pet_rank_attr[max(pet_star - 1, 0)])
 
         crit = self.hero_star[quality]['crit'][star] + self.item_qlt_power[item_qlt][item_tier] * item_num * \
                self.item_attr_prop['crit_prop'] / self.attr_weight['crit']

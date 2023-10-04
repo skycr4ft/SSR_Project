@@ -133,11 +133,3 @@ class Battle:
             squad.increase_rage(character.rage_increase if character is not None else 0)
             if squad.rage >= 100:
                 squad.start_rage_skill_phase()
-
-    # def get_next_alive_character(self, squad):
-    #     # Find the next alive character in the squad
-    #     for i in range(len(squad.characters)):
-    #         character = squad.characters[(self.turn + i) % len(squad.characters)]
-    #         if character.is_alive():
-    #             return character
-    #     return None

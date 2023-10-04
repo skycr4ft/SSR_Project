@@ -133,9 +133,8 @@ class DamageEffect(Effect):
                     chain.used = True
                     total_damage += self.apply_one(caster, target)
 
-            self.log(caster, target, total_damage)
-
-
+            # 打印日志
+            # self.log(caster, target, total_damage)
 
         return True, total_damage
 
@@ -196,7 +195,7 @@ class DamageEffect(Effect):
 
     def log(self, caster, target, damage):
         print(
-        f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {self.effect_type}.')
+            f'{caster.squad.name}-{caster.name} to {target.squad.name}-{target.name} {damage} {self.effect_type}.')
 
 
 class HealEffect(Effect):
@@ -225,14 +224,17 @@ class HealEffect(Effect):
             # 计算治疗
             heal = self.calc_heal(character, target, effect_coef=self.heal_coef, effect_base_heal=self.heal_base)
             total_heal += heal
+
             # 造成治疗
             target.take_heal(heal)
+
             # 打印日志
-            self.log(character, target, heal)
+            # self.log(character, target, heal)
+
         return total_heal
 
     def calc_heal(self, caster, target, effect_coef, effect_base_heal):
-        heal = (effect_coef * caster.attack + effect_base_heal) * (1 + target.heal_rcv_inc) * (1 + caster.heal_deal_inc)
+        heal = (effect_coef * caster.max_hp + effect_base_heal) * (1 + target.heal_rcv_inc) * (1 + caster.heal_deal_inc)
         return heal
 
     def log(self, caster, target, heal):
@@ -270,8 +272,9 @@ class BuffEffect(Effect):
                 return
             # 造成增益
             target.effect_tracker.add_buff_effect(self.clone())
+
             # 打印日志
-            self.log(caster, target)
+            # self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
@@ -314,8 +317,9 @@ class DOTEffect(Effect):
 
             # 造成增益
             target.effect_tracker.add_dot(self.clone())
+
             # 打印日志
-            self.log(caster, target)
+            # self.log(caster, target)
 
     def tick(self, character):
         self.duration -= 1
@@ -332,6 +336,7 @@ class SpecialEffect(Effect):
         super().__init__(*args, **kwargs)
         self.dmg_coef = dmg_coef
         self.base_dmg = base_dmg
+        self.used = False
 
     def clone(self):
         return SpecialEffect(base_dmg=self.base_dmg, dmg_coef=self.dmg_coef, effect_type=self.effect_type,

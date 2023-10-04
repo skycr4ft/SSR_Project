@@ -112,7 +112,7 @@ def PVP_1v1():
     ## PVP
     N = 1000
     turn = 0
-    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值7day_new.xlsx')
+    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值_7day.xlsx')
 
     print(len(cfgs))
 
@@ -368,19 +368,14 @@ def PVE_1v1():
     hero_builder = Numerical()
     monster_builder = Mon_Numerical()
 
-    heroes = ['奈乔', '东', '杰玛', '按摩师', '金鼻子', '苏茜', '女医生']
-
     N = 1000
     turn = 0
-    a, b = 0, 0
     battle_loss = 0
     rows = ['验证点', '剩余血量']
 
-    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值7day_new.xlsx')
+    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值.xlsx')
 
-    factors = [1.0, 1.0, 25.0 / 3]
-
-    attr_base = 20
+    attr_base = 10
     for k, cfg in enumerate(cfgs):
         for base in range(attr_base, 1000):
             for i in range(N):
@@ -390,7 +385,12 @@ def PVE_1v1():
                 for hero in cfg:
                     squad1_list.append(Character(**hero_builder.pack(hero), skills=Hero_Skills[hero['hero']]))
 
-                monster_attrs = [base * f for f in factors]
+                # Create the squads
+                level = cfg[0]['level']
+                _def = hero_builder.hero_level_attr['purple']['def'][level - 1]
+                _hp = hero_builder.hero_level_attr['purple']['hp'][level - 1]
+                monster_attrs = [base, _def, _hp]
+                # print(monster_attrs)
                 for j in range(3):
                     squad2_list.append(Character(**hero_builder.pack_monster(monster_attrs), skills=Hero_Skills['白板']))
 
@@ -422,13 +422,6 @@ def PVE_1v1():
                     hp_remain += hero.curr_hp
                     hp_max += hero.max_hp
 
-                if battle.squads[0].is_alive():
-                    a += 1
-                    # print('Justice win!')
-                else:
-                    b += 1
-                    # print('Evil win!')
-
                 turn += battle.turn
                 battle_loss += hp_remain / hp_max
 
@@ -442,28 +435,22 @@ def PVE_1v1():
                 print('验证点：', k + 1)
 
                 for member in squad1_list:
-                    print(member.name, member.level, member.max_hp, member.attack, member.defense)
+                    print(member.name, member.level, member.attack, member.defense, member.max_hp)
                 for member in squad2_list:
-                    print(member.name, member.level, member.max_hp, member.attack, member.defense)
+                    print(member.name, member.level, member.attack, member.defense, member.max_hp)
 
                 print('基数:', base)
                 print("队伍战力：", power)
                 print('平均回合数：', turn / N)
                 print('平均剩余血量：', battle_loss / N)
-                # print('Justice win rate:', a / N)
-                # print('Evil win rate:', b / N)
                 rows.append([k + 1, battle_loss / N])
 
                 turn = 0
                 battle_loss = 0
-                a = 0
-                b = 0
                 break
 
             turn = 0
             battle_loss = 0
-            a = 0
-            b = 0
 
     with open('C:\\Users\Administrator\Desktop\BattleLoss.csv', 'w', newline='',
               encoding='utf-8') as loss:
@@ -612,5 +599,5 @@ def PVE_Nv1():
 
 
 if __name__ == '__main__':
-    # PVE_1v1()
-    PVP()
+    PVE_1v1()
+    # PVP()
