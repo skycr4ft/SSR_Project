@@ -348,6 +348,10 @@ def calc_hero_power(hero):
                hero.eff_hit * 0 + hero.eff_res * 0 + hero.crit_damage * 0 * hero.crit + hero.crit_reduction * 0)
 
 
+def calc_hero_dps_se(hero):
+    return int(hero.attack * (1 + hero.crit_damage * hero.crit / 100) * 0.8)
+
+
 def get_hero_progression(filepath):
     app = xw.App(visible=False, add_book=False)
     app.display_alerts = False
@@ -399,8 +403,9 @@ def get_se_hero_progression(filepath):
     app.screen_updating = False
     wb = app.books.open(filepath)
 
-    power_list = []
-    for row in wb.sheets['SE'].range('Z120:BF144').value:
+    dps_list = []
+    hp_list = []
+    for row in wb.sheets['SE'].range('Z20:BF144').value:
         heroes = []
         for i in range(3):
             heroes.append({'hero': '白板' + str(int(row[i * 11 + 1])), 'quality': int(row[i * 11 + 1]),
@@ -434,17 +439,27 @@ def get_se_hero_progression(filepath):
             else:
                 hero['pet_qlt'] = 'orange'
 
-        power = 0
+        dps = 0
+        hp = 0
         hero_builder = Numerical()
         for hero in heroes:
             c = Character(**hero_builder.pack(hero), skills=Hero_Skills['白板'])
-            p = calc_hero_power(c)
+            dps_c = calc_hero_dps_se(c)
+            hp_c = c.max_hp
+            if hero['quality'] == 'blue':
+                f = 2
+            elif hero['quality'] == 'purple':
+                f = 2.1
+            else:
+                f = 2.2
             # print(p)
-            power += p
+            dps += dps_c * f
+            hp += hp_c * 1.14
 
-        power_list.append(power)
+        dps_list.append(dps)
+        hp_list.append(hp)
 
-    return power_list
+    return dps_list, hp_list
 
 
 class Numerical:
@@ -752,7 +767,8 @@ class Numerical:
                self.item_boost_attr[item_boost - 1] * item_num / 3 / self.attr_weight['def']
 
         if pet_lvl != 0:
-            _def += self.pet_level_attr[pet_qlt]['slg_def'][pet_lvl - 1] * (1 + self.pet_rank_attr[max(pet_star - 1, 0)])
+            _def += self.pet_level_attr[pet_qlt]['slg_def'][pet_lvl - 1] * (
+                        1 + self.pet_rank_attr[max(pet_star - 1, 0)])
 
         # print(self.hero_offset[hero]['hp'], self.hero_level_attr[quality]['hp'][level - 1],
         #       self.hero_star[quality]['base_attr'][star - 1], self.item_qlt_power[item_qlt][item_tier],
