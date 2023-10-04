@@ -435,7 +435,7 @@ def PVE_1v1():
                 print('验证点：', k + 1)
 
                 for member in squad1_list:
-                    print(member.name, member.level, member.attack, member.defense, member.max_hp)
+                    print(member.name, member.level, member.attack, member.defense, member.max_hp, member.crit)
                 for member in squad2_list:
                     print(member.name, member.level, member.attack, member.defense, member.max_hp)
 
