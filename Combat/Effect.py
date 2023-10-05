@@ -102,7 +102,6 @@ class DamageEffect(Effect):
         super().__init__(*args, **kwargs)
         self.dmg_coef = dmg_coef
         self.dmg_base = dmg_base
-        self.crit_coef = 100
 
     def run(self, caster, squads):
         # 选择目标
@@ -191,7 +190,8 @@ class DamageEffect(Effect):
         return damage
 
     def calc_crit_rate(self, caster_crit, defender_crit_res):
-        return (caster_crit - defender_crit_res) / self.crit_coef
+        from Combat.Consts import CRIT_COEF
+        return (caster_crit - defender_crit_res) / CRIT_COEF
 
     def log(self, caster, target, damage):
         print(
