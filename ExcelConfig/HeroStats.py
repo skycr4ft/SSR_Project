@@ -348,8 +348,24 @@ def calc_hero_power(hero):
                hero.eff_hit * 0 + hero.eff_res * 0 + hero.crit_damage * 0 * hero.crit + hero.crit_reduction * 0)
 
 
-def calc_hero_dps_se(hero):
-    return int(hero.attack * (1 + hero.crit_damage * hero.crit / 100) * 0.8)
+def calc_hero_dps_se(character):
+    return int(character.attack * (1 + character.crit_damage * character.crit / 100) * 0.8)
+
+
+def calc_pet_dps_se(stats, hero):
+    lvl = hero['pet_lvl']
+    quality = hero['pet_qlt']
+    rank = hero['pet_star']
+    atk = stats.pet_level_attr[quality]['atk'][lvl - 1] * (1 + stats.pet_rank_attr[rank - 1])
+    return atk
+
+
+def calc_pet_hp(stats, hero):
+    lvl = hero['pet_lvl']
+    quality = hero['pet_qlt']
+    rank = hero['pet_star']
+    hp = stats.pet_level_attr[quality]['hp'][lvl - 1] * (1 + stats.pet_rank_attr[rank - 1])
+    return hp
 
 
 def get_hero_progression(filepath):
@@ -443,6 +459,8 @@ def get_se_hero_progression(filepath):
         hp = 0
         hero_builder = Numerical()
         for hero in heroes:
+            if hero['level'] == 0:
+                continue
             c = Character(**hero_builder.pack(hero), skills=Hero_Skills['白板'])
             dps_c = calc_hero_dps_se(c)
             hp_c = c.max_hp
@@ -453,8 +471,8 @@ def get_se_hero_progression(filepath):
             else:
                 f = 2.2
             # print(p)
-            dps += dps_c * f
-            hp += hp_c * 1.14
+            dps += dps_c * f + calc_pet_dps_se(hero_builder, hero) * 2.1
+            hp += hp_c * 1.14 + calc_pet_hp(hero_builder, hero)
 
         dps_list.append(dps)
         hp_list.append(hp)
@@ -768,7 +786,7 @@ class Numerical:
 
         if pet_lvl != 0:
             _def += self.pet_level_attr[pet_qlt]['slg_def'][pet_lvl - 1] * (
-                        1 + self.pet_rank_attr[max(pet_star - 1, 0)])
+                    1 + self.pet_rank_attr[max(pet_star - 1, 0)])
 
         # print(self.hero_offset[hero]['hp'], self.hero_level_attr[quality]['hp'][level - 1],
         #       self.hero_star[quality]['base_attr'][star - 1], self.item_qlt_power[item_qlt][item_tier],
