@@ -21,7 +21,8 @@ def pet_attr_cfg(filepath):
     pet_slg_atk = [int(val) for val in wb.sheets['AttrGroup-pet'].range('J1:J18').value]
     pet_slg_def = [int(val) for val in wb.sheets['AttrGroup-pet'].range('J19:J36').value]
 
-    attr_offset = {'B': 1.0, 'A': 1.1, 'S': 1.25}
+    attr_offset = {'B': 1.0, 'A': 1.15, 'S': 1.3}
+    power_offset = {'B': 0, 'A': 500, 'S': 1000}
 
     pets = ['海豹', '蜜蜂', '刺猬', '熊', '章鱼', '大嘴鸟', '水豚', '薮猫', '屎壳郎', '卷尾猴', '野猪', '熊猫', '狼',
             '海鸥', '土拨鼠', '绿绿鹳', '牦牛', '穿山甲']
@@ -51,6 +52,8 @@ def pet_attr_cfg(filepath):
                     row.append((pet_crt[i] / 100.0 * attr_offset[attr_ctgr_quality[k]] - 1) * 10000)
                     row.append('宠物提供的攻击_multi')
                     row.append((pet_slg_atk[i] / 100.0 * attr_offset[attr_ctgr_quality[k]] - 1) * 10000)
+                    row.append('战力_multi')
+                    row.append(power_offset[attr_ctgr_quality[k]])
                 elif a_c == '_Attr2_':
                     row.append('防御_multi')
                     row.append((pet_def[i] / 100.0 * attr_offset[attr_ctgr_quality[k]] - 1) * 10000)
@@ -58,6 +61,8 @@ def pet_attr_cfg(filepath):
                     row.append((pet_crt_res[i] / 100.0 * attr_offset[attr_ctgr_quality[k]] - 1) * 10000)
                     row.append('宠物提供的防御_multi')
                     row.append((pet_slg_def[i] / 100.0 * attr_offset[attr_ctgr_quality[k]] - 1) * 10000)
+                    row.append('战力_multi')
+                    row.append(power_offset[attr_ctgr_quality[k]])
                 elif a_c == '_Attr3_':
                     row.append('血量_multi')
                     row.append((pet_hp[i] / 100.0 * attr_offset[attr_ctgr_quality[k]] - 1) * 10000)
@@ -65,7 +70,8 @@ def pet_attr_cfg(filepath):
                     row.append((pet_slg_hp[i] / 100.0 * attr_offset[attr_ctgr_quality[k]] - 1) * 10000)
                     row.append('se速度_multi')
                     row.append(pets_speed[i] * 10000)
-
+                    row.append('战力_multi')
+                    row.append(power_offset[attr_ctgr_quality[k]])
 
                 for l in range(2 * (30 - len(map_attr_ctgr[a_c]))):
                     row.append('')
@@ -80,7 +86,3 @@ def pet_attr_cfg(filepath):
 
 if __name__ == '__main__':
     pet_attr_cfg('C:\\Users\Administrator\Desktop\AttrGroup-pet.xlsx')
-
-
-
-

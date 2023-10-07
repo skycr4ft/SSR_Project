@@ -1,7 +1,5 @@
-import random
-from Skill import Skill
-import Consts
-from Effect import EffectTracker
+from Combat.Effect import EffectTracker
+import Combat.Consts as Consts
 
 
 class Character:
