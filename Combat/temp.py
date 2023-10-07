@@ -83,7 +83,7 @@ from ExcelConfig.HeroStats import get_se_hero_progression
 
 
 if __name__ == '__main__':
-    dps_score, hp_score = get_se_hero_progression('E:\新建文件夹\战斗\SSR数值规划A.xlsx')
+    dps_score, hp_score = get_se_hero_progression('E:\新建文件夹\战斗\SSR数值规划B.xlsx')
 
     print('输出：')
     for a in dps_score:
