@@ -21,8 +21,8 @@ def pet_attr_cfg(filepath):
     pet_slg_atk = [int(val) for val in wb.sheets['AttrGroup-pet'].range('J1:J18').value]
     pet_slg_def = [int(val) for val in wb.sheets['AttrGroup-pet'].range('J19:J36').value]
 
-    attr_offset = {'B': 1.0, 'A': 1.15, 'S': 1.3}
-    power_offset = {'B': 0, 'A': 500, 'S': 1000}
+    attr_offset = {'B': 1.0, 'A': 1.15, 'S': 1.4}
+    power_offset = {'B': 0, 'A': 500, 'S': 1300}
 
     pets = ['海豹', '蜜蜂', '刺猬', '熊', '章鱼', '大嘴鸟', '水豚', '薮猫', '屎壳郎', '卷尾猴', '野猪', '熊猫', '狼',
             '海鸥', '土拨鼠', '绿绿鹳', '牦牛', '穿山甲']
