@@ -292,7 +292,7 @@ def fetch_pet_level_attr(filepath):
 
     blue_pet_atk = [int(val) for val in wb.sheets['宠物升级数值-标准单只'].range('C3:C62').value]
     purple_pet_atk = [int(val) for val in wb.sheets['宠物升级数值-标准单只'].range('M3:M62').value]
-    orange_pet_atk = [int(val) for val in wb.sheets['宠物升级数值-标准单只'].range('Q3:Q62').value]
+    orange_pet_atk = [int(val) for val in wb.sheets['宠物升级数值-标准单只'].range('W3:W62').value]
 
     blue_pet_crit = [int(val) for val in wb.sheets['宠物升级数值-标准单只'].range('D3:D62').value]
     purple_pet_crit = [int(val) for val in wb.sheets['宠物升级数值-标准单只'].range('N3:N62').value]
