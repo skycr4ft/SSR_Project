@@ -9,6 +9,8 @@ from ExcelConfig.HeroStats import Numerical, calc_hero_power, get_hero_progressi
 from ExcelConfig.MonsterStats import Mon_Numerical
 import csv
 from tqdm import tqdm
+from decimal import Decimal
+from Utilities.Interpolation import linear_interpolation
 
 
 # def main():
@@ -372,8 +374,13 @@ def PVE_1v1():
     turn = 0
     battle_loss = 0
     rows = ['验证点', '剩余血量']
+    mon_atk = []
+    mon_def = []
+    mon_hp = []
+    mon_crit_res = []
+    mon_rec_power = []
 
-    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值.xlsx')
+    cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值B.xlsx')
 
     attr_base = 10
     for k, cfg in enumerate(cfgs):
@@ -423,9 +430,9 @@ def PVE_1v1():
                     hp_max += hero.max_hp
 
                 turn += battle.turn
-                battle_loss += hp_remain / hp_max
+                battle_loss += (hp_max - hp_remain) / hp_max
 
-            if abs(battle_loss / N - 0.5) < 0.03:
+            if abs(battle_loss / N - 0.6) < 0.01:
                 attr_base = base
                 power = 0
                 for character in squad1.characters:
@@ -439,18 +446,22 @@ def PVE_1v1():
                 for member in squad2_list:
                     print(member.name, member.level, member.attack, member.defense, member.max_hp)
 
-                print('基数:', base)
                 print("队伍战力：", power)
                 print('平均回合数：', turn / N)
-                print('平均剩余血量：', battle_loss / N)
+                print('平均损耗血量：', battle_loss / N)
                 rows.append([k + 1, battle_loss / N])
 
                 turn = 0
                 battle_loss = 0
+                mon_atk.append(base)
+                mon_def.append(_def)
+                mon_hp.append(_hp)
                 break
 
             turn = 0
             battle_loss = 0
+
+    linear_interpolation(mon_atk, mon_def, mon_hp)
 
     with open('C:\\Users\Administrator\Desktop\BattleLoss.csv', 'w', newline='',
               encoding='utf-8') as loss:

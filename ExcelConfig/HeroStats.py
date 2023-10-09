@@ -375,7 +375,7 @@ def get_hero_progression(filepath):
     wb = app.books.open(filepath)
 
     active_hero_prog = []
-    for row in wb.sheets['部队养成进度'].range('B3:AH12').value:
+    for row in wb.sheets['部队养成进度'].range('B3:AH10').value:
         heroes = []
         for i in range(3):
             heroes.append({'hero': row[i * 11 + 0], 'quality': int(row[i * 11 + 1]), 'level': int(row[i * 11 + 2]),
