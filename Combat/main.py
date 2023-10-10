@@ -396,7 +396,7 @@ def PVE_1v1():
                 level = cfg[0]['level']
                 _def = hero_builder.hero_level_attr['purple']['def'][level - 1]
                 _hp = hero_builder.hero_level_attr['purple']['hp'][level - 1]
-                monster_attrs = [base, _def, _hp]
+                monster_attrs = [base, _def, _hp, level]
                 # print(monster_attrs)
                 for j in range(3):
                     squad2_list.append(Character(**hero_builder.pack_monster(monster_attrs), skills=Hero_Skills['白板']))

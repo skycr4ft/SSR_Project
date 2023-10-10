@@ -828,7 +828,7 @@ class Numerical:
         dict['atk_base'], dict['def_base'], dict['max_hp_base'] = attrs[0], attrs[1], attrs[2]
         dict['crit_base'], dict['crit_res_base'], dict['eff_hit_base'], dict['eff_res_base'] = \
             0, 0, 0, 0
-        dict['name'], dict['level'] = 'Monster', 0
+        dict['name'], dict['level'] = 'Monster', attrs[3]
         return dict
 
 
