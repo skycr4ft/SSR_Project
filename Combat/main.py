@@ -589,29 +589,6 @@ def PVE_Nv1():
 
 
 def get_hero_stats():
-    # Define the characters and their skills
-    # super_r_orange_hero_info = {'hero': '', 'level': 40, 'star': 5, 'quality': 'orange', 'item_qlt': 'orange',
-    #                             'item_tier': 't2_power', 'item_num': 5,
-    #                             'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
-    # super_r_purple_hero_info = {'hero': '', 'level': 40, 'star': 5, 'quality': 'purple', 'item_qlt': 'orange',
-    #                             'item_tier': 't2_power', 'item_num': 5,
-    #                             'item_boost': 10, 'pet_qlt': 'orange', 'pet_lvl': 40, 'pet_star': 11}
-    # active_orange_hero_info = {'hero': '', 'level': 35, 'star': 1, 'quality': 'orange', 'item_qlt': 'blue',
-    #                            'item_tier': 't2_power', 'item_num': 5,
-    #                            'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8}
-    # # active_purple_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'purple', 'item_qlt': 'blue',
-    # #                            'item_tier': 't2_power', 'item_num': 5,
-    # #                            'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8}
-    # # active_blue_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'blue', 'item_qlt': 'blue',
-    # #                          'item_tier': 't2_power', 'item_num': 5,
-    # #                          'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 4}
-    # active_purple_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'purple', 'item_qlt': 'blue',
-    #                            'item_tier': 't2_power', 'item_num': 5,
-    #                            'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 8}
-    # active_blue_hero_info = {'hero': '', 'level': 35, 'star': 3, 'quality': 'blue', 'item_qlt': 'blue',
-    #                          'item_tier': 't2_power', 'item_num': 5,
-    #                          'item_boost': 1, 'pet_qlt': 'orange', 'pet_lvl': 35, 'pet_star': 4}
-
     hero_builder = Numerical()
 
     cfgs = get_hero_progression('E:\新建文件夹\战斗\SSR战斗养成数值B.xlsx')
