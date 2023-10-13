@@ -1,6 +1,7 @@
 import numpy as np
 import csv
 from decimal import Decimal
+import scipy
 
 
 def linear_interpolation(atk, _def, hp):
